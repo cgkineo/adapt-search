@@ -1,0 +1,14 @@
+{
+  "name": "adapt-search",
+  "homepage": "https://github.com/cgkineo/adapt-search",
+  "authors": [
+    "Gavin McMaster <gavin.mcmaster@kineo.com>"
+  ],
+  "description": "Adapt plugin that takes 1 or more search terms and displays a list of blocks ranked by relevance of keywords",
+  "main": "/js/adapt-search.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-extension"
+  ],
+  "license": "GPLv3"
+}

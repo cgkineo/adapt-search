@@ -1,0 +1,24 @@
+<div class="search-results-inner">
+    {{#if noResults}}
+    <div class="search-result">
+        <div class="search-result-inner">
+            <p class="no-results">{{{noResultsMessage}}}</p>
+        </div>
+    </div>
+    {{else}}
+    {{#each searchResults}}
+        <div class="search-result">
+            <div class="search-result-inner">
+                {{#if visible}}
+                    <a href="#" class="result-title" data-id="{{id}}">{{{title}}}</a>
+                {{else}}
+                    <div class="result-title content-hidden" data-id="{{id}}">{{{title}}}</div>
+                {{/if}}
+                <div class="relevance-indicator">
+                    <div class="relevance-indicator-inner" style="width:{{searchPercentage}}%"></div>    
+                </div>
+            </div>
+        </div>
+    {{/each}}
+    {{/if}}
+</div>

@@ -1,0 +1,17 @@
+{
+    "_id": "b-05",
+    "_parentId": "a-05",
+    "_type": "block",
+    "_classes": "",
+    "title": "It’s as simple as A, B, C",
+    "displayTitle": "It’s as simple as A, B, C",
+    "body": "Adapt uses a layout we've labelled ABC. When a user enters a page they are shown the page title. Inside a page we have articles, which are used to separate out relevant learning material. Blocks are placed inside articles and blocks hold the interactive components. The longer, scrolling pages made possible with Adapt require their own hierarchy and nomenclature to ensure content is structured in a coherent manner.",
+    "_search": {
+        "keywords": [
+            "world",
+            "cup",
+            "brazil"
+        ]
+    },
+    "_trackingId": 0
+}
