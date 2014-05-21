@@ -31,26 +31,8 @@ define(function(require){
             var blockID = $(event.currentTarget).attr("data-id");
             //console.log("navigateToResultPage: " + blockID);
             
-            var blockModel = Adapt.blocks.findWhere({_id:blockID});
-            var pageModel = blockModel.findAncestor("contentObjects");
-            var pageID = pageModel.get('_id');
-
-            console.log("Adapt.currentLocation: " + Adapt.currentLocation + ", pageID: " + pageID);
-
-            if(pageID === Adapt.currentLocation){
-                console.log("scroll to block location on current page");
-                this.scrollToSelectedBlock(blockID);                
-            } else{
-                Adapt.on('pageView:ready', _.bind(this.scrollToSelectedBlock, this, blockID));
-                Backbone.history.navigate('#/id/' + pageID, {trigger: true});
-            }
-
+            Adapt.navigateToElement("." + blockID , "blocks");
             Adapt.trigger('drawer:closeDrawer');
-        },
-
-        scrollToSelectedBlock: function(blockID){
-            console.log("scrollToSelectedBlock: " + blockID);
-            $(window).scrollTo("." + blockID, {offset:{top:-$('.navigation').height()}});
         }
 
 	});
