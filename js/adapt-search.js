@@ -30,7 +30,12 @@ define(function(require){
     showResults.call();
   });
 
- function search(query){
+  Adapt.once('drawer:empty', function(){
+    console.log("search,drawer:empty");
+    $('.navigation-drawer-toggle-button').removeClass('display-none');
+  }); 
+
+  function search(query){
         console.log("Adapt.Search: " + query);
         var maxWeighting = 1;
         var minWeighting = 0.5;
