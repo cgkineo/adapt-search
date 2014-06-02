@@ -30,8 +30,8 @@ define(function(require){
     showResults.call();
   });
 
-  Adapt.once('drawer:noCollections', function(){
-    console.log("search,drawer:noCollections");
+  Adapt.once('drawer:noItems', function(){
+    console.log("search,drawer:noItems");
     $('.navigation-drawer-toggle-button').removeClass('display-none');
   }); 
 
