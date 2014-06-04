@@ -19,26 +19,27 @@
 
 .list-item.search {
 	padding:@drawer-item-padding;
+	padding-left:0;
+	position: relative;
 }
 
 .search-box {
-    vertical-align: baseline;
     height: 24px;
-    border: none;
-    width: 90%;
+	border: none;
+	width: 90%;
+	display: block;
 }
 
 .start-search {
 	text-decoration: none;
-	font-size: 24px;
-	display: inline !important;
+	top: 50%;
+	right: 0;
+	margin-top: -12px;
 	position: absolute;
-	padding: 0 5px;
-	width: 10%;
 	color: @drawer-icon-color;
 	&:hover {
-            color:@drawer-icon-hover-color;
-        }
+        color:@drawer-icon-hover-color;
+    }
 }
 
 // Search Result
@@ -47,7 +48,6 @@
 	position: relative;
 	padding:@drawer-item-padding;
 	display: block;
-	width: 100%;
 	text-decoration: none;
 	color: @drawer-item-text-color;
 	border-bottom: 1px solid darken(@item-color, 10%);
