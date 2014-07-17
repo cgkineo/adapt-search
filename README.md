@@ -4,7 +4,7 @@ adapt-search
 Adapt plugin that takes 1 or more search terms and displays a list of blocks ranked by relevance of keywords
 
 ## How it works
-Keywords are assigned to each block. The search query is matched against this list of keywords and a score is awarded to each block. Blocks are then ordered based on their search score. The search query words in the input box can be separated by commas or whitespace.
+Keywords are assigned to each block. The search query is matched against this list of keywords and a score is awarded to each block. Blocks are then ordered based on their search score. The search query words in the input box can be separated by commas or whitespace. The following sections provide a separate explanation for different disciplines....
 
 ## Designers
 Keywords should describe the learning content of the block. The order of the keywords is important as more weighting is given to words at the start of the list. Also, the way the search algorithm works, a penalty is taken from the search score for keywords missed. A larger penalty is applied for keywords at the start of the list not matched by the search query. Put the most important keywords at the start of the list.
