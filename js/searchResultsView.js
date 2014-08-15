@@ -31,7 +31,7 @@ define(function(require){
             var blockID = $(event.currentTarget).attr("data-id");
             //console.log("navigateToResultPage: " + blockID);
             
-            Adapt.navigateToElement("." + blockID , "blocks");
+            Adapt.navigateToElement("." + blockID);
             Adapt.trigger('drawer:closeDrawer');
         }
 
