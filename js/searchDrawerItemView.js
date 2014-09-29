@@ -27,25 +27,19 @@ define(function(require) {
         },
 
         search: function(event) {
-          if(event) event.preventDefault();
-          var searchVal = $(".search-box").val();
-          console.log("search: " + searchVal);
-          if(searchVal === "") return;
+            if(event) event.preventDefault();
+            var searchVal = $(".search-box").val();
+            if(searchVal === "") {
+                return;
+            }
+            Adapt.trigger("search:filterTerms", searchVal);
+        },
 
-          Adapt.trigger("search:filterTerms", searchVal);
-          
-
-          //Adapt.Search(searchVal);
-          //Adapt.trigger("show:searchResults");
-          //$(".tools-list-item").removeClass("selected");
-          //$(".item-search").addClass("selected");
-      },
-
-      checkEnter: function(event) {
-        if (event.keyCode == 13) {
-            this.search();    
-        }    
-      }
+        checkEnter: function(event) {
+            if (event.keyCode === 13) {
+                this.search();    
+            }    
+        }
 
     });
 
