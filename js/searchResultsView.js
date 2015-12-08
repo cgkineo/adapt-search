@@ -4,7 +4,8 @@ define(function(require){
     var Adapt = require('coreJS/adapt');
     var SearchAlgorithm = require('./search-algorithm');
 
-    
+    var replaceTagsRegEx = /\<{1}[^\>]+\>/g;
+    var replaceEndTagsRegEx = /\<{1}\/{1}[^\>]+\>/g;
     	
 	var SearchResultsView = Backbone.View.extend({
 
@@ -71,6 +72,11 @@ define(function(require){
             title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
             displayTitle = displayTitle.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
             body = body.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
+
+            //strip tags
+            title = this.stripTags(title);
+            displayTitle = this.stripTags(displayTitle);
+            body = this.stripTags(body);
             
             var searchTitle = "";
             var textPreview = "";
@@ -86,6 +92,10 @@ define(function(require){
             if (result.foundPhrases.length > 0) {
 
                 var phrase = result.foundPhrases[0].phrase;
+
+                //strip tags
+                phrase = this.stripTags(phrase);
+
                 var lowerPhrase = phrase.toLowerCase();
                 
                 if (phrase.toLowerCase() == searchTitle.toLowerCase()) {
@@ -149,12 +159,20 @@ define(function(require){
                     var wordPos = text.toLowerCase().indexOf(word);
                     if (wordPos < 0) return;
                     initial += text.slice(0, wordPos);
-                    initial +="<span class='found'>"+word+"</span>";
+                    var highlighted = text.slice(wordPos, wordPos+word.length);
+                    initial +="<span class='found'>"+highlighted+"</span>";
                     text = text.slice(wordPos+word.length, text.length);
                 });
                 initial+=text;
                 return initial;
             }
+        },
+
+        stripTags: function (text) {
+            text = $("<span>"+text+"</span>").html();
+            text = text.replace(replaceEndTagsRegEx, " ");
+            text = text.replace(replaceTagsRegEx, "");
+            return text;
         },
 
         renderResults : function(results){
