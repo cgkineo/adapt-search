@@ -59,6 +59,8 @@ define(function(require){
         $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);   
         $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);  
         
+        
+        
     });
 
 
