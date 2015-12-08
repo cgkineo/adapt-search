@@ -7,17 +7,25 @@ define(function(require) {
 
         className: 'drawer-item-search',
 
-        initialize: function() {
-            this.listenTo(Adapt, 'drawer:empty', this.remove);
-            this.render();
-        },
-
         events: {
             'click .start-search':'search',
-            'keydown .search-box':'checkEnter'
+            'keyup .search-box':'search'            
+        },        
+
+        initialize: function(options) {
+
+            this.listenTo(Adapt, 'drawer:empty', this.remove);
+            this.render();
+           
+            this.search = _.debounce(_.bind(this.search, this), 1000);
+            if(options.query){
+              this.$(".search-box").val(options.query);
+            }
+
         },
 
         render: function() {
+
             var data = this.model.toJSON();
            
             var template = Handlebars.templates['searchBox']
@@ -27,24 +35,12 @@ define(function(require) {
         },
 
         search: function(event) {
+
           if(event) event.preventDefault();
-          var searchVal = $(".search-box").val();
+          var searchVal = this.$(".search-box").val();
           console.log("search: " + searchVal);
-          if(searchVal === "") return;
 
-          Adapt.trigger("search:filterTerms", searchVal);
-          
-
-          //Adapt.Search(searchVal);
-          //Adapt.trigger("show:searchResults");
-          //$(".tools-list-item").removeClass("selected");
-          //$(".item-search").addClass("selected");
-      },
-
-      checkEnter: function(event) {
-        if (event.keyCode == 13) {
-            this.search();    
-        }    
+          Adapt.trigger("search:filterTerms", searchVal);          
       }
 
     });

@@ -8,9 +8,9 @@
     "displayTitle": "It’s as simple as A, B, C",
     "body": "Adapt uses a layout we've labelled ABC. When a user enters a page they are shown the page title. Inside a page we have articles, which are used to separate out relevant learning material. Blocks are placed inside articles and blocks hold the interactive components. The longer, scrolling pages made possible with Adapt require their own hierarchy and nomenclature to ensure content is structured in a coherent manner.",
     "_search": {
-        "keywords": [
-            "words",
-            "to",
+        "_keywords": [
+            "sentences which can be used",
+            "to better enhance the component descriptions",
             "describe",
             "content"
         ]
@@ -22,5 +22,91 @@
  "_search": {
     "title": "",
     "description": "Type in search words and enter",
-    "noResultsMessage": "Sorry, no results were found"
+    "noResultsMessage": "Sorry, no results were found",
+    "_showHighlights": true,
+    "_showFoundWords": true
+}
+
+
+
+
+
+
+// override if needed in course.json
+"_search": {
+    "_previewWords": 15,
+    "_previewCharacters": 30,
+
+    "_searchAttributes": [
+        {
+            "_attributeName": "_search",
+            "_level": 1,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "_keywords",
+            "_level": 1,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "keywords",
+            "_level": 1,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "displayTitle",
+            "_level": 2,
+            "_allowTextPreview": true
+        },
+        {
+            "_attributeName": "body",
+            "_level": 3,
+            "_allowTextPreview": true
+        },
+        {
+            "_attributeName": "alt",
+            "_level": 4,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "_alt",
+            "_level": 4,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "_items",
+            "_level": 5,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "items",
+            "_level": 5,
+            "_allowTextPreview": false
+        },
+        {
+            "_attributeName": "text",
+            "_level": 5,
+            "_allowTextPreview": true
+        }
+    ],
+
+    "_hideComponents": [
+        "blank"
+    ],
+
+    "_hideTypes": [
+
+    ],
+
+    "_ignoreWords": [
+        "a","an","and","are","as","at","be","by","for",
+        "from","has","he","in","is","it","its","of","on",
+        "that","the","to","was","were","will","wish","",
+    ],
+
+    "_wordBoundaryCharacters": [ " ", ".", ":" ],
+
+    "_scoreQualificationThreshold": 20,
+    "_minimumWordLength": 2,
+    "_frequencyImportance": 5
 }

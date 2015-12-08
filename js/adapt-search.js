@@ -4,150 +4,107 @@
 * Maintainers - Gavin McMaster <gavin.mcmaster@kineo.com>
 */
 define(function(require){
-  var Adapt = require('coreJS/adapt');
-  var Backbone = require('backbone');
-  var SearchDrawerItemView = require('extensions/adapt-search/js/searchDrawerItemView');
-  var SearchResultsView = require('extensions/adapt-search/js/searchResultsView');
+    var Adapt = require('coreJS/adapt');
+    var Backbone = require('backbone');
+    var SearchDrawerItemView = require('extensions/adapt-search/js/searchDrawerItemView');
+    var SearchResultsView = require('extensions/adapt-search/js/searchResultsView');
+    var SearchAlgorithm = require('./search-algorithm');
 
-  var contentMatches;
+    var lastSearchQuery = null;
+    var lastSearchObject = null;
 
-  Adapt.on('drawer:openedItemView', function(){
-    console.log("search.js,drawer:openedItemView");
-    var searchObject = Adapt.course.get('_search');
-
-    var drawerObject = {
-      title: searchObject.title,
-      description: searchObject.description
+    var searchConfigDefault = {
+        _previewWords: 15,
+        _previewCharacters: 30,
+        _showHighlights: true,
+        _showFoundWords: true,
+        title: "Search",
+        description: "Type in search words",
+        noResultsMessage:"Sorry, no results were found",
+        awaitingResultsMessage: "Formulating results..."
     };
 
-     var searchModel = new Backbone.Model(drawerObject);
-     $('.drawer-inner').append(new SearchDrawerItemView({model:searchModel}).el);
-  });
 
-  Adapt.on('search:filterTerms', function(query){
-    search.call(this, query);
-    Adapt.trigger('search:termsFiltered');
-    showResults.call();
-  });
+    Adapt.on('search-algorithm:ready', function(){    
+        Adapt.course.set('_search',_.extend(searchConfigDefault, Adapt.course.get('_search')) );
 
-  Adapt.once('drawer:noItems', function(){
-    console.log("search,drawer:noItems");
-    $('.navigation-drawer-toggle-button').removeClass('display-none');
-  }); 
 
-  function search(query){
-        console.log("Adapt.Search: " + query);
-        var maxWeighting = 1;
-        var minWeighting = 0.5;
-        var weightingDecrement = 0.1;
-        var maxUnMatchedPenalty = 0.3;
-        var unMatchedPenaltyDecrement = 0.1;
-        var minUnMatchedPenalty = 0.1;
-        var queryWords;
-        contentMatches = [];
+        var searchConfig = Adapt.course.get('_search');
+        searchConfig.title =searchConfig.title || 'search';
+        searchConfig.description = searchConfig.description || 'description';
+
+        var drawerObject = {
+            title: searchConfig.title,
+            description: searchConfig.description,
+            className: 'search-drawer'
+        };
+
+        Adapt.drawer.addItem(drawerObject, 'resources:showSearch');
+    });
+
+
+    Adapt.on('drawer:openedItemView', function(){
         
-        if(query.indexOf(",") != -1) query = query.replace(/\s*,\s*/g, " ");     
-        //console.log("query: "+ query);
-        queryWords = _.uniq(query.match(/\S+/g));
+        console.log("search.js,drawer:openedItemView");
+
+        var searchConfig = Adapt.course.get('_search');
+        searchConfig = new Backbone.Model(searchConfig);
+
+        var $searchDrawerButton = $(".search-drawer");
+        var $replacementButton = $("<div></div>");
+        $replacementButton.attr("class", $searchDrawerButton.attr("class"));
+        $searchDrawerButton.children().appendTo($replacementButton);
+        $searchDrawerButton.replaceWith($replacementButton);
+
+        $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);   
+        $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);  
         
-        console.log(Adapt.blocks.models.length);
-        _.each(Adapt.blocks.models, function(model){
-            //console.log(model.get('_id'));
-                        
-            if(!model.get('_search')) return;
-            //console.log(model.get('_search').keywords);
-            //console.log( model.get('_search').keywords.length);
+    });
 
-            var matchedKeywords = 0;
-            var unMatchedKeywords = 0;            
-            var taggedKeywords = model.get('_search').keywords;
-            
-            //console.log(taggedKeywords);
-            //console.log( taggedKeywords.length);
-            
-            var weighting = maxWeighting;
-            var unMatchedPenalty = maxUnMatchedPenalty;
-            var searchScore = 0;
-            var searchPenalty = 0;
-            var searchPercentage = 0;
-            var contentID = model.get('_id');
-           // var available = model.get('available');
-            var visible = model.get('_isVisible');
-            var topRankedMatchIndex = -1;
-            var title = model.get("title");
 
-            console.log(contentID + " - " + title);
+    Adapt.on('search:filterTerms', function(query){
 
-            
-            _.each(taggedKeywords, function(keyword){
-                console.log(keyword);
-                var keywordMatched = false;
-                _.each(queryWords, function(word){
-                    console.log(word);
-                    if(word.toLowerCase()===keyword.toLowerCase()){
-                        searchScore += weighting;
-                        matchedKeywords++;
-                        keywordMatched = true;
-                        if(topRankedMatchIndex == -1) topRankedMatchIndex = _.indexOf(taggedKeywords, keyword);
-                    }
-                })
-                console.log("keywordMatched: "+ keywordMatched);
-                if(!keywordMatched) searchPenalty += unMatchedPenalty;
-                
-                weighting-= weightingDecrement;
-                if(weighting < minWeighting) weighting = minWeighting;
-                unMatchedPenalty -= unMatchedPenaltyDecrement;
-                if(unMatchedPenalty < minUnMatchedPenalty) unMatchedPenalty = minUnMatchedPenalty;
-            })
-            
-            unMatchedKeywords = taggedKeywords.length - matchedKeywords;
-            console.log("matchedKeywords: " + matchedKeywords + ",unMatchedKeywords: "+ unMatchedKeywords + ", searchScore: "+ searchScore);
-            
-            // lovely rounding error in javascript
-            searchScore = Math.round(searchScore * 10)/10;
-            searchPenalty = Math.round(searchPenalty * 10)/10;
-            searchPercentage = searchScore*100;
-            
-            if(matchedKeywords > 0){
-                //var contentData = {id:contentID, available:available, visible:visible, title:title, matchedKeywords:matchedKeywords, unMatchedKeywords:unMatchedKeywords, searchScore:searchScore, searchPenalty:searchPenalty, searchPercentage:searchPercentage, topRankedMatchIndex: topRankedMatchIndex, keywords:taggedKeywords.toString()};
-                var contentData = {id:contentID, visible:visible, title:title, matchedKeywords:matchedKeywords, unMatchedKeywords:unMatchedKeywords, searchScore:searchScore, searchPenalty:searchPenalty, searchPercentage:searchPercentage, topRankedMatchIndex: topRankedMatchIndex, keywords:taggedKeywords.toString()};
-                contentMatches.push(contentData);
-            }
-                    
-        });
+        var searchConfig = Adapt.course.get('_search');
+
+        lastSearchQuery = query;
+        if (query.length === 0) {
+
+            var searchObject = _.extend({}, searchConfig, {
+                query: query,
+                searchResults: [],
+                isAwaitingResults: false,
+                isBlank: true
+            });
+
+        } else if (query.length < searchConfig._minimumWordLength) {
+
+            var searchObject = _.extend({}, searchConfig, {
+                query: query,
+                searchResults: [],
+                isAwaitingResults: true,
+                isBlank: false
+            });
+        } else {
         
-        if(contentMatches.length > 0) orderList();
-        
-        //return contentMatches.length;
-    }
-    
-    function orderList(){
-        console.log(contentMatches.length + " content matches");
-      
-        contentMatches.sort(function(a, b){
-                
-           if(a.searchScore !== b.searchScore) return b.searchScore - a.searchScore;
-             
-           if(a.searchPenalty !== b.searchPenalty) return a.searchPenalty - b.searchPenalty;
-           
-           return a.topRankedMatchIndex - b.topRankedMatchIndex;  
-        })        
-      
-        if(console.table) console.table(contentMatches, ["id", "keywords", "searchScore", "searchPenalty", "topRankedMatchIndex"]);
-        
-    }
+            var results = SearchAlgorithm.find(query);
 
-    function showResults(){
-      console.log("Search:showResults");
-      //var searchObject = {results:contentMatches};
-      var searchObject = {
-        searchResults: contentMatches,
-        noResultsMessage: Adapt.course.get('_search').noResultsMessage
-      }
+            var searchObject = _.extend({}, searchConfig, {
+                query: query,
+                searchResults: results,
+                isAwaitingResults: false,
+                isBlank: false
+            });
+        }
 
-      var searchResultsModel = new Backbone.Model(searchObject);
-      $('.drawer-inner').append(new SearchResultsView({model:searchResultsModel}).el);
+        lastSearchObject = searchObject;
+        Adapt.trigger('search:termsFiltered', searchObject); 
+    });
 
-    }
+
+    Adapt.once('drawer:noItems', function(){
+        console.log("search,drawer:noItems");
+        $('.navigation-drawer-toggle-button').removeClass('display-none');
+    }); 
+
 
 });
