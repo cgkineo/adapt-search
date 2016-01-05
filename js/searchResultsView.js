@@ -92,13 +92,20 @@ define(function(require){
             if (result.foundPhrases.length > 0) {
 
                 var phrase = result.foundPhrases[0].phrase;
-
                 //strip tags
                 phrase = this.stripTags(phrase);
 
                 var lowerPhrase = phrase.toLowerCase();
+                var lowerSearchTitle = searchTitle.toLowerCase();
+
+                if (lowerPhrase == lowerSearchTitle && result.foundPhrases.length > 1) {
+                    phrase = result.foundPhrases[1].phrase;
+                    //strip tags
+                    phrase = this.stripTags(phrase);
+                    lowerPhrase = phrase.toLowerCase();
+                }
                 
-                if (phrase.toLowerCase() == searchTitle.toLowerCase()) {
+                if (lowerPhrase == lowerSearchTitle) {
                     //if the search phrase and title are the same
                     var finder = new RegExp("(([^"+wordBoundaryRegEx+"]*["+wordBoundaryRegEx+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                     if (body) {
