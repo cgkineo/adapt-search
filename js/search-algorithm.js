@@ -51,6 +51,11 @@ define([
 				"_allowTextPreview": true
 			},
 			{
+				"_attributeName": "title",
+				"_level": 2,
+				"_allowTextPreview": false
+			},
+			{
 				"_attributeName": "body",
 				"_level": 3,
 				"_allowTextPreview": true
@@ -267,6 +272,7 @@ define([
 			var ignoreWords = this.model.get("_ignoreWords");
 			var regularExpressions = this._regularExpressions;
 			var searchAttributes = this.model.get("_searchAttributes");
+			var minimumWordLength = this.model.get("_minimumWordLength");
 
 			var scores = _.uniq(_.pluck(searchAttributes, "_level"));
 			scores = _.map(scores, function(l) { return 1/l; });
@@ -313,6 +319,7 @@ define([
 						phraseObject.words = _.omit(phraseObject.words, ignoreWords);
 						scoreWords = scoreWords.concat(words);
 					}
+					scoreWords = _.filter(scoreWords, function(word) { return word.length >= minimumWordLength; });
 					scoreWords = _.countBy(scoreWords, function (word) { return word.toLowerCase(); });
 					scoreWords = _.omit(scoreWords, ignoreWords);
 					for (var word in scoreWords) {
