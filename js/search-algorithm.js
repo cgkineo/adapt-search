@@ -346,7 +346,11 @@ define([
 
 				for (var w = 0, wl = searchProfile._words.length; w < wl; w++) {
 					var word = searchProfile._words[w].word;
-					this._wordIndex[word] = this._wordIndex[word] || [];
+					if (Object.prototype.hasOwnProperty && !this._wordIndex.hasOwnProperty(word)) {
+						this._wordIndex[word] = [];
+					} else {
+						this._wordIndex[word] = this._wordIndex[word] || [];
+					}
 					this._wordIndex[word].push(id);
 				}
 				
