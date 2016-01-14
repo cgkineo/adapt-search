@@ -1,14 +1,19 @@
 {
   "name": "adapt-search",
+  "version": "0.0.2",
+  "framework": "^2.0.0",
   "homepage": "https://github.com/cgkineo/adapt-search",
   "authors": [
     "Gavin McMaster <gavin.mcmaster@kineo.com>"
   ],
-  "description": "Adapt plugin that takes 1 or more search terms and displays a list of blocks ranked by relevance of keywords",
+  "displayName": "Search",
+  "extension": "search",
+  "description": "Adapt plugin that takes one or more search terms and displays a list of blocks ranked by relevance of keywords",
   "main": "/js/adapt-search.js",
   "keywords": [
     "adapt-plugin",
     "adapt-extension"
   ],
-  "license": "GPLv3"
+  "license": "GPLv3",
+  "targetAttribute": "_search"
 }
