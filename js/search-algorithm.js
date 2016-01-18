@@ -270,7 +270,7 @@ define([
 
 		makeModelTextProfiles: function() {
       		// Handle _ignoreWords as a special case to support the authoring tool
-      		var ignoreWords = Object.prototype.toString.call(this.model.get('_ignoreWords')) == "[object Array]" 
+      		var ignoreWords = this.model.get('_ignoreWords') instanceof Array 
         		? this.model.get("_ignoreWords")
         		: this.model.get("_ignoreWords").split(',');
         
@@ -393,7 +393,7 @@ define([
 			var regularExpressions = this._regularExpressions;
 			var wordIndex = this._wordIndex;
       		// Handle _ignoreWords as a special case to support the authoring tool
-      		var ignoreWords = Object.prototype.toString.call(this.model.get('_ignoreWords')) == "[object Array]" 
+      		var ignoreWords = this.model.get('_ignoreWords') instanceof Array  
         		? this.model.get("_ignoreWords")
         		: this.model.get("_ignoreWords").split(',');
 			var scoreQualificationThreshold = this.model.get("_scoreQualificationThreshold");
