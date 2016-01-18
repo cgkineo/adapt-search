@@ -23,8 +23,11 @@
     "title": "",
     "description": "Type in search words and enter",
     "noResultsMessage": "Sorry, no results were found",
+    "awaitingResultsMessage": "Formulating results...",
     "_showHighlights": true,
-    "_showFoundWords": true
+    "_showFoundWords": true,
+    "_previewWords": 15,
+    "_previewCharacters": 30
 }
 
 
