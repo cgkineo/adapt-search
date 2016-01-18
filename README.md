@@ -13,9 +13,10 @@ It appears in the drawer. Either as a single item or with other items, such as [
 
 ## Settings Overview
 
-The attributes listed below are used in *course.json* to configure **Search**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json). 
 
-### Attributes
+### General Attributes
+
+The attributes listed below are used in *course.json* to configure **Search**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json). 
 
 
 **title** (string): Extension title, defaults to "Search".
@@ -36,6 +37,15 @@ The attributes listed below are used in *course.json* to configure **Search**, a
 
 **_previewCharacters** (integer): If the number of **_previewWords** cannot be found then use x number of characters. Defaults to 30.
 
+
+### Item Attributes
+
+
+The attributes listed below are used in *contentObject.json*, *articles.json*, *blocks.json* and *components.json* to configure **Search Items**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json). 
+
+**_search** (object): Object to designate search settings.  
+
+>**keywords** array(string): An array of strings detailing the important search phrases for the course section.
 
 <div float align=right><a href="#top">Back to Top</a></div>
 
