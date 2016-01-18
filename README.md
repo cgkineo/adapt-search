@@ -13,7 +13,7 @@ It appears in the drawer. Either as a single item or with other items, such as [
 
 ## Settings Overview
 
-The attributes listed below are used in *course.json* to configure **Search**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-contrib-search/blob/master/example.json). 
+The attributes listed below are used in *course.json* to configure **Search**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json). 
 
 ### Attributes
 
