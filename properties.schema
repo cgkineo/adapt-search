@@ -10,6 +10,86 @@
 			"type": "object",
 			"required": true,
 			"properties": {
+				"contentobject": {
+					"type": "object",
+					"properties": {
+						"_search": {
+							"type": "object",
+							"required": false,
+							"legend": "Search",
+							"properties": {
+								"keywords": {
+									"type": "string",
+									"default": "",
+									"required": false,
+									"title": "Keywords",
+									"inputType": "Text",
+									"validators": []
+								}
+							}
+						}
+					}
+				},
+				"article": {
+					"type": "object",
+					"properties": {
+						"_search": {
+							"type": "object",
+							"required": false,
+							"legend": "Search",
+							"properties": {
+								"keywords": {
+									"type": "string",
+									"default": "",
+									"required": false,
+									"title": "Keywords",
+									"inputType": "Text",
+									"validators": []
+								}
+							}
+						}
+					}
+				},
+				"block": {
+					"type": "object",
+					"properties": {
+						"_search": {
+							"type": "object",
+							"required": false,
+							"legend": "Search",
+							"properties": {
+								"keywords": {
+									"type": "string",
+									"default": "",
+									"required": false,
+									"title": "Keywords",
+									"inputType": "Text",
+									"validators": []
+								}
+							}
+						}
+					}
+				},
+				"component": {
+					"type": "object",
+					"properties": {
+						"_search": {
+							"type": "object",
+							"required": false,
+							"legend": "Search",
+							"properties": {
+								"keywords": {
+									"type": "string",
+									"default": "",
+									"required": false,
+									"title": "Keywords",
+									"inputType": "Text",
+									"validators": []
+								}
+							}
+						}
+					}
+				},
 				"config": {
 					"type": "object"
 				},
@@ -63,6 +143,33 @@
 									"validators": [],
 									"help": ""
 								},
+								"_ignoreWords": {
+									"type": "string",
+									"default": "a,an,and,are,as,at,be,by,for,from,has,he,in,is,it,its,of,on,that,the,to,was,were,will,wish",
+									"required": true,
+									"title": "Ignored words",
+									"inputType": "Text",
+									"validators": [],
+									"help": "A comma-separated list of words which will be ignored by the search algorithm"
+								},
+								"_minimumWordLength": {
+									"type": "number",
+									"required": false,
+									"default": 2,
+									"title": "Minimum word length",
+									"inputType": "Number",
+									"validators": ["number"],
+									"help": "Minimum number of characters which must be entered before triggering a search"
+								},
+								"_frequencyImportance": {
+									"type": "number",
+									"required": false,
+									"default": 5,
+									"title": "Frequency importance",
+									"inputType": "Number",
+									"validators": ["number"],
+									"help": "Extra points for a repeat match"
+								},                
 								"title": {
 									"type": "string",
 									"default": "Search",
@@ -79,7 +186,7 @@
 									"inputType": "Text",
 									"validators": []
 								},
-                                "placeholder": {
+								"placeholder": {
 									"type": "string",
 									"default": "",
 									"required": false,
@@ -105,19 +212,7 @@
 								}
 							}
 						}
-					},
-					"contentobject": {
-						"type": "object"
-					},
-					"article": {
-						"type": "object"
-					},
-					"block": {
-						"type": "object"
-					},
-					"component": {
-						"type": "object"
-					}
+					}	
 				}
 			}
 		}

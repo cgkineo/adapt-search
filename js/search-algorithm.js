@@ -145,11 +145,11 @@ define([
 		setupConfig: function() {
 			var model = Adapt.course.get("_search") || {};
 			//make sure defaults are injected, but original model reference is maintained
-			model = _.extend(model, searchDefaults, model);
+			var modelWithDefaults = _.extend(searchDefaults, model);
 
-			Adapt.course.set("_search", model);
+			Adapt.course.set("_search", modelWithDefaults);
 
-			this.model = new Backbone.Model(model);
+			this.model = new Backbone.Model(modelWithDefaults);
 
 			var wordBoundaryCharacters = this.model.get("_wordBoundaryCharacters");
 			this._regularExpressions.matchNotWordBoundaries = new RegExp( '[^\\' + wordBoundaryCharacters.join('\\') + ']+', 'g' );
@@ -269,7 +269,11 @@ define([
 		},
 
 		makeModelTextProfiles: function() {
-			var ignoreWords = this.model.get("_ignoreWords");
+      		// Handle _ignoreWords as a special case to support the authoring tool
+      		var ignoreWords = this.model.get('_ignoreWords') instanceof Array 
+        		? this.model.get("_ignoreWords")
+        		: this.model.get("_ignoreWords").split(',');
+        
 			var regularExpressions = this._regularExpressions;
 			var searchAttributes = this.model.get("_searchAttributes");
 			var minimumWordLength = this.model.get("_minimumWordLength");
@@ -388,7 +392,10 @@ define([
 
 			var regularExpressions = this._regularExpressions;
 			var wordIndex = this._wordIndex;
-			var ignoreWords = this.model.get("_ignoreWords");
+      		// Handle _ignoreWords as a special case to support the authoring tool
+      		var ignoreWords = this.model.get('_ignoreWords') instanceof Array  
+        		? this.model.get("_ignoreWords")
+        		: this.model.get("_ignoreWords").split(',');
 			var scoreQualificationThreshold = this.model.get("_scoreQualificationThreshold");
 			var minimumWordLength = this.model.get("_minimumWordLength");
 			var frequencyImportance = this.model.get("_frequencyImportance");
@@ -410,7 +417,7 @@ define([
 
 			function getMatchingIdScoreObjects(findWords) {
 				var matchingIdScoreObjects = {};
-
+ 
 				for (var findWord in findWords) {
 					for (var indexWord in wordIndex) {
 						//allow only start matches on findWord beginning with indexWord i.e. find: oneness begins with index: one 
