@@ -8,7 +8,7 @@
   ],
   "displayName": "Search",
   "extension": "search",
-  "description": "Adapt plugin that takes one or more search terms and displays a list of blocks ranked by relevance of keywords",
+  "description": "Keyword-search extension for Adapt",
   "main": "/js/adapt-search.js",
   "keywords": [
     "adapt-plugin",
