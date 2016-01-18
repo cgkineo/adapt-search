@@ -1,7 +1,6 @@
-define(function(require) {
-
-    var Backbone = require('backbone');
-    var Adapt = require('coreJS/adapt');
+define([
+    'coreJS/adapt',
+], function(Adapt) {
 
     var SearchDrawerItemView = Backbone.View.extend({
 

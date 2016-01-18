@@ -1,7 +1,7 @@
 {{#if isBlank}}
 {{else}}
 {{#if isAwaitingResults}}
-    <div class="no-results" tab-index="0" aria-label="{{{awaitingResultsMessage}}}">
+    <div class="no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
         <div class="search-result-inner">
             {{{awaitingResultsMessage}}}
         </div>
@@ -20,7 +20,7 @@
             </div>
         </button>
     {{else}}
-         <div class="no-results" tab-index="0" aria-label="{{{noResultsMessage}}}">
+         <div class="no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
             <div class="search-result-inner">
                 {{{noResultsMessage}}}
             </div>

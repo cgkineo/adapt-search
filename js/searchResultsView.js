@@ -1,4 +1,3 @@
-
 define(function(require){
     var Backbone = require('backbone');
     var Adapt = require('coreJS/adapt');

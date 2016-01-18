@@ -3,15 +3,16 @@
 * License - https://github.com/cgkineo/adapt-search/blob/master/LICENSE
 * Maintainers - Gavin McMaster <gavin.mcmaster@kineo.com>
 */
-define(function(require){
-    var Adapt = require('coreJS/adapt');
-    var Backbone = require('backbone');
-    var SearchDrawerItemView = require('extensions/adapt-search/js/searchDrawerItemView');
-    var SearchResultsView = require('extensions/adapt-search/js/searchResultsView');
-    var SearchAlgorithm = require('./search-algorithm');
+define([
+    'coreJS/adapt',
+    './searchDrawerItemView',
+    './searchResultsView',
+    './search-algorithm'
+], function(Adapt, SearchDrawerItemView, SearchResultsView, SearchAlgorithm){
 
     var lastSearchQuery = null;
     var lastSearchObject = null;
+    var isSearchShown = false;
 
     var searchConfigDefault = {
         _previewWords: 15,
@@ -41,21 +42,44 @@ define(function(require){
         Adapt.drawer.addItem(drawerObject, 'resources:showSearch');
     });
 
-    Adapt.on('drawer:openedItemView', function(){
+    Adapt.on('resources:showSearch', function() {
+        if (isSearchShown) return;
 
-        console.log("search.js,drawer:openedItemView");
+        var searchConfig = Adapt.course.get('_search');
+        searchConfig = new Backbone.Model(searchConfig);
+
+        var template = Handlebars.templates['searchSingleItem'];
+        var $element = $(template(searchConfig.toJSON()));
+
+        Adapt.drawer.triggerCustomView($element, true);
+
+        Adapt.trigger("search:draw");
+
+    });
+
+    Adapt.on('drawer:openedItemView search:draw', function(){
+
+        isSearchShown = true;
 
         var searchConfig = Adapt.course.get('_search');
         searchConfig = new Backbone.Model(searchConfig);
 
         var $searchDrawerButton = $(".search-drawer");
-        var $replacementButton = $("<div></div>");
-        $replacementButton.attr("class", $searchDrawerButton.attr("class"));
-        $searchDrawerButton.children().appendTo($replacementButton);
-        $searchDrawerButton.replaceWith($replacementButton);
+
+        if ($searchDrawerButton.is(":not(div)")) {
+            var $replacementButton = $("<div></div>");
+            $replacementButton.attr("class", $searchDrawerButton.attr("class"));
+            $searchDrawerButton.children().appendTo($replacementButton);
+            $searchDrawerButton.replaceWith($replacementButton);
+        }
 
         $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
         $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
+        
+    });
+
+    Adapt.on('drawer:closed', function() {
+        isSearchShown = false;
     });
 
     Adapt.on('search:filterTerms', function(query){
@@ -98,7 +122,6 @@ define(function(require){
     });
 
     Adapt.once('drawer:noItems', function(){
-        console.log("search,drawer:noItems");
         $('.navigation-drawer-toggle-button').removeClass('display-none');
     });
 
