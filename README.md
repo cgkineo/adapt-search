@@ -33,7 +33,7 @@ The attributes listed below are used in *course.json* to configure **Search**, a
   
 **_showFoundWords** (boolean): Show found words under the search results.  
 
-**_previewWords** (integer): The number of words taken to from either side of the matching word. Defaults to 15.
+**_previewWords** (integer): The number of words taken from either side of the matching word. Defaults to 15.
 
 **_previewCharacters** (integer): If the number of **_previewWords** cannot be found then use x number of characters. Defaults to 30.
 
