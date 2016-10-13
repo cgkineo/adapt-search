@@ -101,8 +101,6 @@ define([
 			"that","the","to","was","were","will","wish","",
 		],
 
-		_wordBoundaryCharacters: [ " ", ".", ":" ],
-
 		_scoreQualificationThreshold: 20,
 		_minimumWordLength: 2,
 		_frequencyImportance: 5
@@ -120,7 +118,7 @@ define([
 
 		_regularExpressions: {
 			wordCharacters: wordCharacters,
-			matchNotWordBoundaries: /[^\ \.\:]+/g,
+			matchNotWordBoundaries: new RegExp("["+wordCharacters+"]+", "g"),
 			trimReplaceNonWordCharacters: new RegExp("^([^"+wordCharacters+"])+|([^"+wordCharacters+"])+$","g"),
 			trimReplaceWhitespace: /^\s+|\s+$/g,
 			escapeRegExp: function (str) {
@@ -152,9 +150,6 @@ define([
 			Adapt.course.set("_search", modelWithDefaults);
 
 			this.model = new Backbone.Model(modelWithDefaults);
-
-			var wordBoundaryCharacters = this.model.get("_wordBoundaryCharacters");
-			this._regularExpressions.matchNotWordBoundaries = new RegExp( '[^\\' + wordBoundaryCharacters.join('\\') + ']+', 'g' );
 
 		},
 

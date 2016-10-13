@@ -96,8 +96,6 @@
         "that","the","to","was","were","will","wish","",
     ],
 
-    "_wordBoundaryCharacters": [ " ", ".", ":" ],
-
     "_scoreQualificationThreshold": 20,
     "_minimumWordLength": 2,
     "_frequencyImportance": 5
