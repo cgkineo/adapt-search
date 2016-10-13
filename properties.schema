@@ -18,6 +18,18 @@
 							"required": false,
 							"legend": "Search",
 							"properties": {
+								"_isEnabled": {
+									"type": "boolean",
+									"required": true,
+									"default": true,
+									"title": "Enable search",
+									"inputType": {
+										"type": "Boolean",
+										"options": [true, false]
+									},
+									"validators": [],
+									"help": ""
+								},
 								"keywords": {
 									"type": "string",
 									"default": "",
@@ -38,6 +50,18 @@
 							"required": false,
 							"legend": "Search",
 							"properties": {
+								"_isEnabled": {
+									"type": "boolean",
+									"required": true,
+									"default": true,
+									"title": "Enable search",
+									"inputType": {
+										"type": "Boolean",
+										"options": [true, false]
+									},
+									"validators": [],
+									"help": ""
+								},
 								"keywords": {
 									"type": "string",
 									"default": "",
@@ -58,6 +82,18 @@
 							"required": false,
 							"legend": "Search",
 							"properties": {
+								"_isEnabled": {
+									"type": "boolean",
+									"required": true,
+									"default": true,
+									"title": "Enable search",
+									"inputType": {
+										"type": "Boolean",
+										"options": [true, false]
+									},
+									"validators": [],
+									"help": ""
+								},
 								"keywords": {
 									"type": "string",
 									"default": "",
@@ -78,6 +114,18 @@
 							"required": false,
 							"legend": "Search",
 							"properties": {
+								"_isEnabled": {
+									"type": "boolean",
+									"required": true,
+									"default": true,
+									"title": "Enable search",
+									"inputType": {
+										"type": "Boolean",
+										"options": [true, false]
+									},
+									"validators": [],
+									"help": ""
+								},
 								"keywords": {
 									"type": "string",
 									"default": "",
@@ -101,6 +149,18 @@
 							"required": false,
 							"legend": "Search",
 							"properties": {
+								"_isEnabled": {
+									"type": "boolean",
+									"required": true,
+									"default": true,
+									"title": "Enable search",
+									"inputType": {
+										"type": "Boolean",
+										"options": [true, false]
+									},
+									"validators": [],
+									"help": ""
+								},
 								"_previewWords": {
 									"type": "number",
 									"required": false,

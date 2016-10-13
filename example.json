@@ -1,6 +1,7 @@
 // on each searchable contentObject, article, block or component
 {
     "_search": {
+        "_isEnabled": true,
         "keywords": [
             "sentences which can be used",
             "to better enhance the component descriptions",
@@ -12,6 +13,7 @@
 
 // in course.json
  "_search": {
+    "_isEnabled": true,
     "title": "",
     "description": "Type in search words and enter",
     "noResultsMessage": "Sorry, no results were found",
