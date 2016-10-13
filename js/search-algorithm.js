@@ -483,8 +483,11 @@ define([
 			}
 
 			function filterAndSortQualifyingMatches(matchingIdScoreObjects) {
+				var allowedScoreObjects = _.filter(matchingIdScoreObjects, function(item) {
+					return isModelSearchable(item.model);
+				});
 				var qualifyingScoreThreshold = 1/scoreQualificationThreshold;
-				var qualifyingMatches = _.filter(matchingIdScoreObjects, function(item) {
+				var qualifyingMatches = _.filter(allowedScoreObjects, function(item) {
 					//remove items which don't meet the score threshold
 					return item.score >= qualifyingScoreThreshold;
 				});
@@ -493,6 +496,23 @@ define([
 					return 1 / item.score;
 				});
 				return qualifyingMatches;
+			}
+
+			function isModelSearchable(model) {
+				var trail = model.getParents(true);
+				var config = model.get("_search");
+				if (config && config._isEnabled === false) return false;
+				if (model.get("_isLocked")) return false;
+
+				var firstDisabledTrailItem = trail.find(function(item) {
+					var config = item.get("_search");
+					if (item.get("_isLocked")) return true;
+					if (config && config._isEnabled === false) return true;
+					return false;
+				});
+
+
+				return (firstDisabledTrailItem === undefined);
 			}
 
 			function mapSearchPhrasesToMatchingWords(matchingIdScoreObjects) {
