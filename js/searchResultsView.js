@@ -64,8 +64,7 @@ define(function(require){
             var body = result.model.get("body");
             var previewWords = this.model.get("_previewWords");
             var previewCharacters = this.model.get("_previewCharacters");
-            var wordBoundaryCharacters = this.model.get("_wordBoundaryCharacters");
-            var wordBoundaryRegEx = "\\"+wordBoundaryCharacters.join("\\");
+            var wordCharacters = search._regularExpressions.wordCharacters;
 
             //trim whitespace
             title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
@@ -106,7 +105,7 @@ define(function(require){
                 
                 if (lowerPhrase == lowerSearchTitle) {
                     //if the search phrase and title are the same
-                    var finder = new RegExp("(([^"+wordBoundaryRegEx+"]*["+wordBoundaryRegEx+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
+                    var finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                     if (body) {
                         textPreview = body.match(finder)[0] + "...";
                     }
@@ -124,7 +123,7 @@ define(function(require){
                         if (wordIndex == wordMap.length) throw "search: cannot find word in phrase";
                         wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
                     } 
-                    var regex = new RegExp("(([^"+wordBoundaryRegEx+"]*["+wordBoundaryRegEx+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})"+SearchAlgorithm._regularExpressions.escapeRegExp(wordMap[wordIndex].word)+"((["+wordBoundaryRegEx+"]{1}[^"+wordBoundaryRegEx+"]*){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
+                    var regex = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})"+SearchAlgorithm._regularExpressions.escapeRegExp(wordMap[wordIndex].word)+"((["+wordCharacters+"]{1}[^"+wordCharacters+"]*){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                     var snippet = phrase.match(regex)[0];
                     var snippetIndexInPhrase = phrase.indexOf(snippet);
                     if (snippet.length == phrase.length) {
@@ -140,7 +139,7 @@ define(function(require){
             
             } else {
 
-                var finder = new RegExp("(([^"+wordBoundaryRegEx+"]*["+wordBoundaryRegEx+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
+                var finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                 if (body) {
                     textPreview = body.match(finder)[0] + "...";
                 }
