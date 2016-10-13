@@ -135,6 +135,9 @@ define([
 		},
 
 		onDataReady: function() {
+			var config = Adapt.course.get("_search");
+			if (!config || !config._isEnabled ) return;
+
 			this.setupConfig();
 			this._searchableModels = this.collectModelTexts();
 			this.makeModelTextProfiles();
@@ -212,12 +215,12 @@ define([
 			function isModelSearchable(model) {
 				var trail = model.getParents(true);
 				var config = model.get("_search");
-				if (config && config._isDisabled) return false;
+				if (config && config._isEnabled === false) return false;
 
 				var firstDisabledTrailItem = trail.find(function(item) {
 					var config = item.get("_search");
 					if (!config) return false;
-					if (config && !config._isDisabled) return false;
+					if (config && config._isEnabled !== false) return false;
 					return true;
 				});
 				return firstDisabledTrailItem === undefined;
