@@ -73,6 +73,11 @@ define([
             $searchDrawerButton.replaceWith($replacementButton);
         }
 
+        if (lastSearchObject && lastSearchObject.searchResults && lastSearchObject.searchResults.length === 0) {
+            lastSearchObject = null;
+            lastSearchQuery = null;
+        }
+
         $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
         $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
         
