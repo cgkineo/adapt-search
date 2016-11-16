@@ -161,6 +161,61 @@
 									"validators": [],
 									"help": ""
 								},
+								"_matchOn": {
+									"type": "object",
+									"required": false,
+									"legend": "Match On Rules",
+									"properties": {
+										"_contentWordBeginsPhraseWord": {
+											"type": "boolean",
+											"required": true,
+											"default": false,
+											"title": "A word in the content begins the search phrase word",
+											"inputType": {
+												"type": "Boolean",
+												"options": [true, false]
+											},
+											"validators": [],
+											"help": ""
+										},
+										"_contentWordContainsPhraseWord": {
+											"type": "boolean",
+											"required": true,
+											"default": false,
+											"title": "A word in the content contains the search phrase word",
+											"inputType": {
+												"type": "Boolean",
+												"options": [true, false]
+											},
+											"validators": [],
+											"help": ""
+										},
+										"_contentWordEqualsPhraseWord": {
+											"type": "boolean",
+											"required": true,
+											"default": true,
+											"title": "A word in the content equals the search phrase word",
+											"inputType": {
+												"type": "Boolean",
+												"options": [true, false]
+											},
+											"validators": [],
+											"help": ""
+										},
+										"_phraseWordBeginsContentWord": {
+											"type": "boolean",
+											"required": true,
+											"default": true,
+											"title": "A word in the content starts with the search phrase word",
+											"inputType": {
+												"type": "Boolean",
+												"options": [true, false]
+											},
+											"validators": [],
+											"help": ""
+										}
+									}
+								}
 								"_previewWords": {
 									"type": "number",
 									"required": false,

@@ -101,6 +101,13 @@ define([
 			"that","the","to","was","were","will","wish","",
 		],
 
+		_matchOn: {
+            _contentWordBeginsPhraseWord: false,
+	        _contentWordContainsPhraseWord: false,
+	        _contentWordEqualsPhraseWord: true,
+	        _phraseWordBeginsContentWord: true
+        },
+
 		_scoreQualificationThreshold: 20,
 		_minimumWordLength: 2,
 		_frequencyImportance: 5
@@ -399,6 +406,7 @@ define([
 			var scoreQualificationThreshold = this.model.get("_scoreQualificationThreshold");
 			var minimumWordLength = this.model.get("_minimumWordLength");
 			var frequencyImportance = this.model.get("_frequencyImportance");
+			var matchOn = this.model.get("_matchOn") || {};
 
 			var json = this._searchableModels.toJSON();
 
@@ -421,15 +429,18 @@ define([
 				for (var findWord in findWords) {
 					for (var indexWord in wordIndex) {
 						//allow only start matches on findWord beginning with indexWord i.e. find: oneness begins with index: one 
-						var rIndexWord = new RegExp("^"+regularExpressions.escapeRegExp(indexWord),"g");
+						var rIndexWordBegins = new RegExp("^"+regularExpressions.escapeRegExp(indexWord),"g");
 						//allow all matches on indexWord containing findWord i.e. index: someone contains find: one, index: anti-money contains find: money
-						var rFindWord = new RegExp(regularExpressions.escapeRegExp(findWord),"g");
+						var rFindWordContains = new RegExp(regularExpressions.escapeRegExp(findWord),"g");
+						//allow only start matches on indexWord beginning with findWord i.e. find: one begins index: oneness
+						var rFindWordBegins = new RegExp("^"+regularExpressions.escapeRegExp(findWord),"g");
 
-						var isIndexMatch = rIndexWord.test(findWord);
-						var isFindMatch = rFindWord.test(indexWord);
+						var isIndexBeginsMatch = matchOn._contentWordBeginsPhraseWord === false ? false : rIndexWordBegins.test(findWord);
+						var isFindContainsMatch = matchOn._contentWordContainsPhraseWord === false ? false : rFindWordContains.test(indexWord);
+						var isFindBeginsMatch = matchOn._phraseWordBeginsContentWord === false ? false : rFindWordBegins.test(indexWord);
 
-						var isFullMatch = findWord == indexWord;
-						var isPartMatch = isIndexMatch || isFindMatch;
+						var isFullMatch = matchOn._contentWordEqualsPhraseWord == false ? false : findWord == indexWord;
+						var isPartMatch = isIndexBeginsMatch || isFindContainsMatch || isFindBeginsMatch;
 
 						if (!isFullMatch && !isPartMatch) continue;
 
