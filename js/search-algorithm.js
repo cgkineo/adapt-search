@@ -136,7 +136,7 @@ define([
 
 		onDataReady: function() {
 			var config = Adapt.course.get("_search");
-			if (!config || _.has(config, '_isEnabled') && config._isEnabled === false) return;
+			if (!config || config._isEnabled === false) return;
 
 			this.setupConfig();
 			this._searchableModels = this.collectModelTexts();
@@ -212,12 +212,12 @@ define([
 			function isModelSearchable(model) {
 				var trail = model.getParents(true);
 				var config = model.get("_search");
-				if (config && _.has(config, '_isEnabled') && config._isEnabled === false) return false;
+				if (config && config._isEnabled === false) return false;
 
 				var firstDisabledTrailItem = trail.find(function(item) {
 					var config = item.get("_search");
 					if (!config) return false;
-					if (config && _.has(config, '_isEnabled') && config._isEnabled !== false) return false;
+					if (config && config._isEnabled !== false) return false;
 					return true;
 				});
 				return firstDisabledTrailItem === undefined;
@@ -499,13 +499,13 @@ define([
 			function isModelSearchable(model) {
 				var trail = model.getParents(true);
 				var config = model.get("_search");
-				if (config && _.has(config, '_isEnabled') && config._isEnabled === false) return false;
+				if (config && config._isEnabled === false) return false;
 				if (model.get("_isLocked")) return false;
 
 				var firstDisabledTrailItem = trail.find(function(item) {
 					var config = item.get("_search");
 					if (item.get("_isLocked")) return true;
-					if (config && _.has(config, '_isEnabled') && config._isEnabled === false) return true;
+					if (config && config._isEnabled === false) return true;
 					return false;
 				});
 
