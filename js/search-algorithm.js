@@ -136,7 +136,7 @@ define([
 
 		onDataReady: function() {
 			var config = Adapt.course.get("_search");
-			if (!config || !config._isEnabled ) return;
+			if (!config || config._isEnabled === false) return;
 
 			this.setupConfig();
 			this._searchableModels = this.collectModelTexts();
