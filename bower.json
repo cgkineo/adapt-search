@@ -2,7 +2,7 @@
     "name": "adapt-search",
     "repository": "git://github.com/cgkineo/adapt-search",
     "framework": "^2.0.0",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "homepage": "https://github.com/cgkineo/adapt-search",
     "issues": "https://github.com/cgkineo/adapt-search/issues/",
     "displayName": "Search",

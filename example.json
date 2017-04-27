@@ -98,6 +98,13 @@
         "that","the","to","was","were","will","wish","",
     ],
 
+    "_matchOn": {
+        "_contentWordBeginsPhraseWord": false,
+        "_contentWordContainsPhraseWord": false,
+        "_contentWordEqualsPhraseWord": true ,
+        "_phraseWordBeginsContentWord": true
+    },
+
     "_scoreQualificationThreshold": 20,
     "_minimumWordLength": 2,
     "_frequencyImportance": 5
