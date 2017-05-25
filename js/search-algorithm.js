@@ -135,7 +135,7 @@ define([
         },
 
         setupListeners: function() {
-            this.listenToOnce(Adapt, "app:dataReady", this.onDataReady);
+            this.listenTo(Adapt, "app:dataReady", this.onDataReady);
         },
 
         onDataReady: function() {
