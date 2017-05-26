@@ -135,7 +135,14 @@ define([
         },
 
         setupListeners: function() {
-            this.listenToOnce(Adapt, "app:dataReady", this.onDataReady);
+            this.listenTo(Adapt, {
+                "app:dataReady": this.onDataReady,
+                "app:languageChanged": this.clearSearchResults
+            });
+        },
+        
+        clearSearchResults: function() {
+            Adapt.trigger("search:filterTerms", "");
         },
 
         onDataReady: function() {

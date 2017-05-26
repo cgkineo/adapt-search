@@ -37,7 +37,6 @@ define([
 
           if(event) event.preventDefault();
           var searchVal = this.$(".search-box").val();
-          console.log("search: " + searchVal);
 
           Adapt.trigger("search:filterTerms", searchVal);          
       }
