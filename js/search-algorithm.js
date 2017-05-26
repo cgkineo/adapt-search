@@ -135,13 +135,16 @@ define([
         },
 
         setupListeners: function() {
-    
-            this.listenTo(Adapt, "app:dataReady", this.onDataReady);
-            this.listenTo(Adapt, "app:languageChanged", function() {
-                // When language is switched, trigger an empty search to clear
-                // any previous results.
-                Adapt.trigger("search:filterTerms", "");
+            this.listenTo(Adapt, {
+                "app:dataReady": this.onDataReady,
+                "app:languageChanged": this.clearResults
             });
+        },
+        
+        clearResults: function() {
+            // When language is switched, trigger an empty search to clear
+            // any previous results.
+            Adapt.trigger("search:filterTerms", "");
         },
 
         onDataReady: function() {
