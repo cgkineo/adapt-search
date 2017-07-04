@@ -6,7 +6,7 @@
 
 It appears in the drawer. Either as a single item or with other items, such as [resources](https://github.com/adaptlearning/adapt-contrib-resources).  
 
-##Installation
+## Installation
 
 ``adapt install search``
 
