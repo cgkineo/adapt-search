@@ -55,7 +55,7 @@ No known limitations.
 
 
 ----------------------------
-**Version number:**  2.0   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
+**Version number:**  2.2.0   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
 **Framework versions:** 2.0  
 **Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)   
 **Accessibility support:** WAI AA   
