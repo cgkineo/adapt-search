@@ -183,16 +183,18 @@ define([
                     .concat(Adapt.components.models);
 
                 var filtered = _.filter(rtn, function(model) {
-                    var type = model.get("_type");
-                    if (_.contains(hideTypes, component)) return false;
+                    var type = model.get("_type"),
+                        displayTitle,
+                        title;
+                    if (_.contains(hideTypes, type)) return false;
 
                     if (type == "component") {
                         var component = model.get("_component");
                         if (_.contains(hideComponents, component)) return false;
                     }
 
-                    var displayTitle = model.get("displayTitle").replace(regularExpressions.trimReplaceWhitespace, "");
-                    var title = model.get("title").replace(regularExpressions.trimReplaceWhitespace, "");
+                    if (model.has("displayTitle")) displayTitle = model.get("displayTitle").replace(regularExpressions.trimReplaceWhitespace, "");
+                    if (model.has("title")) title = model.get("title").replace(regularExpressions.trimReplaceWhitespace, "");
 
                     if (!displayTitle && !title) return false;
 
