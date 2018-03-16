@@ -25,6 +25,8 @@ The attributes listed below are used in *course.json* to configure **Search**, a
 
 **description** (string): Extension description, defaults to "Type in search words".
 
+**_drawerOrder** (number): Determines the order in which this extension appears as a drawer item. Acceptable values are numbers.
+
 **noResultsMessage**: Text displayed when no results are found, defaults to "Sorry, no results were found".
 
 **awaitingResultsMessage**: Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to "Formulating results...".
