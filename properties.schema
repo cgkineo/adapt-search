@@ -1,280 +1,310 @@
 {
-	"type": "object",
-	"$schema": "http://json-schema.org/draft-04/schema",
-	"id": "http://jsonschema.net",
-	"required": false,
-	"globals": {
-	},
-	"properties": {
-		"pluginLocations": {
-			"type": "object",
-			"required": true,
-			"properties": {
-				"contentobject": {
-					"type": "object",
-					"properties": {
-						"_search": {
-							"type": "object",
-							"required": false,
-							"legend": "Search",
-							"properties": {
-								"_isEnabled": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Enable search",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"keywords": {
-									"type": "string",
-									"default": "",
-									"required": false,
-									"title": "Keywords",
-									"inputType": "Text",
-									"validators": []
-								}
-							}
-						}
-					}
-				},
-				"article": {
-					"type": "object",
-					"properties": {
-						"_search": {
-							"type": "object",
-							"required": false,
-							"legend": "Search",
-							"properties": {
-								"_isEnabled": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Enable search",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"keywords": {
-									"type": "string",
-									"default": "",
-									"required": false,
-									"title": "Keywords",
-									"inputType": "Text",
-									"validators": []
-								}
-							}
-						}
-					}
-				},
-				"block": {
-					"type": "object",
-					"properties": {
-						"_search": {
-							"type": "object",
-							"required": false,
-							"legend": "Search",
-							"properties": {
-								"_isEnabled": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Enable search",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"keywords": {
-									"type": "string",
-									"default": "",
-									"required": false,
-									"title": "Keywords",
-									"inputType": "Text",
-									"validators": []
-								}
-							}
-						}
-					}
-				},
-				"component": {
-					"type": "object",
-					"properties": {
-						"_search": {
-							"type": "object",
-							"required": false,
-							"legend": "Search",
-							"properties": {
-								"_isEnabled": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Enable search",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"keywords": {
-									"type": "string",
-									"default": "",
-									"required": false,
-									"title": "Keywords",
-									"inputType": "Text",
-									"validators": []
-								}
-							}
-						}
-					}
-				},
-				"config": {
-					"type": "object"
-				},
-				"course": {
-					"type": "object",
-					"properties": {
-						"_search": {
-							"type": "object",
-							"required": false,
-							"legend": "Search",
-							"properties": {
-								"_isEnabled": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Enable search",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"_previewWords": {
-									"type": "number",
-									"required": false,
-									"default": 10,
-									"title": "Preview words",
-									"inputType": "Number",
-									"validators": ["number"],
-									"help": ""
-								},
-								"_previewCharacters": {
-									"type": "number",
-									"required": false,
-									"default": 30,
-									"title": "Preview characters",
-									"inputType": "Number",
-									"validators": ["number"],
-									"help": ""
-								},
-								"_showFoundWords": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Show found words",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"_showHighlights": {
-									"type": "boolean",
-									"required": true,
-									"default": true,
-									"title": "Show highlights",
-									"inputType": {
-										"type": "Boolean",
-										"options": [true, false]
-									},
-									"validators": [],
-									"help": ""
-								},
-								"_ignoreWords": {
-									"type": "string",
-									"default": "a,an,and,are,as,at,be,by,for,from,has,he,in,is,it,its,of,on,that,the,to,was,were,will,wish",
-									"required": true,
-									"title": "Ignored words",
-									"inputType": "Text",
-									"validators": [],
-									"help": "A comma-separated list of words which will be ignored by the search algorithm"
-								},
-								"_minimumWordLength": {
-									"type": "number",
-									"required": false,
-									"default": 2,
-									"title": "Minimum word length",
-									"inputType": "Number",
-									"validators": ["number"],
-									"help": "Minimum number of characters which must be entered before triggering a search"
-								},
-								"_frequencyImportance": {
-									"type": "number",
-									"required": false,
-									"default": 5,
-									"title": "Frequency importance",
-									"inputType": "Number",
-									"validators": ["number"],
-									"help": "Extra points for a repeat match"
-								},                
-								"title": {
-									"type": "string",
-									"default": "Search",
-									"required": false,
-									"title": "Title",
-									"inputType": "Text",
-									"validators": []
-								},
-								"description": {
-									"type": "string",
-									"default": "Enter search criteria",
-									"required": false,
-									"title": "Placeholder",
-									"inputType": "Text",
-									"validators": []
-								},
-								"placeholder": {
-									"type": "string",
-									"default": "",
-									"required": false,
-									"title": "Placeholder text for the search box",
-									"inputType": "Text",
-									"validators": []
-								},
-								"noResultsMessage": {
-									"type": "string",
-									"default": "No results found",
-									"required": false,
-									"title": "No results message",
-									"inputType": "Text",
-									"validators": []
-								},
-								"awaitingResultsMessage": {
-									"type": "string",
-									"default": "Formulating results...",
-									"required": false,
-									"title": "Processing results message",
-									"inputType": "Text",
-									"validators": []
-								}
-							}
-						}
-					}	
-				}
-			}
-		}
-	}
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "id": "http://jsonschema.net",
+    "required": false,
+    "globals": {
+    },
+    "properties": {
+        "pluginLocations": {
+            "type": "object",
+            "required": true,
+            "properties": {
+                "contentobject": {
+                    "type": "object",
+                    "properties": {
+                        "_search": {
+                            "type": "object",
+                            "required": false,
+                            "legend": "Search",
+                            "properties": {
+                                "_isEnabled": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Enable search",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "keywords": {
+                                    "type": "string",
+                                    "default": "",
+                                    "required": false,
+                                    "title": "Keywords",
+                                    "inputType": "Text",
+                                    "validators": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "article": {
+                    "type": "object",
+                    "properties": {
+                        "_search": {
+                            "type": "object",
+                            "required": false,
+                            "legend": "Search",
+                            "properties": {
+                                "_isEnabled": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Enable search",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "keywords": {
+                                    "type": "string",
+                                    "default": "",
+                                    "required": false,
+                                    "title": "Keywords",
+                                    "inputType": "Text",
+                                    "validators": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "block": {
+                    "type": "object",
+                    "properties": {
+                        "_search": {
+                            "type": "object",
+                            "required": false,
+                            "legend": "Search",
+                            "properties": {
+                                "_isEnabled": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Enable search",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "keywords": {
+                                    "type": "string",
+                                    "default": "",
+                                    "required": false,
+                                    "title": "Keywords",
+                                    "inputType": "Text",
+                                    "validators": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "component": {
+                    "type": "object",
+                    "properties": {
+                        "_search": {
+                            "type": "object",
+                            "required": false,
+                            "legend": "Search",
+                            "properties": {
+                                "_isEnabled": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Enable search",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "keywords": {
+                                    "type": "string",
+                                    "default": "",
+                                    "required": false,
+                                    "title": "Keywords",
+                                    "inputType": "Text",
+                                    "validators": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "config": {
+                    "type": "object"
+                },
+                "course": {
+                    "type": "object",
+                    "properties": {
+                        "_search": {
+                            "type": "object",
+                            "required": false,
+                            "legend": "Search",
+                            "properties": {
+                                "_isEnabled": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Enable search",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "_drawerOrder": {
+                                    "type": "number",
+                                    "required": false,
+                                    "default": 0,
+                                    "title": "Drawer Order",
+                                    "inputType": "Number",
+                                    "validators": ["number"]
+                                },
+                                "_matchOn": {
+                                    "type": "object",
+                                    "required": false,
+                                    "legend": "Match On Rules",
+                                    "properties": {
+                                        "_contentWordBeginsPhraseWord": {
+                                            "type": "boolean",
+                                            "required": true,
+                                            "default": false,
+                                            "title": "A word in the content begins the search phrase word",
+                                            "inputType": "Checkbox",
+                                            "validators": [],
+                                            "help": ""
+                                        },
+                                        "_contentWordContainsPhraseWord": {
+                                            "type": "boolean",
+                                            "required": true,
+                                            "default": false,
+                                            "title": "A word in the content contains the search phrase word",
+                                            "inputType": "Checkbox",
+                                            "validators": [],
+                                            "help": ""
+                                        },
+                                        "_contentWordEqualsPhraseWord": {
+                                            "type": "boolean",
+                                            "required": true,
+                                            "default": true,
+                                            "title": "A word in the content equals the search phrase word",
+                                            "inputType": "Checkbox",
+                                            "validators": [],
+                                            "help": ""
+                                        },
+                                        "_phraseWordBeginsContentWord": {
+                                            "type": "boolean",
+                                            "required": true,
+                                            "default": true,
+                                            "title": "A word in the content starts with the search phrase word",
+                                            "inputType": "Checkbox",
+                                            "validators": [],
+                                            "help": ""
+                                        }
+                                    }
+                                },
+                                "_previewWords": {
+                                    "type": "number",
+                                    "required": false,
+                                    "default": 10,
+                                    "title": "Preview words",
+                                    "inputType": "Number",
+                                    "validators": ["number"],
+                                    "help": ""
+                                },
+                                "_previewCharacters": {
+                                    "type": "number",
+                                    "required": false,
+                                    "default": 30,
+                                    "title": "Preview characters",
+                                    "inputType": "Number",
+                                    "validators": ["number"],
+                                    "help": ""
+                                },
+                                "_showFoundWords": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Show found words",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "_showHighlights": {
+                                    "type": "boolean",
+                                    "required": true,
+                                    "default": true,
+                                    "title": "Show highlights",
+                                    "inputType": "Checkbox",
+                                    "validators": [],
+                                    "help": ""
+                                },
+                                "_ignoreWords": {
+                                    "type": "string",
+                                    "default": "a,an,and,are,as,at,be,by,for,from,has,he,in,is,it,its,of,on,that,the,to,was,were,will,wish",
+                                    "required": true,
+                                    "title": "Ignored words",
+                                    "inputType": "Text",
+                                    "validators": [],
+                                    "help": "A comma-separated list of words which will be ignored by the search algorithm"
+                                },
+                                "_minimumWordLength": {
+                                    "type": "number",
+                                    "required": false,
+                                    "default": 2,
+                                    "title": "Minimum word length",
+                                    "inputType": "Number",
+                                    "validators": ["number"],
+                                    "help": "Minimum number of characters which must be entered before triggering a search"
+                                },
+                                "_frequencyImportance": {
+                                    "type": "number",
+                                    "required": false,
+                                    "default": 5,
+                                    "title": "Frequency importance",
+                                    "inputType": "Number",
+                                    "validators": ["number"],
+                                    "help": "Extra points for a repeat match"
+                                },                
+                                "title": {
+                                    "type": "string",
+                                    "default": "Search",
+                                    "required": false,
+                                    "title": "Title",
+                                    "inputType": "Text",
+                                    "validators": []
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "default": "Enter search criteria",
+                                    "required": false,
+                                    "title": "Placeholder",
+                                    "inputType": "Text",
+                                    "validators": []
+                                },
+                                "placeholder": {
+                                    "type": "string",
+                                    "default": "",
+                                    "required": false,
+                                    "title": "Placeholder text for the search box",
+                                    "inputType": "Text",
+                                    "validators": []
+                                },
+                                "noResultsMessage": {
+                                    "type": "string",
+                                    "default": "No results found",
+                                    "required": false,
+                                    "title": "No results message",
+                                    "inputType": "Text",
+                                    "validators": []
+                                },
+                                "awaitingResultsMessage": {
+                                    "type": "string",
+                                    "default": "Formulating results...",
+                                    "required": false,
+                                    "title": "Processing results message",
+                                    "inputType": "Text",
+                                    "validators": []
+                                }
+                            }
+                        }
+                    }   
+                }
+            }
+        }
+    }
 }

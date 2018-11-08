@@ -14,6 +14,7 @@
 // in course.json
  "_search": {
     "_isEnabled": true,
+    "_drawerOrder": 0,
     "title": "",
     "description": "Type in search words and enter",
     "noResultsMessage": "Sorry, no results were found",
@@ -97,6 +98,13 @@
         "from","has","he","in","is","it","its","of","on",
         "that","the","to","was","were","will","wish","",
     ],
+
+    "_matchOn": {
+        "_contentWordBeginsPhraseWord": false,
+        "_contentWordContainsPhraseWord": false,
+        "_contentWordEqualsPhraseWord": true ,
+        "_phraseWordBeginsContentWord": true
+    },
 
     "_scoreQualificationThreshold": 20,
     "_minimumWordLength": 2,

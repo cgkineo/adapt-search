@@ -5,8 +5,8 @@ define(function(require){
 
     var replaceTagsRegEx = /\<{1}[^\>]+\>/g;
     var replaceEndTagsRegEx = /\<{1}\/{1}[^\>]+\>/g;
-    	
-	var SearchResultsView = Backbone.View.extend({
+        
+    var SearchResultsView = Backbone.View.extend({
 
         className : 'search-results inactive',
         
@@ -194,8 +194,8 @@ define(function(require){
             Adapt.trigger('drawer:closeDrawer');
         }
 
-	});
+    });
 
-	 return SearchResultsView;
+     return SearchResultsView;
 
 });
