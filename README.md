@@ -25,6 +25,8 @@ The attributes listed below are used in *course.json* to configure **Search**, a
 
 **description** (string): Extension description, defaults to "Type in search words".
 
+**_drawerOrder** (number): Determines the order in which this extension appears as a drawer item. Acceptable values are numbers.
+
 **noResultsMessage**: Text displayed when no results are found, defaults to "Sorry, no results were found".
 
 **awaitingResultsMessage**: Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to "Formulating results...".
@@ -55,7 +57,7 @@ No known limitations.
 
 
 ----------------------------
-**Version number:**  2.2.0   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
+**Version number:**  2.2.3   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
 **Framework versions:** 2.0  
 **Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)   
 **Accessibility support:** WAI AA   

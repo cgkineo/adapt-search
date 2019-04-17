@@ -146,6 +146,14 @@
                                     "validators": [],
                                     "help": ""
                                 },
+                                "_drawerOrder": {
+                                    "type": "number",
+                                    "required": false,
+                                    "default": 0,
+                                    "title": "Drawer Order",
+                                    "inputType": "Number",
+                                    "validators": ["number"]
+                                },
                                 "_matchOn": {
                                     "type": "object",
                                     "required": false,
