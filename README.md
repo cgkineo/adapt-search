@@ -47,7 +47,8 @@ The attributes listed below are used in *contentObject.json*, *articles.json*, *
 
 **_search** (object): Object to designate search settings.  
 
->**keywords** array(string): An array of strings detailing the important search phrases for the course section.
+>**keywords** array(string): An array of strings detailing the important search phrases for the course section.  
+**NOTE**: Keywords are not exported with the `grunt translate:export` command. When localising content, use a process that identifies keywords from the actual translated course content.
 
 <div float align=right><a href="#top">Back to Top</a></div>
 
