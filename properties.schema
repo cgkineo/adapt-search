@@ -266,7 +266,8 @@
                                     "required": false,
                                     "title": "Title",
                                     "inputType": "Text",
-                                    "validators": []
+                                    "validators": [],
+                                    "translatable": true
                                 },
                                 "description": {
                                     "type": "string",
@@ -274,7 +275,8 @@
                                     "required": false,
                                     "title": "Placeholder",
                                     "inputType": "Text",
-                                    "validators": []
+                                    "validators": [],
+                                    "translatable": true
                                 },
                                 "placeholder": {
                                     "type": "string",
@@ -282,7 +284,8 @@
                                     "required": false,
                                     "title": "Placeholder text for the search box",
                                     "inputType": "Text",
-                                    "validators": []
+                                    "validators": [],
+                                    "translatable": true
                                 },
                                 "noResultsMessage": {
                                     "type": "string",
@@ -290,7 +293,8 @@
                                     "required": false,
                                     "title": "No results message",
                                     "inputType": "Text",
-                                    "validators": []
+                                    "validators": [],
+                                    "translatable": true
                                 },
                                 "awaitingResultsMessage": {
                                     "type": "string",
@@ -298,7 +302,8 @@
                                     "required": false,
                                     "title": "Processing results message",
                                     "inputType": "Text",
-                                    "validators": []
+                                    "validators": [],
+                                    "translatable": true
                                 }
                             }
                         }
