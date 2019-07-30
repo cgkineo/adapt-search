@@ -1,30 +1,46 @@
 {{#if isBlank}}
 {{else}}
 {{#if isAwaitingResults}}
-    <div class="no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
-        <div class="search-result-inner">
-            {{{awaitingResultsMessage}}}
-        </div>
+  <div class="no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
+    <div class="search-result-inner">
+      {{{awaitingResultsMessage}}}
     </div>
+  </div>
 {{else}}
-    {{#each formattedResults}}
-        <button class="base search-result" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
-            <div class="search-result-inner">
-                <div class="result-title">{{#if ../_showHighlights}}{{{searchTitleTagged}}}{{else}}{{{searchTitle}}}{{/if}}</div>
-                {{#if textPreview}}
-                    <div class="result-preview">"{{#if ../_showHighlights}}{{{textPreviewTagged}}}{{else}}{{{textPreview}}}{{/if}}"</div>
-                {{/if}}
-                {{#if ../_showFoundWords}}
-                <div class="result-foundwords"><i>{{{foundWords}}}</i></div>
-                {{/if}}
-            </div>
-        </button>
-    {{else}}
-         <div class="no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
-            <div class="search-result-inner">
-                {{{noResultsMessage}}}
-            </div>
+  {{#each formattedResults}}
+    <button class="base search-result" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
+      <div class="search-result-inner">
+        <div class="result-title">
+          {{#if ../_showHighlights}}
+            {{{searchTitleTagged}}}
+          {{else}}
+            {{{searchTitle}}}
+          {{/if}}
         </div>
-    {{/each}}
+        {{#if textPreview}}
+          <div class="result-preview">
+            "{{#if ../_showHighlights}}
+              {{{textPreviewTagged}}}
+            {{else}}
+              {{{textPreview}}}
+            {{/if}}"
+          </div>
+        {{/if}}
+        {{#if ../_showFoundWords}}
+        <div class="result-foundwords">
+          <i>
+            {{{foundWords}}}
+          </i>
+        </div>
+        {{/if}}
+      </div>
+    </button>
+  {{else}}
+    <div class="no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
+      <div class="search-result-inner">
+        {{{noResultsMessage}}}
+      </div>
+    </div>
+  {{/each}}
 {{/if}}
 {{/if}}

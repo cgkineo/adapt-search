@@ -4,131 +4,131 @@
 * Maintainers - Gavin McMaster <gavin.mcmaster@kineo.com>
 */
 define([
-    'coreJS/adapt',
-    './searchDrawerItemView',
-    './searchResultsView',
-    './search-algorithm'
+  'coreJS/adapt',
+  './searchDrawerItemView',
+  './searchResultsView',
+  './search-algorithm'
 ], function(Adapt, SearchDrawerItemView, SearchResultsView, SearchAlgorithm){
 
-    var lastSearchQuery = null;
-    var lastSearchObject = null;
-    var isSearchShown = false;
+  var lastSearchQuery = null;
+  var lastSearchObject = null;
+  var isSearchShown = false;
 
-    var searchConfigDefault = {
-        _previewWords: 15,
-        _previewCharacters: 30,
-        _showHighlights: true,
-        _showFoundWords: true,
-        title: "Search",
-        description: "Type in search words",
-        placeholder: "",
-        noResultsMessage: "Sorry, no results were found",
-        awaitingResultsMessage: "Formulating results..."
+  var searchConfigDefault = {
+    _previewWords: 15,
+    _previewCharacters: 30,
+    _showHighlights: true,
+    _showFoundWords: true,
+    title: "Search",
+    description: "Type in search words",
+    placeholder: "",
+    noResultsMessage: "Sorry, no results were found",
+    awaitingResultsMessage: "Formulating results..."
+  };
+
+  Adapt.on('search-algorithm:ready', function(){
+    Adapt.course.set('_search', _.extend(searchConfigDefault, Adapt.course.get('_search')) );
+
+    var searchConfig = Adapt.course.get('_search');
+    searchConfig.title = searchConfig.title || 'search';
+    searchConfig.description = searchConfig.description || 'description';
+
+    var drawerObject = {
+      title: searchConfig.title,
+      description: searchConfig.description,
+      className: 'search-drawer',
+      drawerOrder: searchConfig._drawerOrder || 0
     };
 
-    Adapt.on('search-algorithm:ready', function(){
-        Adapt.course.set('_search', _.extend(searchConfigDefault, Adapt.course.get('_search')) );
+    Adapt.drawer.addItem(drawerObject, 'resources:showSearch');
+  });
 
-        var searchConfig = Adapt.course.get('_search');
-        searchConfig.title = searchConfig.title || 'search';
-        searchConfig.description = searchConfig.description || 'description';
+  Adapt.on('resources:showSearch', function() {
+    if (isSearchShown) return;
 
-        var drawerObject = {
-            title: searchConfig.title,
-            description: searchConfig.description,
-            className: 'search-drawer',
-            drawerOrder: searchConfig._drawerOrder || 0
-        };
+    var searchConfig = Adapt.course.get('_search');
+    searchConfig = new Backbone.Model(searchConfig);
 
-        Adapt.drawer.addItem(drawerObject, 'resources:showSearch');
-    });
+    var template = Handlebars.templates['searchSingleItem'];
+    var $element = $(template(searchConfig.toJSON()));
 
-    Adapt.on('resources:showSearch', function() {
-        if (isSearchShown) return;
+    Adapt.drawer.triggerCustomView($element, true);
 
-        var searchConfig = Adapt.course.get('_search');
-        searchConfig = new Backbone.Model(searchConfig);
+    Adapt.trigger("search:draw");
 
-        var template = Handlebars.templates['searchSingleItem'];
-        var $element = $(template(searchConfig.toJSON()));
+  });
 
-        Adapt.drawer.triggerCustomView($element, true);
+  Adapt.on('drawer:openedItemView search:draw', function(){
 
-        Adapt.trigger("search:draw");
+    isSearchShown = true;
 
-    });
+    var searchConfig = Adapt.course.get('_search');
+    searchConfig = new Backbone.Model(searchConfig);
 
-    Adapt.on('drawer:openedItemView search:draw', function(){
+    var $searchDrawerButton = $(".search-drawer");
 
-        isSearchShown = true;
+    if ($searchDrawerButton.is(":not(div)")) {
+      var $replacementButton = $("<div></div>");
+      $replacementButton.attr("class", $searchDrawerButton.attr("class"));
+      $searchDrawerButton.children().appendTo($replacementButton);
+      $searchDrawerButton.replaceWith($replacementButton);
+    }
 
-        var searchConfig = Adapt.course.get('_search');
-        searchConfig = new Backbone.Model(searchConfig);
+    if (lastSearchObject && lastSearchObject.searchResults && lastSearchObject.searchResults.length === 0) {
+      lastSearchObject = null;
+      lastSearchQuery = null;
+    }
 
-        var $searchDrawerButton = $(".search-drawer");
+    $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
+    $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
 
-        if ($searchDrawerButton.is(":not(div)")) {
-            var $replacementButton = $("<div></div>");
-            $replacementButton.attr("class", $searchDrawerButton.attr("class"));
-            $searchDrawerButton.children().appendTo($replacementButton);
-            $searchDrawerButton.replaceWith($replacementButton);
-        }
+  });
 
-        if (lastSearchObject && lastSearchObject.searchResults && lastSearchObject.searchResults.length === 0) {
-            lastSearchObject = null;
-            lastSearchQuery = null;
-        }
+  Adapt.on('drawer:closed', function() {
+    isSearchShown = false;
+  });
 
-        $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
-        $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
-        
-    });
+  Adapt.on('search:filterTerms', function(query){
+    var searchConfig = Adapt.course.get('_search');
 
-    Adapt.on('drawer:closed', function() {
-        isSearchShown = false;
-    });
+    lastSearchQuery = query;
 
-    Adapt.on('search:filterTerms', function(query){
-        var searchConfig = Adapt.course.get('_search');
+    if (query.length === 0) {
 
-        lastSearchQuery = query;
+      var searchObject = _.extend({}, searchConfig, {
+        query: query,
+        searchResults: [],
+        isAwaitingResults: false,
+        isBlank: true
+      });
 
-        if (query.length === 0) {
+    } else if (query.length < searchConfig._minimumWordLength) {
 
-            var searchObject = _.extend({}, searchConfig, {
-                query: query,
-                searchResults: [],
-                isAwaitingResults: false,
-                isBlank: true
-            });
+      var searchObject = _.extend({}, searchConfig, {
+        query: query,
+        searchResults: [],
+        isAwaitingResults: true,
+        isBlank: false
+      });
+    } else {
 
-        } else if (query.length < searchConfig._minimumWordLength) {
+      var results = SearchAlgorithm.find(query);
 
-            var searchObject = _.extend({}, searchConfig, {
-                query: query,
-                searchResults: [],
-                isAwaitingResults: true,
-                isBlank: false
-            });
-        } else {
+      var searchObject = _.extend({}, searchConfig, {
+        query: query,
+        searchResults: results,
+        isAwaitingResults: false,
+        isBlank: false
+      });
+    }
 
-            var results = SearchAlgorithm.find(query);
+    lastSearchObject = searchObject;
 
-            var searchObject = _.extend({}, searchConfig, {
-                query: query,
-                searchResults: results,
-                isAwaitingResults: false,
-                isBlank: false
-            });
-        }
+    Adapt.trigger('search:termsFiltered', searchObject);
+  });
 
-        lastSearchObject = searchObject;
-
-        Adapt.trigger('search:termsFiltered', searchObject);
-    });
-
-    Adapt.once('drawer:noItems', function(){
-        $('.navigation-drawer-toggle-button').removeClass('display-none');
-    });
+  Adapt.once('drawer:noItems', function(){
+    $('.navigation-drawer-toggle-button').removeClass('display-none');
+  });
 
 });
