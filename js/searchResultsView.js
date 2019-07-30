@@ -8,7 +8,7 @@ define(function(require){
 
   var SearchResultsView = Backbone.View.extend({
 
-    className : 'search-results inactive',
+    className : 'search__items-container is-inactive',
 
     initialize: function(options) {
 
@@ -36,7 +36,7 @@ define(function(require){
 
     updateResults : function(searchObject){
 
-      this.$el.removeClass('inactive');
+      this.$el.removeClass('is-inactive');
       var formattedResults = this.formatResults(searchObject);
       this.renderResults(formattedResults);
     },
@@ -164,7 +164,7 @@ define(function(require){
             if (wordPos < 0) return;
             initial += text.slice(0, wordPos);
             var highlighted = text.slice(wordPos, wordPos+word.length);
-            initial +="<span class='found'>"+highlighted+"</span>";
+            initial +="<span class='is-found'>"+highlighted+"</span>";
             text = text.slice(wordPos+word.length, text.length);
         });
         initial+=text;
@@ -183,7 +183,7 @@ define(function(require){
     renderResults : function(results){
 
       var template = Handlebars.templates['searchResultsContent'];
-      this.$('.search-results-content').html(template(results));
+      this.$('.search__items-container-inner').html(template(results));
     },
 
     navigateToResultPage: function(event) {

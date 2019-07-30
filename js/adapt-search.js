@@ -30,13 +30,13 @@ define([
     Adapt.course.set('_search', _.extend(searchConfigDefault, Adapt.course.get('_search')) );
 
     var searchConfig = Adapt.course.get('_search');
-    searchConfig.title = searchConfig.title || 'search';
-    searchConfig.description = searchConfig.description || 'description';
+    searchConfig.title = searchConfig.title || 'Search';
+    searchConfig.description = searchConfig.description || 'Description';
 
     var drawerObject = {
       title: searchConfig.title,
       description: searchConfig.description,
-      className: 'search-drawer',
+      className: 'is-search',
       drawerOrder: searchConfig._drawerOrder || 0
     };
 
@@ -65,7 +65,7 @@ define([
     var searchConfig = Adapt.course.get('_search');
     searchConfig = new Backbone.Model(searchConfig);
 
-    var $searchDrawerButton = $(".search-drawer");
+    var $searchDrawerButton = $(".is-search");
 
     if ($searchDrawerButton.is(":not(div)")) {
       var $replacementButton = $("<div></div>");
@@ -79,8 +79,8 @@ define([
       lastSearchQuery = null;
     }
 
-    $('.drawer-inner .search-drawer').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
-    $('.drawer-inner .search-drawer').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
+    $('.drawer__holder .is-search').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
+    $('.drawer__holder .is-search').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
 
   });
 
@@ -128,7 +128,7 @@ define([
   });
 
   Adapt.once('drawer:noItems', function(){
-    $('.navigation-drawer-toggle-button').removeClass('display-none');
+    $('.nav-drawer-btn').removeClass('u-display-none');
   });
 
 });

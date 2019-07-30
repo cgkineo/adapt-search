@@ -1,16 +1,16 @@
 {{#if isBlank}}
 {{else}}
 {{#if isAwaitingResults}}
-  <div class="no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
-    <div class="search-result-inner">
+  <div class="search__item no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
+    <div class="search__item-inner">
       {{{awaitingResultsMessage}}}
     </div>
   </div>
 {{else}}
   {{#each formattedResults}}
-    <button class="base search-result" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
-      <div class="search-result-inner">
-        <div class="result-title">
+    <button class="search__item" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
+      <div class="search__item-inner">
+        <div class="search__item-title">
           {{#if ../_showHighlights}}
             {{{searchTitleTagged}}}
           {{else}}
@@ -18,7 +18,7 @@
           {{/if}}
         </div>
         {{#if textPreview}}
-          <div class="result-preview">
+          <div class="search__item-preview">
             "{{#if ../_showHighlights}}
               {{{textPreviewTagged}}}
             {{else}}
@@ -27,7 +27,7 @@
           </div>
         {{/if}}
         {{#if ../_showFoundWords}}
-        <div class="result-foundwords">
+        <div class="search__item-foundwords">
           <i>
             {{{foundWords}}}
           </i>
@@ -36,8 +36,8 @@
       </div>
     </button>
   {{else}}
-    <div class="no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
-      <div class="search-result-inner">
+    <div class="search__item no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
+      <div class="search__item-inner">
         {{{noResultsMessage}}}
       </div>
     </div>

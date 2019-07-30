@@ -4,11 +4,11 @@ define([
 
   var SearchDrawerItemView = Backbone.View.extend({
 
-    className: 'drawer-item-search',
+    className: 'js-drawer-textbox-change',
 
     events: {
       'click .start-search':'search',
-      'keyup .search-box':'search'
+      'keyup .search__textbox':'search'
     },
 
     initialize: function(options) {
@@ -18,7 +18,7 @@ define([
 
       this.search = _.debounce(_.bind(this.search, this), 1000);
       if(options.query){
-        this.$(".search-box").val(options.query);
+        this.$(".search__textbox").val(options.query);
       }
 
     },
@@ -36,7 +36,7 @@ define([
     search: function(event) {
 
       if(event) event.preventDefault();
-      var searchVal = this.$(".search-box").val();
+      var searchVal = this.$(".search__textbox").val();
 
       Adapt.trigger("search:filterTerms", searchVal);
     }
