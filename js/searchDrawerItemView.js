@@ -4,11 +4,11 @@ define([
 
   var SearchDrawerItemView = Backbone.View.extend({
 
-    className: 'js-drawer-textbox-change',
+    className: 'search',
 
     events: {
-      'click .start-search':'search',
-      'keyup .search__textbox':'search'
+      'click .js-search-textbox-change':'search',
+      'keyup .js-search-textbox-change':'search'
     },
 
     initialize: function(options) {

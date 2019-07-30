@@ -8,9 +8,9 @@
   </div>
 {{else}}
   {{#each formattedResults}}
-    <button class="search__item" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
+    <button class="search__item drawer__item-btn" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
       <div class="search__item-inner">
-        <div class="search__item-title">
+        <div class="search__item-title drawer__item-title">
           <div class="search__item-title-inner">
             {{#if ../_showHighlights}}
               {{{searchTitleTagged}}}
@@ -20,7 +20,7 @@
           </div>
         </div>
         {{#if textPreview}}
-          <div class="search__item-preview">
+          <div class="search__item-preview drawer__item-body">
             <div class="search__item-preview-inner">
               "{{#if ../_showHighlights}}
                 {{{textPreviewTagged}}}
@@ -31,7 +31,7 @@
           </div>
         {{/if}}
         {{#if ../_showFoundWords}}
-        <div class="search__item-foundwords">
+        <div class="search__item-foundwords drawer__item-body">
           <div class="search__item-foundwords-inner">
             {{{foundWords}}}
           </div>
