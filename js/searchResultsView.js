@@ -4,16 +4,23 @@ define(function(require){
     var SearchAlgorithm = require('./search-algorithm');
 
     var replaceTagsRegEx = /\<{1}[^\>]+\>/g;
+    var replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
     var replaceEndTagsRegEx = /\<{1}\/{1}[^\>]+\>/g;
+    var replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
         
     var SearchResultsView = Backbone.View.extend({
 
-        className : 'search-results inactive',
-        
-        initialize: function(options) {
+        className: 'search-results inactive',
 
-          this.listenTo(Adapt, 'drawer:empty', this.remove);    
-          this.listenTo(Adapt, 'search:termsFiltered', _.bind(this.updateResults, this));      
+        events: {
+          "click [data-id]":"navigateToResultPage"
+        },
+
+        initialize: function(options) {
+          this.listenTo(Adapt, {
+            'drawer:empty': this.remove,
+            'search:termsFiltered': this.updateResults
+          });
           this.render();  
 
           if(options.searchObject){
@@ -21,43 +28,31 @@ define(function(require){
           }          
         },        
 
-        events: {
-          "click [data-id]":"navigateToResultPage"
-        },
-
         render: function() {
-            
             var template = Handlebars.templates['searchResults'];
             $(this.el).html(template());
-
             return this;
         },
 
-
-        updateResults : function(searchObject){            
-
+        updateResults: function(searchObject) {
             this.$el.removeClass('inactive');
             var formattedResults = this.formatResults(searchObject);
             this.renderResults(formattedResults);
         },
 
-        formatResults : function(searchObject){
-
-            var resultsLimit = Math.min(5, searchObject.searchResults.length);            
-            var formattedResults = [];
-
-            for(var i=0;i<resultsLimit;i++){
-              formattedResults.push(this.formatResult(searchObject.searchResults[i], searchObject.query));
-            }
+        formatResults: function(searchObject) {
+            var self = this;
+            var resultsLimit = Math.min(5, searchObject.searchResults.length);
+            
+            var formattedResults = _.map(_.first(searchObject.searchResults, resultsLimit), function(result) {
+              return self.formatResult(result);
+            });
 
             searchObject.formattedResults = formattedResults;
-            
             return searchObject;
         },
 
-        formatResult : function(result, query){
-
-
+        formatResult: function(result) {
             var foundWords = _.keys(result.foundWords).join(" ");
             var title = result.model.get("title");
             var displayTitle = result.model.get("displayTitle");
@@ -138,12 +133,10 @@ define(function(require){
                 }
             
             } else {
-
                 var finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                 if (body) {
                     textPreview = body.match(finder)[0] + "...";
                 }
-
             }
 
             var searchTitleTagged = tag(result.foundWords, searchTitle);
@@ -175,21 +168,22 @@ define(function(require){
 
         stripTags: function (text) {
             text = $("<span>"+text+"</span>").html();
-            text = text.replace(replaceEndTagsRegEx, " ");
-            text = text.replace(replaceTagsRegEx, "");
-            return text;
+            return text
+              .replace(replaceEndTagsRegEx, " ")
+              .replace(replaceTagsRegEx, "")
+              .replace(replaceEscapedEndTagsRegEx, " ")
+              .replace(replaceEscapedTagsRegEx, "");
         },
 
-        renderResults : function(results){
-
+        renderResults: function(results) {
             var template = Handlebars.templates['searchResultsContent'];
             this.$('.search-results-content').html(template(results));
         },
 
         navigateToResultPage: function(event) {
-            event.preventDefault();
-            var blockID = $(event.currentTarget).attr("data-id");            
-            
+            event && event.preventDefault();
+            var blockID = $(event.currentTarget).attr("data-id");
+
             Adapt.navigateToElement("." + blockID);
             Adapt.trigger('drawer:closeDrawer');
         }
