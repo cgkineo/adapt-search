@@ -31,23 +31,22 @@ define(function(require){
         render: function() {
             var template = Handlebars.templates['searchResults'];
             $(this.el).html(template());
-
             return this;
         },
 
-        updateResults: function(searchObject) {            
+        updateResults: function(searchObject) {
             this.$el.removeClass('inactive');
             var formattedResults = this.formatResults(searchObject);
             this.renderResults(formattedResults);
         },
 
         formatResults: function(searchObject) {
-            var resultsLimit = Math.min(5, searchObject.searchResults.length);            
-            var formattedResults = [];
+            var self = this;
+            var resultsLimit = Math.min(5, searchObject.searchResults.length);
             
-            for(var i=0; i<resultsLimit; i++){
-              formattedResults.push(this.formatResult(searchObject.searchResults[i]));
-            }
+            var formattedResults = _.map(_.first(searchObject.searchResults, resultsLimit), function(result) {
+              return self.formatResult(result);
+            });
 
             searchObject.formattedResults = formattedResults;
             return searchObject;
@@ -183,8 +182,8 @@ define(function(require){
 
         navigateToResultPage: function(event) {
             event && event.preventDefault();
-            var blockID = $(event.currentTarget).attr("data-id");            
-            
+            var blockID = $(event.currentTarget).attr("data-id");
+
             Adapt.navigateToElement("." + blockID);
             Adapt.trigger('drawer:closeDrawer');
         }
