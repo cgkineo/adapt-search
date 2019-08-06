@@ -1,9 +1,3 @@
-/*
-* adapt-keepScrollPosition
-* License - http://github.com/adaptlearning/adapt_framework/LICENSE
-* Maintainers - Oliver Foster <oliver.foster@kineo.com>, Tom Greenfield
-*/
-
 define([
     "core/js/adapt",
     "core/js/models/adaptModel"
