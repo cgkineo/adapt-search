@@ -5,8 +5,8 @@
 */
 
 define([
-    "coreJS/adapt",
-    "coreModels/adaptModel"
+    "core/js/adapt",
+    "core/js/models/adaptModel"
 ], function (Adapt, AdaptModel) {
 
     if (!AdaptModel.prototype.getParents) {
@@ -632,7 +632,7 @@ define([
                     var searchProfile = {
                         "_raw": recursivelyCollectModelTexts(json)
                     };
-                    model.set("_searchProfile", searchProfile)
+                    model.set("_searchProfile", searchProfile);
                     searchable.push(model);
                 }
 
@@ -870,7 +870,7 @@ define([
                         var partMatchRatio = 1;
                         if (isPartMatch && !isFullMatch) {
                             if (findWord.length > indexWord.length) partMatchRatio = indexWord.length / findWord.length;
-                            else partMatchRatio = findWord.length / indexWord.length
+                            else partMatchRatio = findWord.length / indexWord.length;
                         }
 
                         updateIdScoreObjectsForWord(matchingIdScoreObjects, indexWord, isFullMatch, partMatchRatio);

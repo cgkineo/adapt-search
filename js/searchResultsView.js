@@ -1,32 +1,33 @@
 define(function(require){
     var Backbone = require('backbone');
-    var Adapt = require('coreJS/adapt');
+    var Adapt = require('core/js/adapt');
     var SearchAlgorithm = require('./search-algorithm');
 
     var replaceTagsRegEx = /\<{1}[^\>]+\>/g;
     var replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
     var replaceEndTagsRegEx = /\<{1}\/{1}[^\>]+\>/g;
     var replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
-        
+
     var SearchResultsView = Backbone.View.extend({
 
         className: 'search-results inactive',
 
         events: {
-          "click [data-id]":"navigateToResultPage"
+            "click [data-id]": "navigateToResultPage"
         },
 
         initialize: function(options) {
-          this.listenTo(Adapt, {
-            'drawer:empty': this.remove,
-            'search:termsFiltered': this.updateResults
-          });
-          this.render();  
+            this.listenTo(Adapt, {
+                'drawer:empty': this.remove,
+                'search:termsFiltered': this.updateResults
+            });
 
-          if(options.searchObject){
-            this.updateResults(options.searchObject);
-          }          
-        },        
+            this.render();
+
+            if(options.searchObject){
+                this.updateResults(options.searchObject);
+            }
+        },
 
         render: function() {
             var template = Handlebars.templates['searchResults'];
@@ -43,9 +44,9 @@ define(function(require){
         formatResults: function(searchObject) {
             var self = this;
             var resultsLimit = Math.min(5, searchObject.searchResults.length);
-            
+
             var formattedResults = _.map(_.first(searchObject.searchResults, resultsLimit), function(result) {
-              return self.formatResult(result);
+                return self.formatResult(result);
             });
 
             searchObject.formattedResults = formattedResults;
@@ -62,15 +63,15 @@ define(function(require){
             var wordCharacters = search._regularExpressions.wordCharacters;
 
             //trim whitespace
-            title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
-            displayTitle = displayTitle.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
-            body = body.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace,"");
+            title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, "");
+            displayTitle = displayTitle.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, "");
+            body = body.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, "");
 
             //strip tags
             title = this.stripTags(title);
             displayTitle = this.stripTags(displayTitle);
             body = this.stripTags(body);
-            
+
             var searchTitle = "";
             var textPreview = "";
 
@@ -83,7 +84,7 @@ define(function(require){
 
             //select preview text
             if (result.foundPhrases.length > 0) {
-
+                var finder;
                 var phrase = result.foundPhrases[0].phrase;
                 //strip tags
                 phrase = this.stripTags(phrase);
@@ -97,10 +98,10 @@ define(function(require){
                     phrase = this.stripTags(phrase);
                     lowerPhrase = phrase.toLowerCase();
                 }
-                
+
                 if (lowerPhrase == lowerSearchTitle) {
                     //if the search phrase and title are the same
-                    var finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
+                    finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                     if (body) {
                         textPreview = body.match(finder)[0] + "...";
                     }
@@ -117,7 +118,7 @@ define(function(require){
                         wordIndex++;
                         if (wordIndex == wordMap.length) throw "search: cannot find word in phrase";
                         wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-                    } 
+                    }
                     var regex = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})"+SearchAlgorithm._regularExpressions.escapeRegExp(wordMap[wordIndex].word)+"((["+wordCharacters+"]{1}[^"+wordCharacters+"]*){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                     var snippet = phrase.match(regex)[0];
                     var snippetIndexInPhrase = phrase.indexOf(snippet);
@@ -131,9 +132,9 @@ define(function(require){
                         textPreview = "..." + snippet + "...";
                     }
                 }
-            
+
             } else {
-                var finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
+                finder = new RegExp("(([^"+wordCharacters+"]*["+wordCharacters+"]{1}){1,"+previewWords+"}|.{0,"+previewCharacters+"})", "i");
                 if (body) {
                     textPreview = body.match(finder)[0] + "...";
                 }
@@ -190,6 +191,6 @@ define(function(require){
 
     });
 
-     return SearchResultsView;
+    return SearchResultsView;
 
 });
