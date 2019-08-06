@@ -10,7 +10,7 @@ define(function(require){
         
     var SearchResultsView = Backbone.View.extend({
 
-        className : 'search-results inactive',
+        className: 'search-results inactive',
 
         events: {
           "click [data-id]":"navigateToResultPage"
@@ -19,7 +19,7 @@ define(function(require){
         initialize: function(options) {
           this.listenTo(Adapt, {
             'drawer:empty': this.remove,
-            'search:termsFiltered': _.bind(this.updateResults, this)
+            'search:termsFiltered': this.updateResults
           });
           this.render();  
 
@@ -35,16 +35,16 @@ define(function(require){
             return this;
         },
 
-        updateResults : function(searchObject){            
+        updateResults: function(searchObject) {            
             this.$el.removeClass('inactive');
             var formattedResults = this.formatResults(searchObject);
             this.renderResults(formattedResults);
         },
 
-        formatResults : function(searchObject){
+        formatResults: function(searchObject) {
             var resultsLimit = Math.min(5, searchObject.searchResults.length);            
             var formattedResults = [];
-
+            
             for(var i=0; i<resultsLimit; i++){
               formattedResults.push(this.formatResult(searchObject.searchResults[i]));
             }
@@ -53,7 +53,7 @@ define(function(require){
             return searchObject;
         },
 
-        formatResult : function(result){
+        formatResult: function(result) {
             var foundWords = _.keys(result.foundWords).join(" ");
             var title = result.model.get("title");
             var displayTitle = result.model.get("displayTitle");
@@ -176,7 +176,7 @@ define(function(require){
               .replace(replaceEscapedTagsRegEx, "");
         },
 
-        renderResults : function(results){
+        renderResults: function(results) {
             var template = Handlebars.templates['searchResultsContent'];
             this.$('.search-results-content').html(template(results));
         },
