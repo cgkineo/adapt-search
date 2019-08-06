@@ -1,25 +1,6 @@
 define([
-    "core/js/adapt",
-    "core/js/models/adaptModel"
-], function (Adapt, AdaptModel) {
-
-    if (!AdaptModel.prototype.getParents) {
-
-        AdaptModel.prototype.getParents = function (shouldIncludeChild) {
-            var parents = [];
-            var context = this;
-
-            if (shouldIncludeChild) parents.push(context);
-
-            while (context.has("_parentId")) {
-                context = context.getParent();
-                parents.push(context);
-            }
-
-            return parents.length ? new Backbone.Collection(parents) : null;
-        }
-
-    }
+    "core/js/adapt"
+], function (Adapt) {
 
     var searchDefaults = { //override in course.json "_search": {}
 
@@ -634,11 +615,11 @@ define([
             }
 
             function isModelSearchable(model) {
-                var trail = model.getParents(true);
+                var trail = model.getAncestorModels(true);
                 var config = model.get("_search");
                 if (config && config._isEnabled === false) return false;
 
-                var firstDisabledTrailItem = trail.find(function (item) {
+                var firstDisabledTrailItem = _.find(trail, function (item) {
                     var config = item.get("_search");
                     if (!config) return false;
                     if (config && config._isEnabled !== false) return false;
@@ -925,12 +906,12 @@ define([
             }
 
             function isModelSearchable(model) {
-                var trail = model.getParents(true);
+                var trail = model.getAncestorModels(true);
                 var config = model.get("_search");
                 if (config && config._isEnabled === false) return false;
                 if (model.get("_isLocked")) return false;
 
-                var firstDisabledTrailItem = trail.find(function (item) {
+                var firstDisabledTrailItem = _.find(trail, function(item) {
                     var config = item.get("_search");
                     if (item.get("_isLocked")) return true;
                     if (config && config._isEnabled === false) return true;
