@@ -619,7 +619,7 @@ define([
                 var config = model.get("_search");
                 if (config && config._isEnabled === false) return false;
 
-                var firstDisabledTrailItem = _.find(trail, function (item) {
+                var firstDisabledTrailItem = _.find(trail, function(item) {
                     var config = item.get("_search");
                     if (!config) return false;
                     if (config && config._isEnabled !== false) return false;
@@ -675,9 +675,9 @@ define([
 
         makeModelTextProfiles: function () {
             // Handle _ignoreWords as a special case to support the authoring tool
-            var ignoreWords = this.model.get('_ignoreWords') instanceof Array
-                ? this.model.get("_ignoreWords")
-                : this.model.get("_ignoreWords").split(',');
+            var ignoreWords = this.model.get('_ignoreWords') instanceof Array ?
+                this.model.get("_ignoreWords") :
+                this.model.get("_ignoreWords").split(',');
 
             var regularExpressions = this._regularExpressions;
             var searchAttributes = this.model.get("_searchAttributes");
@@ -765,8 +765,8 @@ define([
 
             }
 
-            for (var word in this._wordIndex) {
-                this._wordIndex[word] = _.uniq(this._wordIndex[word]);
+            for (var _word in this._wordIndex) {
+                this._wordIndex[_word] = _.uniq(this._wordIndex[_word]);
             }
 
         },
@@ -798,9 +798,9 @@ define([
             var regularExpressions = this._regularExpressions;
             var wordIndex = this._wordIndex;
             // Handle _ignoreWords as a special case to support the authoring tool
-            var ignoreWords = this.model.get('_ignoreWords') instanceof Array
-                ? this.model.get("_ignoreWords")
-                : this.model.get("_ignoreWords").split(',');
+            var ignoreWords = this.model.get('_ignoreWords') instanceof Array ?
+                this.model.get("_ignoreWords") :
+                this.model.get("_ignoreWords").split(',');
             var scoreQualificationThreshold = this.model.get("_scoreQualificationThreshold");
             var minimumWordLength = this.model.get("_minimumWordLength");
             var frequencyImportance = this.model.get("_frequencyImportance");
