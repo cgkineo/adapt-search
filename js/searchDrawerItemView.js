@@ -1,5 +1,5 @@
 define([
-  'coreJS/adapt',
+  'core/js/adapt',
 ], function(Adapt) {
 
   var SearchDrawerItemView = Backbone.View.extend({
@@ -7,8 +7,8 @@ define([
     className: 'search',
 
     events: {
-      'click .js-search-textbox-change':'search',
-      'keyup .js-search-textbox-change':'search'
+      'click .js-search-textbox-change': 'search',
+      'keyup .js-search-textbox-change': 'search'
     },
 
     initialize: function(options) {
@@ -16,32 +16,31 @@ define([
       this.listenTo(Adapt, 'drawer:empty', this.remove);
       this.render();
 
-      this.search = _.debounce(_.bind(this.search, this), 1000);
-      if(options.query){
+      this.search = _.debounce(this.search.bind(this), 1000);
+      if (options.query){
         this.$(".search__textbox").val(options.query);
       }
 
     },
 
     render: function() {
-
       var data = this.model.toJSON();
 
-      var template = Handlebars.templates['searchBox']
+      var template = Handlebars.templates['searchBox'];
       $(this.el).html(template(data));
 
       return this;
     },
 
     search: function(event) {
+      if(event && event.preventDefault) event.preventDefault();
 
-      if(event) event.preventDefault();
       var searchVal = this.$(".search__textbox").val();
-
       Adapt.trigger("search:filterTerms", searchVal);
     }
 
   });
 
   return SearchDrawerItemView;
-})
+
+});

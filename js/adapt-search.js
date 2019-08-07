@@ -4,7 +4,7 @@
 * Maintainers - Gavin McMaster <gavin.mcmaster@kineo.com>
 */
 define([
-  'coreJS/adapt',
+  'core/js/adapt',
   './searchDrawerItemView',
   './searchResultsView',
   './search-algorithm'
@@ -90,12 +90,13 @@ define([
 
   Adapt.on('search:filterTerms', function(query){
     var searchConfig = Adapt.course.get('_search');
+    var searchObject;
 
     lastSearchQuery = query;
 
     if (query.length === 0) {
 
-      var searchObject = _.extend({}, searchConfig, {
+      searchObject = _.extend({}, searchConfig, {
         query: query,
         searchResults: [],
         isAwaitingResults: false,
@@ -104,7 +105,7 @@ define([
 
     } else if (query.length < searchConfig._minimumWordLength) {
 
-      var searchObject = _.extend({}, searchConfig, {
+      searchObject = _.extend({}, searchConfig, {
         query: query,
         searchResults: [],
         isAwaitingResults: true,
@@ -114,7 +115,7 @@ define([
 
       var results = SearchAlgorithm.find(query);
 
-      var searchObject = _.extend({}, searchConfig, {
+      searchObject = _.extend({}, searchConfig, {
         query: query,
         searchResults: results,
         isAwaitingResults: false,
