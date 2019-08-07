@@ -18,7 +18,7 @@ define([
 
       this.search = _.debounce(this.search.bind(this), 1000);
       if (options.query){
-        this.$(".search__textbox").val(options.query);
+        this.$(".js-search-textbox-change").val(options.query);
       }
 
     },
@@ -35,7 +35,7 @@ define([
     search: function(event) {
       if(event && event.preventDefault) event.preventDefault();
 
-      var searchVal = this.$(".search__textbox").val();
+      var searchVal = this.$(".js-search-textbox-change").val();
       Adapt.trigger("search:filterTerms", searchVal);
     }
 

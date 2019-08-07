@@ -55,11 +55,9 @@ define([
     Adapt.drawer.triggerCustomView($element, true);
 
     Adapt.trigger("search:draw");
-
   });
 
   Adapt.on('drawer:openedItemView search:draw', function(){
-
     isSearchShown = true;
 
     var searchConfig = Adapt.course.get('_search');
@@ -81,7 +79,6 @@ define([
 
     $('.drawer__holder .is-search').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
     $('.drawer__holder .is-search').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
-
   });
 
   Adapt.on('drawer:closed', function() {
@@ -95,16 +92,13 @@ define([
     lastSearchQuery = query;
 
     if (query.length === 0) {
-
       searchObject = _.extend({}, searchConfig, {
         query: query,
         searchResults: [],
         isAwaitingResults: false,
         isBlank: true
       });
-
     } else if (query.length < searchConfig._minimumWordLength) {
-
       searchObject = _.extend({}, searchConfig, {
         query: query,
         searchResults: [],
@@ -112,7 +106,6 @@ define([
         isBlank: false
       });
     } else {
-
       var results = SearchAlgorithm.find(query);
 
       searchObject = _.extend({}, searchConfig, {

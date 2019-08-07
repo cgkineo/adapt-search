@@ -1,14 +1,21 @@
 <div class="drawer__item">
   <div class="drawer__item-open is-search">
+
+    {{#if title}}
     <div class="drawer__item-title">
-      <div class="drawer__item-title-inner h5" tabindex="0" aria-role="region">
+      <div class="drawer__item-title-inner" tabindex="0" aria-role="region">
         {{{title}}}
       </div>
     </div>
+    {{/if}}
+
+    {{#if description}}
     <div class="drawer__item-description">
       <div class="drawer__item-description-inner">
         {{{a11y_text description}}}
       </div>
     </div>
+    {{/if}}
+
   </div>
 </div>

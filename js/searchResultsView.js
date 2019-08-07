@@ -154,13 +154,13 @@ define(function(require){
 
       function tag(words, text) {
         var initial = "";
-          _.each(words, function(count, word) {
-            var wordPos = text.toLowerCase().indexOf(word);
-            if (wordPos < 0) return;
-            initial += text.slice(0, wordPos);
-            var highlighted = text.slice(wordPos, wordPos+word.length);
-            initial +="<span class='is-found'>"+highlighted+"</span>";
-            text = text.slice(wordPos+word.length, text.length);
+        _.each(words, function(count, word) {
+          var wordPos = text.toLowerCase().indexOf(word);
+          if (wordPos < 0) return;
+          initial += text.slice(0, wordPos);
+          var highlighted = text.slice(wordPos, wordPos+word.length);
+          initial +="<span class='is-found'>"+highlighted+"</span>";
+          text = text.slice(wordPos+word.length, text.length);
         });
         initial+=text;
         return initial;

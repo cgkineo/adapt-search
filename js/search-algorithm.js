@@ -577,12 +577,10 @@ define([
     },
 
     collectModelTexts: function () {
-
       var searchAttributes = this.model.get("_searchAttributes");
       var hideComponents = this.model.get("_hideComponents");
       var hideTypes = this.model.get("_hideTypes");
       var regularExpressions = this._regularExpressions;
-
 
       function combineAdaptModels() {
         var rtn = []
@@ -774,13 +772,11 @@ define([
           }
           this._wordIndex[word].push(id);
         }
-
       }
 
       for (var word in this._wordIndex) {
         this._wordIndex[word] = _.uniq(this._wordIndex[word]);
       }
-
     },
 
     find: function (findPhrase) {
@@ -930,7 +926,6 @@ define([
           return false;
         });
 
-
         return (firstDisabledTrailItem === undefined);
       }
 
@@ -961,7 +956,6 @@ define([
     }
 
   }, Backbone.Events);
-
 
   search.initialize();
 

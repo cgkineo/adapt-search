@@ -1,50 +1,61 @@
 {{#if isBlank}}
+
 {{else}}
+
 {{#if isAwaitingResults}}
-  <div class="search__item no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
-    <div class="search__item-inner">
-      {{{awaitingResultsMessage}}}
-    </div>
+<div class="search__item no-results" tabindex="0" aria-label="{{{awaitingResultsMessage}}}" role="region">
+  <div class="search__item-inner">
+    {{{awaitingResultsMessage}}}
   </div>
+</div>
+
 {{else}}
-  {{#each formattedResults}}
-    <button class="search__item drawer__item-btn" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
-      <div class="search__item-inner">
-        <div class="search__item-title drawer__item-title">
-          <div class="search__item-title-inner">
-            {{#if ../_showHighlights}}
-              {{{searchTitleTagged}}}
-            {{else}}
-              {{{searchTitle}}}
-            {{/if}}
-          </div>
-        </div>
-        {{#if textPreview}}
-          <div class="search__item-preview drawer__item-body">
-            <div class="search__item-preview-inner">
-              "{{#if ../_showHighlights}}
-                {{{textPreviewTagged}}}
-              {{else}}
-                {{{textPreview}}}
-              {{/if}}"
-            </div>
-          </div>
+
+{{#each formattedResults}}
+<button class="search__item drawer__item-btn" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
+  <div class="search__item-inner">
+
+    <div class="search__item-title drawer__item-title">
+      <div class="search__item-title-inner drawer__item-title-inner">
+        {{#if ../_showHighlights}}
+        {{{searchTitleTagged}}}
+        {{else}}
+        {{{searchTitle}}}
         {{/if}}
-        {{#if ../_showFoundWords}}
-        <div class="search__item-foundwords drawer__item-body">
-          <div class="search__item-foundwords-inner">
-            {{{foundWords}}}
-          </div>
-        </div>
-        {{/if}}
-      </div>
-    </button>
-  {{else}}
-    <div class="search__item no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
-      <div class="search__item-inner">
-        {{{noResultsMessage}}}
       </div>
     </div>
-  {{/each}}
+
+    {{#if textPreview}}
+    <div class="search__item-preview drawer__item-body">
+      <div class="search__item-preview-inner drawer__item-body-inner">
+        "{{#if ../_showHighlights}}
+        {{{textPreviewTagged}}}
+        {{else}}
+        {{{textPreview}}}
+        {{/if}}"
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if ../_showFoundWords}}
+    <div class="search__item-foundwords drawer__item-body">
+      <div class="search__item-foundwords-inner drawer__item-body-inner">
+        {{{foundWords}}}
+      </div>
+    </div>
+    {{/if}}
+
+  </div>
+</button>
+
+{{else}}
+
+<div class="search__item no-results" tabindex="0" aria-label="{{{noResultsMessage}}}" role="region">
+  <div class="search__item-inner">
+    {{{noResultsMessage}}}
+  </div>
+</div>
+{{/each}}
+
 {{/if}}
 {{/if}}
