@@ -16,13 +16,50 @@
       display: none;
     }
   }
+
+  &__items-container {
+    border-top: 1px solid @drawer-item-hover;
+  }
 }
 
-//Override default drawer__item-btn styling
+// --------------------------------------------------
+// drawer__item-btn hover override
+// --------------------------------------------------
 .drawer {
   &__item-btn.is-search {
     .no-touch &:not(.is-disabled):hover {
       background-color: @drawer-item;
+      color: @drawer-item-inverted;
     }
   }
 }
+// --------------------------------------------------
+
+// --------------------------------------------------
+// drawer__item-btn spacing overrides
+// --------------------------------------------------
+.drawer {
+  &__item-btn.is-search {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border: 0;
+  }
+
+  &__item-btn.is-search > .drawer__item-title,
+  &__item-btn.is-search > .drawer__item-body {
+    padding-left: unit(@item-padding, rem);
+    padding-right: unit(@item-padding, rem);
+  }
+
+  &__item-btn.is-search > .drawer__item-body {
+    margin-bottom: @item-margin;
+  }
+
+  &__item-btn.is-search .search {
+    margin-left: @item-padding;
+    margin-right: @item-padding;
+    margin-bottom: @item-padding;
+  }
+}
+// --------------------------------------------------
