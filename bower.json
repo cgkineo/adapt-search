@@ -4,12 +4,12 @@
     "type": "git",
     "url": "git://github.com/cgkineo/adapt-search"
   },
-  "framework": ">=2.2",
-  "version": "2.3.3",
+  "version": "3.0.0",
+  "framework": ">=5",
   "homepage": "https://github.com/cgkineo/adapt-search",
   "issues": "https://github.com/cgkineo/adapt-search/issues/",
-  "displayName": "Search",
   "extension": "search",
+  "displayName": "Search",
   "description": "Keyword-search extension for Adapt",
   "main": "/js/adapt-search.js",
   "keywords": [

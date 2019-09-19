@@ -56,11 +56,10 @@ The attributes listed below are used in *contentObject.json*, *articles.json*, *
 
 No known limitations.
 
-
 ----------------------------
-**Version number:**  2.3.3   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>
-**Framework versions:** 2.2+
-**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)
-**Accessibility support:** WAI AA
-**RTL support:** No
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, IE Mobile 11, Safari 11+12 for macOS+iOS, Opera
+**Version number:**  3.0.0   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
+**Framework versions:** 5+  
+**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)  
+**Accessibility support:** WAI AA  
+**RTL support:** No  
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, IE Mobile 11, Safari 11+12 for macOS+iOS, Opera  
