@@ -1,25 +1,6 @@
 define([
-    "core/js/adapt",
-    "core/js/models/adaptModel"
-], function (Adapt, AdaptModel) {
-
-    if (!AdaptModel.prototype.getParents) {
-
-        AdaptModel.prototype.getParents = function (shouldIncludeChild) {
-            var parents = [];
-            var context = this;
-
-            if (shouldIncludeChild) parents.push(context);
-
-            while (context.has("_parentId")) {
-                context = context.getParent();
-                parents.push(context);
-            }
-
-            return parents.length ? new Backbone.Collection(parents) : null;
-        }
-
-    }
+    "core/js/adapt"
+], function (Adapt) {
 
     var searchDefaults = { //override in course.json "_search": {}
 
@@ -634,11 +615,11 @@ define([
             }
 
             function isModelSearchable(model) {
-                var trail = model.getParents(true);
+                var trail = model.getAncestorModels(true);
                 var config = model.get("_search");
                 if (config && config._isEnabled === false) return false;
 
-                var firstDisabledTrailItem = trail.find(function (item) {
+                var firstDisabledTrailItem = _.find(trail, function(item) {
                     var config = item.get("_search");
                     if (!config) return false;
                     if (config && config._isEnabled !== false) return false;
@@ -694,9 +675,9 @@ define([
 
         makeModelTextProfiles: function () {
             // Handle _ignoreWords as a special case to support the authoring tool
-            var ignoreWords = this.model.get('_ignoreWords') instanceof Array
-                ? this.model.get("_ignoreWords")
-                : this.model.get("_ignoreWords").split(',');
+            var ignoreWords = this.model.get('_ignoreWords') instanceof Array ?
+                this.model.get("_ignoreWords") :
+                this.model.get("_ignoreWords").split(',');
 
             var regularExpressions = this._regularExpressions;
             var searchAttributes = this.model.get("_searchAttributes");
@@ -784,8 +765,8 @@ define([
 
             }
 
-            for (var word in this._wordIndex) {
-                this._wordIndex[word] = _.uniq(this._wordIndex[word]);
+            for (var _word in this._wordIndex) {
+                this._wordIndex[_word] = _.uniq(this._wordIndex[_word]);
             }
 
         },
@@ -817,9 +798,9 @@ define([
             var regularExpressions = this._regularExpressions;
             var wordIndex = this._wordIndex;
             // Handle _ignoreWords as a special case to support the authoring tool
-            var ignoreWords = this.model.get('_ignoreWords') instanceof Array
-                ? this.model.get("_ignoreWords")
-                : this.model.get("_ignoreWords").split(',');
+            var ignoreWords = this.model.get('_ignoreWords') instanceof Array ?
+                this.model.get("_ignoreWords") :
+                this.model.get("_ignoreWords").split(',');
             var scoreQualificationThreshold = this.model.get("_scoreQualificationThreshold");
             var minimumWordLength = this.model.get("_minimumWordLength");
             var frequencyImportance = this.model.get("_frequencyImportance");
@@ -925,12 +906,12 @@ define([
             }
 
             function isModelSearchable(model) {
-                var trail = model.getParents(true);
+                var trail = model.getAncestorModels(true);
                 var config = model.get("_search");
                 if (config && config._isEnabled === false) return false;
                 if (model.get("_isLocked")) return false;
 
-                var firstDisabledTrailItem = trail.find(function (item) {
+                var firstDisabledTrailItem = _.find(trail, function(item) {
                     var config = item.get("_search");
                     if (item.get("_isLocked")) return true;
                     if (config && config._isEnabled === false) return true;
