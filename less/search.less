@@ -1,119 +1,65 @@
-// Search Box
-
-.drawer-item-open.search {
-    border-bottom: 1px solid darken(@item-color, 10%);
-}
-
-.list-item-open.search {
+.search {
+  &__textbox-container {
     position: relative;
-    padding:@drawer-item-padding;
-    display: block;
+  }
+
+  &__textbox {
     width: 100%;
-    color: @drawer-item-text-color;
-}
+    padding: @item-padding;
+    line-height: @drawer-item-body-line-height;
 
-.drawer-item-description-inner {
-    font-size:16px;
-    font-weight:@font-weight-bold;
-}
-
-.list-item.search {
-    padding:5px 0;
-    padding-left:0;
-    position: relative;
-}
-
-.search-box {
-    height: 24px;
-    border: none;
-    width: 100%;
-    display: block;
-}
-
-.start-search {
-    text-decoration: none;
-    top: 50%;
-    right: 0;
-    margin-top: -12px;
-    position: absolute;
-    color: @drawer-icon-color;
-    &:hover {
-        color:@drawer-icon-hover-color;
+    /*
+     * Hide 'X' icon for IE11 and Edge 12+
+     * Issue:https://github.com/adaptlearning/adapt_framework/issues/1913
+     */
+    &::-ms-clear {
+      display: none;
     }
+  }
+
+  &__items-container {
+    border-top: 1px solid @drawer-item-hover;
+  }
 }
 
-.search-drawer {
-    width: auto !important;
-
-    &:hover {
-        background-color:initial !important;
+// --------------------------------------------------
+// drawer__item-btn hover override
+// --------------------------------------------------
+.drawer {
+  &__item-btn.is-search {
+    .no-touch &:not(.is-disabled):hover {
+      background-color: @drawer-item;
+      color: @drawer-item-inverted;
     }
+  }
 }
+// --------------------------------------------------
 
-// Search Result
+// --------------------------------------------------
+// drawer__item-btn spacing overrides
+// --------------------------------------------------
+.drawer {
+  &__item-btn.is-search {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border: 0;
+  }
 
-.search-results {
-    &.inactive {
-        display:none;
-    }
+  &__item-btn.is-search > .drawer__item-title,
+  &__item-btn.is-search > .drawer__item-body {
+    padding-left: unit(@item-padding, rem);
+    padding-right: unit(@item-padding, rem);
+  }
 
-    .no-results {
-        padding:0px;
-        color: @drawer-item-text-color;
-        border-bottom: 1px solid darken(spin(@quaternary-color, 180), 10%);
-        width: 100%;
-        font-size: 16px;
+  &__item-btn.is-search > .drawer__item-body {
+    margin-bottom: @item-margin;
+  }
 
-        .search-result-inner {
-            padding: 10px 5px;;
-        }
-
-        div {
-            padding: 0px;
-        }
-    }
-
-    .search-result {
-        padding:0px;
-        color: @drawer-item-text-color;
-        border-bottom: 1px solid darken(spin(@quaternary-color, 180), 10%);
-        width: 100%;
-        .no-touch &:hover {
-            color:@drawer-item-text-hover-color;
-            background-color: @drawer-item-hover-color;
-            border-bottom: 1px solid darken(spin(@quaternary-color, 180), 10%);
-        }
-
-        .search-result-inner {
-            padding: 10px 5px;
-        }
-
-        .found {
-            background-color: yellow;
-            color: black;
-
-        }
-
-    }
+  &__item-btn.is-search .search {
+    margin-left: @item-padding;
+    margin-right: @item-padding;
+    margin-bottom: @item-padding;
+  }
 }
-
-.result-title {
-    font-size:16px;
-    font-weight:@font-weight-bold;
-    color: @drawer-item-text-color;
-    text-decoration: none;
-}
-
-.result-foundwords {
-    font-size:14px;
-    color: @drawer-item-text-color;
-    text-decoration: none;
-    padding: 0 0 0 10px;
-}
-
-.result-preview {
-    font-size:15px;
-    color: @drawer-item-text-color;
-    text-decoration: none;
-    padding: 3px 0 4px 10px;
-}
+// --------------------------------------------------
