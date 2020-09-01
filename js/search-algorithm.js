@@ -613,6 +613,7 @@ define([
         var trail = model.getAncestorModels(true);
         var config = model.get("_search");
         if (config && config._isEnabled === false) return false;
+        if (!model.getIsAvailableInPage()) return false;
 
         var firstDisabledTrailItem = _.find(trail, function(item) {
           var config = item.get("_search");
