@@ -610,13 +610,15 @@ define([
       }
 
       function isModelSearchable(model) {
-        var config = model.get('_search');
+        const config = model.get('_search');
         if (config && config._isEnabled === false) return false;
-        if (!model.getIsAvailableInPage()) return false;
 
-        var trail = model.getAncestorModels(true);
-        var firstDisabledTrailItem = _.find(trail, function(item) {
-          var config = item.get('_search');
+        const isAvailableInPage = model.getAncestorModels(true).every(model => model.get('_isAvailable'));
+        if (!isAvailableInPage) return false;
+
+        const trail = model.getAncestorModels(true);
+        const firstDisabledTrailItem = _.find(trail, function(item) {
+          const config = item.get('_search');
           if (!config) return false;
           if (config && config._isEnabled !== false) return false;
           return true;
