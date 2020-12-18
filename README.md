@@ -1,6 +1,6 @@
 # adapt-search
 
-**Search** is an *extension* which can extend the [Adapt framework](https://github.com/adaptlearning/adapt_framework).
+**Search** is an *extension* plugin for the [Adapt framework](https://github.com/adaptlearning/adapt_framework).
 
 <img src="https://raw.githubusercontent.com/wiki/cgkineo/adapt-search/images/example.gif" alt="sample search extension">
 
@@ -8,46 +8,55 @@ It appears in the drawer. Either as a single item or with other items, such as [
 
 ## Installation
 
-``adapt install search``
-
+To install this plugin using the Adapt CLI, run `adapt install adapt-search`
 
 ## Settings Overview
+The search extension's main configuration should be added to *course.json*. Additional configuration of search 'keywords' may be included on contentObjects, articles, blocks and components.
 
-
-### General Attributes
+## General Attributes
 
 The attributes listed below are used in *course.json* to configure **Search**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json).
 
+### title (string):
+Extension title, defaults to `"Search"`.
 
-**title** (string): Extension title, defaults to "Search".
+### placeholder (string):
+Search field text box 'placeholder' text, defaults to `""`.
 
-**placeholder** (string): Text box placeholder, defaults to "".
+### description (string):
+Extension description, defaults to `"Type in search words"`.
 
-**description** (string): Extension description, defaults to "Type in search words".
+### \_drawerOrder (number):
+Determines the order in which this extension appears as a drawer item. You only need to set this if your course has more than one extension that appears in the drawer (e.g. [glossary](https://github.com/adaptlearning/adapt-contrib-glossary), [resources](https://github.com/adaptlearning/adapt-contrib-resources) and you want to control the order in which they are listed when the drawer is opened.
 
-**_drawerOrder** (number): Determines the order in which this extension appears as a drawer item. Acceptable values are numbers.
+### noResultsMessage (string):
+Text displayed when no results are found, defaults to `"Sorry, no results were found"`.
 
-**noResultsMessage**: Text displayed when no results are found, defaults to "Sorry, no results were found".
+### awaitingResultsMessage (string):
+Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to "Formulating results...".
 
-**awaitingResultsMessage**: Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to "Formulating results...".
+### \_showHighlights (boolean): 
+Show the yellow highlights on search results.
 
-**_showHighlights** (boolean): Show the yellow highlights on search results.
+### \_showFoundWords (boolean):
+Show found words under the search results.
 
-**_showFoundWords** (boolean): Show found words under the search results.
+### \_previewWords (integer):
+The number of words taken from either side of the matching word. Defaults to `15`.
 
-**_previewWords** (integer): The number of words taken from either side of the matching word. Defaults to 15.
+### \_previewCharacters (integer):
+If the number of `_previewWords` cannot be found then use `x` number of characters. Defaults to `30`.
 
-**_previewCharacters** (integer): If the number of **_previewWords** cannot be found then use x number of characters. Defaults to 30.
 
-
-### Item Attributes
-
+## Item Attributes
 
 The attributes listed below are used in *contentObject.json*, *articles.json*, *blocks.json* and *components.json* to configure **Search Items**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json).
 
-**_search** (object): Object to designate search settings.
+### \_search (object): 
+Container object for the `keywords` setting
 
->**keywords** array(string): An array of strings detailing the important search phrases for the course section.
+#### keywords (array): 
+An array of search keywords/phrases to be associate with the contentObject/article/block/component. Each item in the array must be a string.
 **NOTE**: Keywords are exported with the `grunt translate:export` command. When localising content, use a process that ensures translated keywords are found in the actual translated course content.
 
 <div float align=right><a href="#top">Back to Top</a></div>
@@ -62,4 +71,4 @@ No known limitations.
 **Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)  
 **Accessibility support:** WAI AA  
 **RTL support:** No  
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 12+13 for macOS/iOS/iPadOS, Opera  
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera  
