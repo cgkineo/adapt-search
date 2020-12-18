@@ -1,69 +1,69 @@
 define([
-  "core/js/adapt"
+  'core/js/adapt'
 ], function (Adapt) {
 
-  var searchDefaults = { //override in course.json "_search": {}
+  var searchDefaults = { // override in course.json "_search": {}
 
     _searchAttributes: [
       {
-        "_attributeName": "_search",
-        "_level": 1,
-        "_allowTextPreview": false
+        '_attributeName': '_search',
+        '_level': 1,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "_keywords",
-        "_level": 1,
-        "_allowTextPreview": false
+        '_attributeName': '_keywords',
+        '_level': 1,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "keywords",
-        "_level": 1,
-        "_allowTextPreview": false
+        '_attributeName': 'keywords',
+        '_level': 1,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "displayTitle",
-        "_level": 2,
-        "_allowTextPreview": true
+        '_attributeName': 'displayTitle',
+        '_level': 2,
+        '_allowTextPreview': true
       },
       {
-        "_attributeName": "title",
-        "_level": 2,
-        "_allowTextPreview": false
+        '_attributeName': 'title',
+        '_level': 2,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "body",
-        "_level": 3,
-        "_allowTextPreview": true
+        '_attributeName': 'body',
+        '_level': 3,
+        '_allowTextPreview': true
       },
       {
-        "_attributeName": "alt",
-        "_level": 4,
-        "_allowTextPreview": false
+        '_attributeName': 'alt',
+        '_level': 4,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "_alt",
-        "_level": 4,
-        "_allowTextPreview": false
+        '_attributeName': '_alt',
+        '_level': 4,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "_items",
-        "_level": 5,
-        "_allowTextPreview": false
+        '_attributeName': '_items',
+        '_level': 5,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "items",
-        "_level": 5,
-        "_allowTextPreview": false
+        '_attributeName': 'items',
+        '_level': 5,
+        '_allowTextPreview': false
       },
       {
-        "_attributeName": "text",
-        "_level": 5,
-        "_allowTextPreview": true
+        '_attributeName': 'text',
+        '_level': 5,
+        '_allowTextPreview': true
       }
     ],
 
     _hideComponents: [
-      "blank"
+      'blank'
     ],
 
     _hideTypes: [
@@ -71,9 +71,9 @@ define([
     ],
 
     _ignoreWords: [
-      "a", "an", "and", "are", "as", "at", "be", "by", "for",
-      "from", "has", "he", "in", "is", "it", "its", "of", "on",
-      "that", "the", "to", "was", "were", "will", "wish", "",
+      'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for',
+      'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on',
+      'that', 'the', 'to', 'was', 'were', 'will', 'wish', ''
     ],
 
     _matchOn: {
@@ -514,11 +514,11 @@ define([
     _wordIndex: null,
 
     _regularExpressions: {
-      matchNotWordBoundaries: new RegExp("[" + wordCharacters + "]+", "g"),
-      trimReplaceNonWordCharacters: new RegExp("^([^" + wordCharacters + "])+|([^" + wordCharacters + "])+$", "g"),
+      matchNotWordBoundaries: new RegExp('[' + wordCharacters + ']+', 'g'),
+      trimReplaceNonWordCharacters: new RegExp('^([^' + wordCharacters + '])+|([^' + wordCharacters + '])+$', 'g'),
       trimReplaceWhitespace: /^\s+|\s+$/g,
       escapeRegExp: function (str) {
-        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
       }
     },
 
@@ -528,40 +528,40 @@ define([
 
     setupListeners: function () {
       this.listenTo(Adapt, {
-        "app:dataReady": this.onDataReady,
-        "app:languageChanged": this.clearSearchResults
+        'app:dataReady': this.onDataReady,
+        'app:languageChanged': this.clearSearchResults
       });
     },
 
     clearSearchResults: function () {
-      Adapt.trigger("search:filterTerms", "");
+      Adapt.trigger('search:filterTerms', '');
     },
 
     onDataReady: function () {
-      var config = Adapt.course.get("_search");
+      var config = Adapt.course.get('_search');
       if (!config || config._isEnabled === false) return;
 
       this.setupConfig();
       this._searchableModels = this.collectModelTexts();
       this.makeModelTextProfiles();
       this.indexTextProfiles();
-      Adapt.trigger("search-algorithm:ready");
+      Adapt.trigger('search-algorithm:ready');
     },
 
     setupConfig: function () {
-      var model = Adapt.course.get("_search") || {};
-      //make sure defaults are injected, but original model reference is maintained
+      var model = Adapt.course.get('_search') || {};
+      // make sure defaults are injected, but original model reference is maintained
       var modelWithDefaults = _.extend(searchDefaults, model);
 
-      Adapt.course.set("_search", modelWithDefaults);
+      Adapt.course.set('_search', modelWithDefaults);
 
       this.model = new Backbone.Model(modelWithDefaults);
     },
 
     collectModelTexts: function () {
-      var searchAttributes = this.model.get("_searchAttributes");
-      var hideComponents = this.model.get("_hideComponents");
-      var hideTypes = this.model.get("_hideTypes");
+      var searchAttributes = this.model.get('_searchAttributes');
+      var hideComponents = this.model.get('_hideComponents');
+      var hideTypes = this.model.get('_hideTypes');
       var regularExpressions = this._regularExpressions;
 
       function combineAdaptModels() {
@@ -572,18 +572,18 @@ define([
           .concat(Adapt.components.models);
 
         var filtered = _.filter(rtn, function (model) {
-          var type = model.get("_type"),
-            displayTitle,
-            title;
+          var type = model.get('_type');
+          var displayTitle;
+          var title;
           if (_.contains(hideTypes, type)) return false;
 
-          if (type == "component") {
-            var component = model.get("_component");
+          if (type === 'component') {
+            var component = model.get('_component');
             if (_.contains(hideComponents, component)) return false;
           }
 
-          if (model.has("displayTitle")) displayTitle = model.get("displayTitle").replace(regularExpressions.trimReplaceWhitespace, "");
-          if (model.has("title")) title = model.get("title").replace(regularExpressions.trimReplaceWhitespace, "");
+          if (model.has('displayTitle')) displayTitle = model.get('displayTitle').replace(regularExpressions.trimReplaceWhitespace, '');
+          if (model.has('title')) title = model.get('title').replace(regularExpressions.trimReplaceWhitespace, '');
 
           if (!displayTitle && !title) return false;
 
@@ -601,21 +601,24 @@ define([
           if (!isModelSearchable(model)) continue;
           var json = model.toJSON();
           var searchProfile = {
-            "_raw": recursivelyCollectModelTexts(json)
+            '_raw': recursivelyCollectModelTexts(json)
           };
-          model.set("_searchProfile", searchProfile);
+          model.set('_searchProfile', searchProfile);
           searchable.push(model);
         }
         return new Backbone.Collection(searchable);
       }
 
       function isModelSearchable(model) {
-        var trail = model.getAncestorModels(true);
-        var config = model.get("_search");
+        const config = model.get('_search');
         if (config && config._isEnabled === false) return false;
 
-        var firstDisabledTrailItem = _.find(trail, function(item) {
-          var config = item.get("_search");
+        const isAvailableInPage = model.getAncestorModels(true).every(model => model.get('_isAvailable'));
+        if (!isAvailableInPage) return false;
+
+        const trail = model.getAncestorModels(true);
+        const firstDisabledTrailItem = _.find(trail, function(item) {
+          const config = item.get('_search');
           if (!config) return false;
           if (config && config._isEnabled !== false) return false;
           return true;
@@ -629,14 +632,14 @@ define([
           var attributeObject = searchAttributes[i];
           if (!json[attributeObject._attributeName]) continue;
           switch (typeof json[attributeObject._attributeName]) {
-            case "object":
+            case 'object':
               if (json[attributeObject._attributeName] instanceof Array) {
                 for (var sa = 0, sal = json[attributeObject._attributeName].length; sa < sal; sa++) {
                   switch (typeof json[attributeObject._attributeName][sa]) {
-                    case "object":
+                    case 'object':
                       texts = texts.concat(recursivelyCollectModelTexts(json[attributeObject._attributeName][sa], attributeObject._level));
                       break;
-                    case "string":
+                    case 'string':
                       addString(json[attributeObject._attributeName][sa], attributeObject._level, attributeObject);
                   }
                 }
@@ -644,7 +647,7 @@ define([
                 texts = texts.concat(recursivelyCollectModelTexts(json[attributeObject._attributeName], attributeObject._level));
               }
               break;
-            case "string":
+            case 'string':
               addString(json[attributeObject._attributeName], level, attributeObject);
               break;
           }
@@ -653,8 +656,8 @@ define([
 
         function addString(string, level, attributeObject) {
           var textLevel = level || attributeObject._level;
-          var text = $("<div>" + string.replace(regularExpressions.trimReplaceWhitespace, "") + "</div>").text();
-          text = text.replace(regularExpressions.trimReplaceWhitespace, "");
+          var text = $('<div>' + string.replace(regularExpressions.trimReplaceWhitespace, '') + '</div>').text();
+          text = text.replace(regularExpressions.trimReplaceWhitespace, '');
           if (!text) return;
           texts.push({
             score: 1 / textLevel,
@@ -669,19 +672,19 @@ define([
     makeModelTextProfiles: function () {
       // Handle _ignoreWords as a special case to support the authoring tool
       var ignoreWords = this.model.get('_ignoreWords') instanceof Array ?
-        this.model.get("_ignoreWords") :
-        this.model.get("_ignoreWords").split(',');
+        this.model.get('_ignoreWords') :
+        this.model.get('_ignoreWords').split(',');
 
       var regularExpressions = this._regularExpressions;
-      var searchAttributes = this.model.get("_searchAttributes");
-      var minimumWordLength = this.model.get("_minimumWordLength");
+      var searchAttributes = this.model.get('_searchAttributes');
+      var minimumWordLength = this.model.get('_minimumWordLength');
 
-      var scores = _.uniq(_.pluck(searchAttributes, "_level"));
+      var scores = _.uniq(_.pluck(searchAttributes, '_level'));
       scores = _.map(scores, function (l) { return 1 / l; });
 
       for (var i = 0, l = this._searchableModels.models.length; i < l; i++) {
         var item = this._searchableModels.models[i];
-        var profile = item.get("_searchProfile");
+        var profile = item.get('_searchProfile');
         makeModelPhraseProfile(profile);
         makeModelPhraseWordAndWordProfile(profile);
       }
@@ -715,7 +718,7 @@ define([
             var phraseObject = phrases[i];
             var chunks = phraseObject.phrase.match(regularExpressions.matchNotWordBoundaries);
             var words = _.map(chunks, function (chunk) {
-              return chunk.replace(regularExpressions.trimReplaceNonWordCharacters, "");
+              return chunk.replace(regularExpressions.trimReplaceNonWordCharacters, '');
             });
             phraseObject.words = _.countBy(words, function (word) { return word.toLowerCase(); });
             phraseObject.words = _.omit(phraseObject.words, ignoreWords);
@@ -742,8 +745,8 @@ define([
 
       for (var i = 0, il = this._searchableModels.models.length; i < il; i++) {
         var item = this._searchableModels.models[i];
-        var id = item.get("_id");
-        var searchProfile = item.get("_searchProfile");
+        var id = item.get('_id');
+        var searchProfile = item.get('_searchProfile');
 
         for (var w = 0, wl = searchProfile._words.length; w < wl; w++) {
           var word = searchProfile._words[w].word;
@@ -789,19 +792,19 @@ define([
       var wordIndex = this._wordIndex;
       // Handle _ignoreWords as a special case to support the authoring tool
       var ignoreWords = this.model.get('_ignoreWords') instanceof Array ?
-        this.model.get("_ignoreWords") :
-        this.model.get("_ignoreWords").split(',');
-      var scoreQualificationThreshold = this.model.get("_scoreQualificationThreshold");
-      var minimumWordLength = this.model.get("_minimumWordLength");
-      var frequencyImportance = this.model.get("_frequencyImportance");
-      var matchOn = this.model.get("_matchOn") || {};
+        this.model.get('_ignoreWords') :
+        this.model.get('_ignoreWords').split(',');
+      var scoreQualificationThreshold = this.model.get('_scoreQualificationThreshold');
+      var minimumWordLength = this.model.get('_minimumWordLength');
+      var frequencyImportance = this.model.get('_frequencyImportance');
+      var matchOn = this.model.get('_matchOn') || {};
 
       var json = this._searchableModels.toJSON();
 
       function getFindPhraseWords(findPhrase) {
         var findChunks = findPhrase.match(regularExpressions.matchNotWordBoundaries);
         var findWords = _.map(findChunks, function (chunk) {
-          return chunk.replace(regularExpressions.trimReplaceNonWordCharacters, "");
+          return chunk.replace(regularExpressions.trimReplaceNonWordCharacters, '');
         });
         findWords = _.countBy(findWords, function (word) { return word.toLowerCase(); });
         findWords = _.omit(findWords, ignoreWords);
@@ -816,18 +819,18 @@ define([
 
         for (var findWord in findWords) {
           for (var indexWord in wordIndex) {
-            //allow only start matches on findWord beginning with indexWord i.e. find: oneness begins with index: one
-            var rIndexWordBegins = new RegExp("^" + regularExpressions.escapeRegExp(indexWord), "g");
-            //allow all matches on indexWord containing findWord i.e. index: someone contains find: one, index: anti-money contains find: money
-            var rFindWordContains = new RegExp(regularExpressions.escapeRegExp(findWord), "g");
-            //allow only start matches on indexWord beginning with findWord i.e. find: one begins index: oneness
-            var rFindWordBegins = new RegExp("^" + regularExpressions.escapeRegExp(findWord), "g");
+            // allow only start matches on findWord beginning with indexWord i.e. find: oneness begins with index: one
+            var rIndexWordBegins = new RegExp('^' + regularExpressions.escapeRegExp(indexWord), 'g');
+            // allow all matches on indexWord containing findWord i.e. index: someone contains find: one, index: anti-money contains find: money
+            var rFindWordContains = new RegExp(regularExpressions.escapeRegExp(findWord), 'g');
+            // allow only start matches on indexWord beginning with findWord i.e. find: one begins index: oneness
+            var rFindWordBegins = new RegExp('^' + regularExpressions.escapeRegExp(findWord), 'g');
 
             var isIndexBeginsMatch = matchOn._contentWordBeginsPhraseWord === false ? false : rIndexWordBegins.test(findWord);
             var isFindContainsMatch = matchOn._contentWordContainsPhraseWord === false ? false : rFindWordContains.test(indexWord);
             var isFindBeginsMatch = matchOn._phraseWordBeginsContentWord === false ? false : rFindWordBegins.test(indexWord);
 
-            var isFullMatch = matchOn._contentWordEqualsPhraseWord == false ? false : findWord == indexWord;
+            var isFullMatch = matchOn._contentWordEqualsPhraseWord === false ? false : findWord === indexWord;
             var isPartMatch = isIndexBeginsMatch || isFindContainsMatch || isFindBeginsMatch;
 
             if (!isFullMatch && !isPartMatch) continue;
@@ -885,11 +888,11 @@ define([
         });
         var qualifyingScoreThreshold = 1 / scoreQualificationThreshold;
         var qualifyingMatches = _.filter(allowedScoreObjects, function (item) {
-          //remove items which don't meet the score threshold
+          // remove items which don't meet the score threshold
           return item.score >= qualifyingScoreThreshold;
         });
         qualifyingMatches = _.sortBy(qualifyingMatches, function (item) {
-          //sort by highest score first
+          // sort by highest score first
           return 1 / item.score;
         });
         return qualifyingMatches;
@@ -897,13 +900,13 @@ define([
 
       function isModelSearchable(model) {
         var trail = model.getAncestorModels(true);
-        var config = model.get("_search");
+        var config = model.get('_search');
         if (config && config._isEnabled === false) return false;
-        if (model.get("_isLocked")) return false;
+        if (model.get('_isLocked')) return false;
 
         var firstDisabledTrailItem = _.find(trail, function(item) {
-          var config = item.get("_search");
-          if (item.get("_isLocked")) return true;
+          var config = item.get('_search');
+          if (item.get('_isLocked')) return true;
           if (config && config._isEnabled === false) return true;
           return false;
         });
@@ -916,7 +919,7 @@ define([
           var matchingPhrases = [];
           var scoreObject = matchingIdScoreObjects[i];
           var foundWords = _.keys(scoreObject.foundWords);
-          var modelPhrases = scoreObject.model.get("_searchProfile")._phrases;
+          var modelPhrases = scoreObject.model.get('_searchProfile')._phrases;
           for (var p = 0, lp = modelPhrases.length; p < lp; p++) {
             var modelPhrase = modelPhrases[p];
             if (!modelPhrase.searchAttribute._allowTextPreview) continue;

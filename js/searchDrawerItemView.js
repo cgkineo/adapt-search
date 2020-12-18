@@ -1,5 +1,5 @@
 define([
-  'core/js/adapt',
+  'core/js/adapt'
 ], function(Adapt) {
 
   var SearchDrawerItemView = Backbone.View.extend({
@@ -17,8 +17,8 @@ define([
       this.render();
 
       this.search = _.debounce(this.search.bind(this), 1000);
-      if (options.query){
-        this.$(".js-search-textbox-change").val(options.query);
+      if (options.query) {
+        this.$('.js-search-textbox-change').val(options.query);
       }
 
     },
@@ -33,10 +33,10 @@ define([
     },
 
     search: function(event) {
-      if(event && event.preventDefault) event.preventDefault();
+      if (event && event.preventDefault) event.preventDefault();
 
-      var searchVal = this.$(".js-search-textbox-change").val();
-      Adapt.trigger("search:filterTerms", searchVal);
+      var searchVal = this.$('.js-search-textbox-change').val();
+      Adapt.trigger('search:filterTerms', searchVal);
     }
 
   });

@@ -8,7 +8,7 @@ define([
   './searchDrawerItemView',
   './searchResultsView',
   './search-algorithm'
-], function(Adapt, SearchDrawerItemView, SearchResultsView, SearchAlgorithm){
+], function(Adapt, SearchDrawerItemView, SearchResultsView, SearchAlgorithm) {
 
   var lastSearchQuery = null;
   var lastSearchObject = null;
@@ -19,15 +19,15 @@ define([
     _previewCharacters: 30,
     _showHighlights: true,
     _showFoundWords: true,
-    title: "Search",
-    description: "Type in search words",
-    placeholder: "",
-    noResultsMessage: "Sorry, no results were found",
-    awaitingResultsMessage: "Formulating results..."
+    title: 'Search',
+    description: 'Type in search words',
+    placeholder: '',
+    noResultsMessage: 'Sorry, no results were found',
+    awaitingResultsMessage: 'Formulating results...'
   };
 
-  Adapt.on('search-algorithm:ready', function(){
-    Adapt.course.set('_search', _.extend(searchConfigDefault, Adapt.course.get('_search')) );
+  Adapt.on('search-algorithm:ready', function() {
+    Adapt.course.set('_search', _.extend(searchConfigDefault, Adapt.course.get('_search')));
 
     var searchConfig = Adapt.course.get('_search');
     searchConfig.title = searchConfig.title || 'Search';
@@ -54,20 +54,20 @@ define([
 
     Adapt.drawer.triggerCustomView($element, true);
 
-    Adapt.trigger("search:draw");
+    Adapt.trigger('search:draw');
   });
 
-  Adapt.on('drawer:openedItemView search:draw', function(){
+  Adapt.on('drawer:openedItemView search:draw', function() {
     isSearchShown = true;
 
     var searchConfig = Adapt.course.get('_search');
     searchConfig = new Backbone.Model(searchConfig);
 
-    var $searchDrawerButton = $(".is-search");
+    var $searchDrawerButton = $('.is-search');
 
-    if ($searchDrawerButton.is(":not(div)")) {
-      var $replacementButton = $("<div></div>");
-      $replacementButton.attr("class", $searchDrawerButton.attr("class"));
+    if ($searchDrawerButton.is(':not(div)')) {
+      var $replacementButton = $('<div></div>');
+      $replacementButton.attr('class', $searchDrawerButton.attr('class'));
       $searchDrawerButton.children().appendTo($replacementButton);
       $searchDrawerButton.replaceWith($replacementButton);
     }
@@ -77,15 +77,15 @@ define([
       lastSearchQuery = null;
     }
 
-    $('.drawer__holder .is-search').append(new SearchDrawerItemView({model:searchConfig, query: lastSearchQuery}).el);
-    $('.drawer__holder .is-search').append(new SearchResultsView({model:searchConfig, searchObject: lastSearchObject}).el);
+    $('.drawer__holder .is-search').append(new SearchDrawerItemView({ model: searchConfig, query: lastSearchQuery }).el);
+    $('.drawer__holder .is-search').append(new SearchResultsView({ model: searchConfig, searchObject: lastSearchObject }).el);
   });
 
   Adapt.on('drawer:closed', function() {
     isSearchShown = false;
   });
 
-  Adapt.on('search:filterTerms', function(query){
+  Adapt.on('search:filterTerms', function(query) {
     var searchConfig = Adapt.course.get('_search');
     var searchObject;
 
@@ -121,7 +121,7 @@ define([
     Adapt.trigger('search:termsFiltered', searchObject);
   });
 
-  Adapt.once('drawer:noItems', function(){
+  Adapt.once('drawer:noItems', function() {
     $('.nav-drawer-btn').removeClass('u-display-none');
   });
 
