@@ -1,195 +1,194 @@
-define([
-  'core/js/adapt',
-  './search-algorithm'
-], function(Adapt, SearchAlgorithm) {
-  var replaceTagsRegEx = /\<{1}[^\>]+\>/g;
-  var replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
-  var replaceEndTagsRegEx = /\<{1}\/{1}[^\>]+\>/g;
-  var replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
+import Adapt from 'core/js/adapt';
+import SearchAlgorithm from './search-algorithm';
 
-  var SearchResultsView = Backbone.View.extend({
+const replaceTagsRegEx = /<{1}[^>]+>/g;
+const replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
+const replaceEndTagsRegEx = /<{1}\/{1}[^>]+>/g;
+const replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
 
-    className: 'search__items-container is-inactive',
+export default class SearchResultsView extends Backbone.View {
 
-    events: {
+  className() {
+    return 'search__items-container is-inactive';
+  }
+
+  events() {
+    return {
       'click [data-id]': 'navigateToResultPage'
-    },
+    };
+  }
 
-    initialize: function(options) {
-      this.listenTo(Adapt, {
-        'drawer:empty': this.remove,
-        'search:termsFiltered': this.updateResults
-      });
+  initialize(options) {
+    this.listenTo(Adapt, {
+      'drawer:empty': this.remove,
+      'search:termsFiltered': this.updateResults
+    });
 
-      this.render();
+    this.render();
 
-      if (options.searchObject) {
-        this.updateResults(options.searchObject);
-      }
-    },
+    if (options.searchObject) {
+      this.updateResults(options.searchObject);
+    }
+  }
 
-    render: function() {
-      var template = Handlebars.templates['searchResults'];
-      $(this.el).html(template());
-      return this;
-    },
+  render() {
+    const template = Handlebars.templates.searchResults;
+    $(this.el).html(template());
+    return this;
+  }
 
-    updateResults: function(searchObject) {
-      this.$el.removeClass('is-inactive');
-      var formattedResults = this.formatResults(searchObject);
-      this.renderResults(formattedResults);
-    },
+  updateResults(searchObject) {
+    this.$el.removeClass('is-inactive');
+    const formattedResults = this.formatResults(searchObject);
+    this.renderResults(formattedResults);
+  }
 
-    formatResults: function(searchObject) {
-      var self = this;
-      var resultsLimit = Math.min(5, searchObject.searchResults.length);
+  formatResults(searchObject) {
+    const self = this;
+    const resultsLimit = Math.min(5, searchObject.searchResults.length);
 
-      var formattedResults = _.map(_.first(searchObject.searchResults, resultsLimit), function(result) {
-        return self.formatResult(result);
-      });
+    const formattedResults = _.map(_.first(searchObject.searchResults, resultsLimit), function(result) {
+      return self.formatResult(result);
+    });
 
-      searchObject.formattedResults = formattedResults;
-      return searchObject;
-    },
+    searchObject.formattedResults = formattedResults;
+    return searchObject;
+  }
 
-    formatResult: function(result, query) {
-      var foundWords = _.keys(result.foundWords).join(' ');
-      var title = result.model.get('title');
-      var displayTitle = result.model.get('displayTitle');
-      var body = result.model.get('body');
-      var previewWords = this.model.get('_previewWords');
-      var previewCharacters = this.model.get('_previewCharacters');
-      var wordCharacters = search._regularExpressions.wordCharacters;
+  formatResult(result, query) {
+    const foundWords = _.keys(result.foundWords).join(' ');
+    let title = result.model.get('title');
+    let displayTitle = result.model.get('displayTitle');
+    let body = result.model.get('body');
+    const previewWords = this.model.get('_previewWords');
+    const previewCharacters = this.model.get('_previewCharacters');
+    const wordCharacters = window.search._regularExpressions.wordCharacters;
 
-      // trim whitespace
-      title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
-      displayTitle = displayTitle.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
-      body = body.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
+    // trim whitespace
+    title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
+    displayTitle = displayTitle.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
+    body = body.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
 
+    // strip tags
+    title = this.stripTags(title);
+    displayTitle = this.stripTags(displayTitle);
+    body = this.stripTags(body);
+
+    let searchTitle = '';
+    let textPreview = '';
+
+    // select title
+    if (!title) {
+      searchTitle = $('<div>' + displayTitle + '</div>').text() || 'No title found';
+    } else {
+      searchTitle = $('<div>' + title + '</div>').text();
+    }
+
+    let finder;
+    // select preview text
+    if (result.foundPhrases.length > 0) {
+      let phrase = result.foundPhrases[0].phrase;
       // strip tags
-      title = this.stripTags(title);
-      displayTitle = this.stripTags(displayTitle);
-      body = this.stripTags(body);
+      phrase = this.stripTags(phrase);
 
-      var searchTitle = '';
-      var textPreview = '';
+      let lowerPhrase = phrase.toLowerCase();
+      const lowerSearchTitle = searchTitle.toLowerCase();
 
-      // select title
-      if (!title) {
-        searchTitle = $('<div>' + displayTitle + '</div>').text() || 'No title found';
-      } else {
-        searchTitle = $('<div>' + title + '</div>').text();
-      }
-
-      // select preview text
-      if (result.foundPhrases.length > 0) {
-        var finder;
-        var phrase = result.foundPhrases[0].phrase;
+      if (lowerPhrase === lowerSearchTitle && result.foundPhrases.length > 1) {
+        phrase = result.foundPhrases[1].phrase;
         // strip tags
         phrase = this.stripTags(phrase);
+        lowerPhrase = phrase.toLowerCase();
+      }
 
-        var lowerPhrase = phrase.toLowerCase();
-        var lowerSearchTitle = searchTitle.toLowerCase();
-
-        if (lowerPhrase === lowerSearchTitle && result.foundPhrases.length > 1) {
-          phrase = result.foundPhrases[1].phrase;
-          // strip tags
-          phrase = this.stripTags(phrase);
-          lowerPhrase = phrase.toLowerCase();
-        }
-
-        if (lowerPhrase === lowerSearchTitle) {
-          // if the search phrase and title are the same
-          finder = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-          if (body) {
-            textPreview = body.match(finder)[0] + '...';
-          }
-        } else {
-          var wordMap = _.map(result.foundWords, function(count, word) {
-            return { word: word, count: count };
-          });
-          _.sortBy(wordMap, function(item) {
-            return item.count;
-          });
-          var wordIndex = 0;
-          var wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-          while (wordInPhraseStartPosition === -1) {
-            wordIndex++;
-            if (wordIndex === wordMap.length) throw new Error('search: cannot find word in phrase');
-            wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-          }
-          var regex = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})' + SearchAlgorithm._regularExpressions.escapeRegExp(wordMap[wordIndex].word) + '(([' + wordCharacters + ']{1}[^' + wordCharacters + ']*){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-          var snippet = phrase.match(regex)[0];
-          var snippetIndexInPhrase = phrase.indexOf(snippet);
-          if (snippet.length === phrase.length) {
-            textPreview = snippet;
-          } else if (snippetIndexInPhrase === 0) {
-            textPreview = snippet + '...';
-          } else if (snippetIndexInPhrase + snippet.length === phrase.length) {
-            textPreview = '...' + snippet;
-          } else {
-            textPreview = '...' + snippet + '...';
-          }
-        }
-
-      } else {
+      if (lowerPhrase === lowerSearchTitle) {
+        // if the search phrase and title are the same
         finder = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
         if (body) {
           textPreview = body.match(finder)[0] + '...';
         }
-      }
-
-      var searchTitleTagged = tag(result.foundWords, searchTitle);
-      var textPreviewTagged = tag(result.foundWords, textPreview);
-
-      return {
-        searchTitleTagged: searchTitleTagged,
-        searchTitle: searchTitle,
-        foundWords: foundWords,
-        textPreview: textPreview,
-        textPreviewTagged: textPreviewTagged,
-        id: result.model.get('_id')
-      };
-
-      function tag(words, text) {
-        var initial = '';
-        _.each(words, function(count, word) {
-          var wordPos = text.toLowerCase().indexOf(word);
-          if (wordPos < 0) return;
-          initial += text.slice(0, wordPos);
-          var highlighted = text.slice(wordPos, wordPos + word.length);
-          initial += "<span class='is-found'>" + highlighted + '</span>';
-          text = text.slice(wordPos + word.length, text.length);
+      } else {
+        const wordMap = _.map(result.foundWords, function(count, word) {
+          return { word: word, count: count };
         });
-        initial += text;
-        return initial;
+        _.sortBy(wordMap, function(item) {
+          return item.count;
+        });
+        let wordIndex = 0;
+        let wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
+        while (wordInPhraseStartPosition === -1) {
+          wordIndex++;
+          if (wordIndex === wordMap.length) throw new Error('search: cannot find word in phrase');
+          wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
+        }
+        const regex = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})' + SearchAlgorithm._regularExpressions.escapeRegExp(wordMap[wordIndex].word) + '(([' + wordCharacters + ']{1}[^' + wordCharacters + ']*){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
+        const snippet = phrase.match(regex)[0];
+        const snippetIndexInPhrase = phrase.indexOf(snippet);
+        if (snippet.length === phrase.length) {
+          textPreview = snippet;
+        } else if (snippetIndexInPhrase === 0) {
+          textPreview = snippet + '...';
+        } else if (snippetIndexInPhrase + snippet.length === phrase.length) {
+          textPreview = '...' + snippet;
+        } else {
+          textPreview = '...' + snippet + '...';
+        }
       }
-    },
 
-    stripTags: function (text) {
-      text = $('<span>' + text + '</span>').html();
-      return text
-        .replace(replaceEndTagsRegEx, ' ')
-        .replace(replaceTagsRegEx, '')
-        .replace(replaceEscapedEndTagsRegEx, ' ')
-        .replace(replaceEscapedTagsRegEx, '');
-    },
-
-    renderResults: function(results) {
-      var template = Handlebars.templates['searchResultsContent'];
-      this.$('.search__items-container-inner').html(template(results));
-    },
-
-    navigateToResultPage: function(event) {
-      event && event.preventDefault();
-      var blockID = $(event.currentTarget).attr('data-id');
-
-      Adapt.navigateToElement('.' + blockID);
-      Adapt.trigger('drawer:closeDrawer');
+    } else {
+      finder = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
+      if (body) {
+        textPreview = body.match(finder)[0] + '...';
+      }
     }
 
-  });
+    const searchTitleTagged = tag(result.foundWords, searchTitle);
+    const textPreviewTagged = tag(result.foundWords, textPreview);
 
-  return SearchResultsView;
+    return {
+      searchTitleTagged: searchTitleTagged,
+      searchTitle: searchTitle,
+      foundWords: foundWords,
+      textPreview: textPreview,
+      textPreviewTagged: textPreviewTagged,
+      id: result.model.get('_id')
+    };
 
-});
+    function tag(words, text) {
+      let initial = '';
+      _.each(words, function(count, word) {
+        const wordPos = text.toLowerCase().indexOf(word);
+        if (wordPos < 0) return;
+        initial += text.slice(0, wordPos);
+        const highlighted = text.slice(wordPos, wordPos + word.length);
+        initial += "<span class='is-found'>" + highlighted + '</span>';
+        text = text.slice(wordPos + word.length, text.length);
+      });
+      initial += text;
+      return initial;
+    }
+  }
+
+  stripTags (text) {
+    text = $('<span>' + text + '</span>').html();
+    return text
+      .replace(replaceEndTagsRegEx, ' ')
+      .replace(replaceTagsRegEx, '')
+      .replace(replaceEscapedEndTagsRegEx, ' ')
+      .replace(replaceEscapedTagsRegEx, '');
+  }
+
+  renderResults(results) {
+    const template = Handlebars.templates.searchResultsContent;
+    this.$('.search__items-container-inner').html(template(results));
+  }
+
+  navigateToResultPage(event) {
+    event && event.preventDefault();
+    const blockID = $(event.currentTarget).attr('data-id');
+
+    Adapt.navigateToElement('.' + blockID);
+    Adapt.trigger('drawer:closeDrawer');
+  }
+
+}
