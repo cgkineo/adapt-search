@@ -5,7 +5,7 @@ const matchNotWordBoundaries = new RegExp(`[${WORD_CHARACTERS}]+`, 'g');
 const trimReplaceNonWordCharacters = new RegExp(`^([^${WORD_CHARACTERS}])+|([^${WORD_CHARACTERS}])+$`, 'g');
 
 /**
- * Represents a searchable phrase at a model attributes.
+ * Represents a searchable phrase at a model attribute.
  */
 export default class SearchablePhrase {
 
@@ -41,7 +41,7 @@ export default class SearchablePhrase {
   }
 
   /**
-   * Returns all searchable phrases from the give model.
+   * Returns all searchable phrases from the given model.
    * @param {Backbone.Model} model
    * @returns {[SearchablePhrase]}
    */

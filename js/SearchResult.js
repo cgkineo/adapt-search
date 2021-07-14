@@ -1,7 +1,8 @@
 import Adapt from 'core/js/adapt';
 
 /**
- * Represents a matching model and the words, phrases and score of the search result.
+ * Represents a matching model, its matching words and phrases and the score of
+ * the search result.
  */
 export default class SearchResult {
 
@@ -19,7 +20,7 @@ export default class SearchResult {
   }
 
   /**
-   * Update search result score and lists with a newly found word.
+   * Update search result score, words and phrases with a newly found word.
    * @param {string} word
    * @param {boolean} isFullMatch
    * @param {number} partMatchRatio

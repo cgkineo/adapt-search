@@ -1,5 +1,5 @@
 /**
- * Keeps track of the word occurances and their highest phrase score.
+ * Keeps track of the word occurrences and their highest phrase score.
  */
 export default class SearchableWord {
 
