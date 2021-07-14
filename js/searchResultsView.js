@@ -64,6 +64,10 @@ export default class SearchResultsView extends Backbone.View {
     const makeTextPreview = result => {
       const numberOfPreviewCharacters = this.model.get('_previewCharacters');
       const numberOfPreviewWords = this.model.get('_previewWords');
+      /**
+       * Note: This regexp makes no sense but it works, need to find a better way
+       * of matching multilanguage words, which are sometimes a single character
+       */
       const bodyPrettify = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords * 2}}|.{0,${numberOfPreviewCharacters * 2}})`, 'i');
       const title = stripHTMLAndHandlebars(result.model.get('title')) || stripHTMLAndHandlebars(result.model.get('displayTitle')) || 'No title found';
       const body = stripHTMLAndHandlebars(result.model.get('body')) || '';
@@ -87,6 +91,10 @@ export default class SearchResultsView extends Backbone.View {
         .sort((a, b) => a.count - b.count)
         .find(({ word }) => lowerPhrase.includes(word))
         .word;
+      /**
+       * Note: This regexp makes no sense but it works, need to find a better way
+       * of matching multilanguage words, which are sometimes a single character
+       */
       const snippetMatcher = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})${escapeRegExp(word)}(([${WORD_CHARACTERS}]{1}[^${WORD_CHARACTERS}]*){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})`, 'i');
       const snippet = phrase.match(snippetMatcher)[0];
       const snippetIndexInPhrase = phrase.indexOf(snippet);
