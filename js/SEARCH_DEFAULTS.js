@@ -58,6 +58,11 @@ const SEARCH_DEFAULTS = {
       _allowTextPreview: false
     },
     {
+      _attributeName: '_options',
+      _level: 5,
+      _allowTextPreview: false
+    },
+    {
       _attributeName: 'items',
       _level: 5,
       _allowTextPreview: false
