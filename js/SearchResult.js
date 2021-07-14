@@ -1,12 +1,15 @@
 import Adapt from 'core/js/adapt';
 
+/**
+ * Represents a matching model and the words, phrases and score of the search result.
+ */
 export default class SearchResult {
 
   constructor({
     searchableModel,
     score = 0,
-    foundWords = {},
-    foundPhrases = null
+    foundWords = [],
+    foundPhrases = []
   } = {}) {
     this.searchableModel = searchableModel;
     this.model = this.searchableModel.model;
@@ -15,29 +18,30 @@ export default class SearchResult {
     this.foundPhrases = foundPhrases;
   }
 
+  /**
+   * Update search result score and lists with a newly found word.
+   * @param {string} word
+   * @param {boolean} isFullMatch
+   * @param {number} partMatchRatio
+   */
   addFoundWord(word, isFullMatch, partMatchRatio) {
+    if (this.foundWords.find(({ word: matchWord }) => matchWord === word)) return;
     const config = Adapt.course.get('_search');
     const frequencyImportance = config._frequencyImportance;
-    if (this.foundWords[word] === undefined) this.foundWords[word] = 0;
-    const allPhraseWordRatingObjects = _.where(this.searchableModel.words, { word });
-    const wordFrequency = _.reduce(allPhraseWordRatingObjects, function (memo, item) { return memo + item.count; }, 0);
-    const wordFrequencyHitScore = _.reduce(allPhraseWordRatingObjects, function (memo, item) {
-      const frequencyBonus = (item.score * item.count) / frequencyImportance;
-      return memo + item.score + frequencyBonus;
-    }, 0);
-    this.foundWords[word] += wordFrequency;
-    if (isFullMatch) {
-      this.score += wordFrequencyHitScore;
-    } else {
-      this.score += wordFrequencyHitScore * partMatchRatio;
-    }
+    const searchableWord = this.searchableModel.words.find(({ word: matchWord }) => matchWord === word);
+    this.foundWords.push(searchableWord);
+    const frequencyBonus = (searchableWord.score * searchableWord.count) / frequencyImportance;
+    const wordFrequencyHitBonus = searchableWord.score + frequencyBonus;
+    this.score += isFullMatch
+      ? wordFrequencyHitBonus
+      : wordFrequencyHitBonus * partMatchRatio;
     // Find all matching phrases
-    const foundWords = Object.keys(this.foundWords);
+    const foundWords = this.foundWords.map(({ word }) => word);
     const phrases = this.searchableModel.phrases;
     this.foundPhrases = [];
     for (const phrase of phrases) {
       if (!phrase.allowTextPreview) continue;
-      if (!_.intersection(foundWords, _.keys(phrase.words)).length > 0) continue;
+      if (!_.intersection(foundWords, Object.keys(phrase.words)).length > 0) continue;
       this.foundPhrases.push(phrase);
     }
   }

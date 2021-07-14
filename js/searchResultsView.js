@@ -1,6 +1,6 @@
 import Adapt from 'core/js/adapt';
 import WORD_CHARACTERS from './WORD_CHARACTERS';
-import { stripTags, tag, escapeRegExp } from './utils';
+import escapeRegExp from './escapeRegExp';
 
 export default class SearchResultsView extends Backbone.View {
 
@@ -37,69 +37,97 @@ export default class SearchResultsView extends Backbone.View {
   }
 
   formatResults(searchObject) {
-    const resultsLimit = Math.min(5, searchObject.searchResults.length);
-    const previewWords = this.model.get('_previewWords');
-    const previewCharacters = this.model.get('_previewCharacters');
-    const formattedResults = searchObject.searchResults.slice(0, resultsLimit).map(result => {
-      const foundWords = _.keys(result.foundWords).join(' ');
-      const title = stripTags(result.model.get('title'));
-      const displayTitle = stripTags(result.model.get('displayTitle'));
-      const body = stripTags(result.model.get('body'));
-      const searchTitle = !title
-        ? $('<div>' + displayTitle + '</div>').text() || 'No title found'
-        : $('<div>' + title + '</div>').text();
-      let textPreview = '';
-      let finder;
-      // select preview text
-      if (result.foundPhrases.length > 0) {
-        let phrase = stripTags(result.foundPhrases[0].phrase);
-        let lowerPhrase = phrase.toLowerCase();
-        const lowerSearchTitle = searchTitle.toLowerCase();
-
-        if (lowerPhrase === lowerSearchTitle && result.foundPhrases.length > 1) {
-          phrase = stripTags(result.foundPhrases[1].phrase);
-          lowerPhrase = phrase.toLowerCase();
-        }
-
-        if (lowerPhrase === lowerSearchTitle) {
-          // if the search phrase and title are the same
-          finder = new RegExp('(([^' + WORD_CHARACTERS + ']*[' + WORD_CHARACTERS + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-          if (body) {
-            textPreview = body.match(finder)[0] + '...';
-          }
-        } else {
-          const wordMap = Object.entries(result.foundWords).map(([word, count]) => ({ word, count }));
-          wordMap.sort((a, b) => a.count - b.count);
-          let wordIndex = 0;
-          let wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-          while (wordInPhraseStartPosition === -1) {
-            wordIndex++;
-            if (wordIndex === wordMap.length) throw new Error('search: cannot find word in phrase');
-            wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-          }
-          const regex = new RegExp('(([^' + WORD_CHARACTERS + ']*[' + WORD_CHARACTERS + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})' + escapeRegExp(wordMap[wordIndex].word) + '(([' + WORD_CHARACTERS + ']{1}[^' + WORD_CHARACTERS + ']*){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-          const snippet = phrase.match(regex)[0];
-          const snippetIndexInPhrase = phrase.indexOf(snippet);
-          textPreview = `${(snippetIndexInPhrase !== 0) ? '...' : ''}${snippet}${(snippetIndexInPhrase + snippet.length !== phrase.length) ? '...' : ''}`;
-        }
-
-      } else {
-        finder = new RegExp('(([^' + WORD_CHARACTERS + ']*[' + WORD_CHARACTERS + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-        if (body) {
-          textPreview = body.match(finder)[0] + '...';
-        }
+    const stripHTMLAndHandlebars = (text) => {
+      const replaceTagsRegEx = /<{1}[^>]+>/g;
+      const replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
+      const replaceEndTagsRegEx = /<{1}\/{1}[^>]+>/g;
+      const replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
+      const replaceHandlebarsRegEx = /{{[^}}]*/g;
+      const replaceHandlebarsEndRegEx = /}}/g;
+      text = $(`<span>${text}</span>`).html();
+      return text
+        .replace(replaceEndTagsRegEx, ' ')
+        .replace(replaceTagsRegEx, '')
+        .replace(replaceEscapedEndTagsRegEx, ' ')
+        .replace(replaceEscapedTagsRegEx, '')
+        .replace(replaceHandlebarsRegEx, ' ')
+        .replace(replaceHandlebarsEndRegEx, '')
+        .trim();
+    };
+    const checkSkipTitlePhrase = (title, result) => {
+      const lowerPhrase = stripHTMLAndHandlebars(result.foundPhrases[0].phrase).toLowerCase();
+      const lowerTitle = title.toLowerCase();
+      const shouldSkipTitlePhraseForPreview = (lowerPhrase === lowerTitle && result.foundPhrases.length > 1);
+      if (shouldSkipTitlePhraseForPreview) return result.foundPhrases[1];
+      return result.foundPhrases[0];
+    };
+    const makeTextPreview = result => {
+      const numberOfPreviewCharacters = this.model.get('_previewCharacters');
+      const numberOfPreviewWords = this.model.get('_previewWords');
+      const bodyPrettify = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords * 2}}|.{0,${numberOfPreviewCharacters * 2}})`, 'i');
+      const title = stripHTMLAndHandlebars(result.model.get('title')) || stripHTMLAndHandlebars(result.model.get('displayTitle')) || 'No title found';
+      const body = stripHTMLAndHandlebars(result.model.get('body')) || '';
+      const hasNoFoundPhrases = (result.foundPhrases.length === 0);
+      if (hasNoFoundPhrases) {
+        const textPreview = body.match(bodyPrettify)[0] + '...';
+        return [title, textPreview];
       }
-
-      const searchTitleTagged = tag(result.foundWords, searchTitle);
-      const textPreviewTagged = tag(result.foundWords, textPreview);
-      const id = result.model.get('_id');
+      const foundPhrase = checkSkipTitlePhrase(title, result);
+      const phrase = stripHTMLAndHandlebars(foundPhrase.phrase);
+      const lowerPhrase = phrase.toLowerCase();
+      const lowerTitle = title.toLowerCase();
+      if (lowerPhrase === lowerTitle) {
+        // if the search phrase and title are the same still
+        const textPreview = body.match(bodyPrettify)[0] + '...';
+        return [title, textPreview];
+      }
+      const word = result
+        .foundWords
+        .slice(0)
+        .sort((a, b) => a.count - b.count)
+        .find(({ word }) => lowerPhrase.includes(word))
+        .word;
+      const snippetMatcher = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})${escapeRegExp(word)}(([${WORD_CHARACTERS}]{1}[^${WORD_CHARACTERS}]*){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})`, 'i');
+      const snippet = phrase.match(snippetMatcher)[0];
+      const snippetIndexInPhrase = phrase.indexOf(snippet);
+      const isSnippetAtPhraseStart = (snippetIndexInPhrase === 0);
+      const isSnippetAtPhraseEnd = (snippetIndexInPhrase + snippet.length === phrase.length);
+      const textPreview = `${isSnippetAtPhraseStart ? '' : '...'}${snippet}${isSnippetAtPhraseEnd ? '' : '...'}`;
+      return [title, textPreview];
+    };
+    const wrapWordsWithSpan = (words, text) => {
+      const tagWords = words.map(({ word }) => word);
+      const initial = [];
+      while (text) {
+        const lowerCaseText = text.toLowerCase();
+        const wordTextPositions = tagWords.map(word => lowerCaseText.indexOf(word));
+        const firstWordIndex = wordTextPositions.reduce((firstWordIndex, wordTextPosition, wordIndex) => {
+          if (wordTextPosition === -1) return firstWordIndex;
+          if (firstWordIndex === -1) return wordIndex;
+          const firstWordTextPosition = wordTextPositions[firstWordIndex];
+          if (wordTextPosition >= firstWordTextPosition) return firstWordIndex;
+          return wordIndex;
+        }, -1);
+        if (firstWordIndex === -1) break;
+        const word = tagWords[firstWordIndex];
+        const wordTextPosition = wordTextPositions[firstWordIndex];
+        initial.push(text.slice(0, wordTextPosition));
+        initial.push(`<span class='is-found'>${text.slice(wordTextPosition, wordTextPosition + word.length)}</span>`);
+        text = text.slice(wordTextPosition + word.length, text.length);
+      }
+      initial.push(text);
+      return initial.join('');
+    };
+    const resultsLimit = Math.min(5, searchObject.searchResults.length);
+    const formattedResults = searchObject.searchResults.slice(0, resultsLimit).map(result => {
+      const [title, textPreview] = makeTextPreview(result);
       return {
-        searchTitleTagged,
-        searchTitle,
-        foundWords,
+        title,
         textPreview,
-        textPreviewTagged,
-        id
+        titleTagged: wrapWordsWithSpan(result.foundWords, title),
+        textPreviewTagged: wrapWordsWithSpan(result.foundWords, textPreview),
+        foundWords: result.foundWords.map(({ word }) => word).join(' '),
+        id: result.model.get('_id')
       };
     });
     searchObject.formattedResults = formattedResults;

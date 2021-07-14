@@ -57,18 +57,16 @@ class Search extends Backbone.Controller {
 
   onShowSearch() {
     if (this.isSearchShown) return;
-    let searchConfig = Adapt.course.get('_search');
-    searchConfig = new Backbone.Model(searchConfig);
+    const searchConfig = Adapt.course.get('_search');
     const template = Handlebars.templates.searchSingleItem;
-    const $element = $(template(searchConfig.toJSON()));
+    const $element = $(template(searchConfig));
     Adapt.drawer.triggerCustomView($element, true);
     Adapt.trigger('search:draw');
   }
 
   onOpenedItemView() {
     this.isSearchShown = true;
-    let searchConfig = Adapt.course.get('_search');
-    searchConfig = new Backbone.Model(searchConfig);
+    const searchConfigModel = new Backbone.Model(Adapt.course.get('_search'));
     const $searchDrawerButton = $('.is-search');
     if ($searchDrawerButton.is(':not(div)')) {
       const $replacementButton = $('<div></div>');
@@ -80,8 +78,9 @@ class Search extends Backbone.Controller {
       this.lastSearchObject = null;
       this.lastSearchQuery = null;
     }
-    $('.drawer__holder .is-search').append(new SearchDrawerItemView({ model: searchConfig, query: this.lastSearchQuery }).el);
-    $('.drawer__holder .is-search').append(new SearchResultsView({ model: searchConfig, searchObject: this.lastSearchObject }).el);
+    $('.drawer__holder .is-search')
+      .append(new SearchDrawerItemView({ model: searchConfigModel, query: this.lastSearchQuery }).el)
+      .append(new SearchResultsView({ model: searchConfigModel, searchObject: this.lastSearchObject }).el);
   }
 
   onDrawerClosed() {

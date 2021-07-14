@@ -3,8 +3,12 @@ import SearchableModel from './SearchableModel';
 import SearchablePhrase from './SearchablePhrase';
 import SearchObject from './SearchObject';
 import SearchResult from './SearchResult';
-import { escapeRegExp } from './utils';
+import escapeRegExp from './escapeRegExp';
 
+/**
+ * Main API
+ * The last instance is available through window.search
+ */
 export default class Searcher {
 
   constructor() {
@@ -18,28 +22,12 @@ export default class Searcher {
     }, {});
   }
 
+  /**
+   * Returns an array of search results.
+   * @param {string} searchPhrase
+   * @returns {[SearchResult]}
+   */
   query(searchPhrase) {
-    /*
-    returns [
-      {
-        score: (float)score = bestPhraseAttributeScore * (wordOccurencesInSection * frequencyMultiplier)
-        model: model,
-        foundWords: {
-          "foundWord": (int)occurencesInSection
-        },
-        foundPhrases: [
-          {
-            "score": (float)score   = (1/attributeLevel)
-            "phrase": "Test phrase",
-            "words": {
-              "Test": (int)occurencesInPhrase,
-              "phrase": (int)occurencesInPhrase
-            }
-          }
-        ]
-      }
-    ];
-    */
     const config = Adapt.course.get('_search');
     const wordIndex = this.wordIndex;
     const scoreQualificationThreshold = config._scoreQualificationThreshold;
@@ -57,24 +45,29 @@ export default class Searcher {
         const isIndexBeginsMatch = matchOn._contentWordBeginsPhraseWord === false ? false : rIndexWordBegins.test(findWord);
         const isFindContainsMatch = matchOn._contentWordContainsPhraseWord === false ? false : rFindWordContains.test(indexWord);
         const isFindBeginsMatch = matchOn._phraseWordBeginsContentWord === false ? false : rFindWordBegins.test(indexWord);
-        const isFullMatch = matchOn._contentWordEqualsPhraseWord === false ? false : findWord === indexWord;
+        const isFullMatch = matchOn._contentWordEqualsPhraseWord === false ? false : (findWord === indexWord);
         const isPartMatch = isIndexBeginsMatch || isFindContainsMatch || isFindBeginsMatch;
         if (!isFullMatch && !isPartMatch) continue;
         const partMatchRatio = isFullMatch ? 1 : (findWord.length > indexWord.length) ? indexWord.length / findWord.length : findWord.length / indexWord.length;
         wordIndex[indexWord].forEach(searchableModel => {
-          const model = searchableModel.model;
-          const id = model.get('_id');
+          const id = searchableModel.model.get('_id');
           indexedSearchResults[id] = (indexedSearchResults[id] || new SearchResult({ searchableModel }));
           indexedSearchResults[id].addFoundWord(indexWord, isFullMatch, partMatchRatio);
         });
       }
     }
-    const searchResults = _.values(indexedSearchResults);
+    const searchResults = Object.values(indexedSearchResults);
     const qualifyingScoreThreshold = 1 / scoreQualificationThreshold;
     const qualifyingSearchResults = searchResults.filter(item => item.score >= qualifyingScoreThreshold).sort((a, b) => b.score - a.score);
     return qualifyingSearchResults;
   }
 
+  /**
+   * Returns a search object which represents all of the settings used for the
+   * search, the search results and the user interface search state.
+   * @param {string} searchPhrase
+   * @returns {SearchObject}
+   */
   search(searchPhrase) {
     const config = Adapt.course.get('_search');
     const shouldSearch = (searchPhrase.length >= config._minimumWordLength);
