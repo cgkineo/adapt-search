@@ -1,4 +1,5 @@
 import Adapt from 'core/js/adapt';
+import data from 'core/js/data';
 import SearchDrawerItemView from './searchDrawerItemView';
 import SearchResultsView from './searchResultsView';
 import SEARCH_DEFAULTS from './SEARCH_DEFAULTS';
@@ -19,6 +20,9 @@ class Search extends Backbone.Controller {
       'drawer:closed': this.onDrawerClosed,
       'drawer:noItems': this.onNoItems
     });
+    this.listenTo(data, {
+      'add remove change:_isAvailable change:_isLocked': this.reIndex
+    });
   }
 
   onDataReady() {
@@ -32,12 +36,16 @@ class Search extends Backbone.Controller {
     const modelWithDefaults = $.extend(true, {}, SEARCH_DEFAULTS, model);
     Adapt.course.set('_search', modelWithDefaults);
     this.isSetup = true;
-    window.search = this.searcher = new Searcher();
+    this.reIndex();
   }
 
   clearSearchResults() {
     this.query('');
     this.addDrawerItem();
+    this.reIndex();
+  }
+
+  reIndex() {
     if (!this.isSetup) return;
     window.search = this.searcher = new Searcher();
   }
