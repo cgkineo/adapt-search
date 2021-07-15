@@ -54,12 +54,13 @@ export default class SearchResultsView extends Backbone.View {
         .replace(replaceHandlebarsEndRegEx, '')
         .trim();
     };
-    const checkSkipTitlePhrase = (title, result) => {
-      const lowerPhrase = stripHTMLAndHandlebars(result.foundPhrases[0].phrase).toLowerCase();
-      const lowerTitle = title.toLowerCase();
-      const shouldSkipTitlePhraseForPreview = (lowerPhrase === lowerTitle && result.foundPhrases.length > 1);
-      if (shouldSkipTitlePhraseForPreview) return result.foundPhrases[1];
-      return result.foundPhrases[0];
+    const checkSkipTitlePhrases = (title, result) => {
+      return result.foundPhrases.find(foundPhrase => {
+        const lowerPhrase = stripHTMLAndHandlebars(foundPhrase.phrase).toLowerCase();
+        const lowerTitle = title.toLowerCase();
+        const isNotTitle = (lowerPhrase !== lowerTitle);
+        return isNotTitle;
+      }) || result.foundPhrases[result.foundPhrases.length - 1];
     };
     const makeTextPreview = result => {
       const numberOfPreviewCharacters = this.model.get('_previewCharacters');
@@ -76,7 +77,7 @@ export default class SearchResultsView extends Backbone.View {
         const textPreview = body.match(bodyPrettify)[0] + '...';
         return [title, textPreview];
       }
-      const foundPhrase = checkSkipTitlePhrase(title, result);
+      const foundPhrase = checkSkipTitlePhrases(title, result);
       const phrase = stripHTMLAndHandlebars(foundPhrase.phrase);
       const lowerPhrase = phrase.toLowerCase();
       const lowerTitle = title.toLowerCase();
