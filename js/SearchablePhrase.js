@@ -1,5 +1,6 @@
 import Adapt from 'core/js/adapt';
 import WORD_CHARACTERS from './WORD_CHARACTERS';
+import replaceAccents from './replaceAccents';
 
 const matchNotWordBoundaries = new RegExp(`[${WORD_CHARACTERS}]+`, 'g');
 const trimReplaceNonWordCharacters = new RegExp(`^([^${WORD_CHARACTERS}])+|([^${WORD_CHARACTERS}])+$`, 'g');
@@ -18,6 +19,7 @@ export default class SearchablePhrase {
   } = {}) {
     this.name = searchAttribute?._attributeName ?? null;
     this.phrase = phrase;
+    this.safePhrase = replaceAccents(phrase).toLowerCase();
     this.level = level ?? searchAttribute?._level ?? null;
     this.score = score ?? (this.level !== null ? (1 / this.level) : null);
     this.allowTextPreview = (allowTextPreview ?? searchAttribute?._allowTextPreview) ?? null;
@@ -27,7 +29,7 @@ export default class SearchablePhrase {
       ? config._ignoreWords
       : config._ignoreWords.split(',');
     const minimumWordLength = config._minimumWordLength;
-    this.words = this.phrase
+    this.words = this.safePhrase
       .match(matchNotWordBoundaries)
       .map(chunk => chunk.replace(trimReplaceNonWordCharacters, ''))
       .filter(word => word.length >= minimumWordLength)

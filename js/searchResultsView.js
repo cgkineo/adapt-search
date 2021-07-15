@@ -1,6 +1,7 @@
 import Adapt from 'core/js/adapt';
 import WORD_CHARACTERS from './WORD_CHARACTERS';
 import escapeRegExp from './escapeRegExp';
+import replaceAccents from './replaceAccents';
 
 export default class SearchResultsView extends Backbone.View {
 
@@ -71,6 +72,7 @@ export default class SearchResultsView extends Backbone.View {
        */
       const bodyPrettify = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords * 2}}|.{0,${numberOfPreviewCharacters * 2}})`, 'i');
       const title = stripHTMLAndHandlebars(result.model.get('title')) || stripHTMLAndHandlebars(result.model.get('displayTitle')) || 'No title found';
+      const safeTitle = replaceAccents(title);
       const body = stripHTMLAndHandlebars(result.model.get('body')) || '';
       const hasNoFoundPhrases = (result.foundPhrases.length === 0);
       if (hasNoFoundPhrases) {
@@ -79,8 +81,9 @@ export default class SearchResultsView extends Backbone.View {
       }
       const foundPhrase = checkSkipTitlePhrases(title, result);
       const phrase = stripHTMLAndHandlebars(foundPhrase.phrase);
-      const lowerPhrase = phrase.toLowerCase();
-      const lowerTitle = title.toLowerCase();
+      const safePhrase = stripHTMLAndHandlebars(foundPhrase.safePhrase);
+      const lowerPhrase = safePhrase.toLowerCase();
+      const lowerTitle = safeTitle.toLowerCase();
       if (lowerPhrase === lowerTitle) {
         // if the search phrase and title are the same still
         const textPreview = body.match(bodyPrettify)[0] + '...';
@@ -97,11 +100,13 @@ export default class SearchResultsView extends Backbone.View {
        * of matching multilanguage words, which are sometimes a single character
        */
       const snippetMatcher = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})${escapeRegExp(word)}(([${WORD_CHARACTERS}]{1}[^${WORD_CHARACTERS}]*){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})`, 'i');
-      const snippet = phrase.match(snippetMatcher)[0];
-      const snippetIndexInPhrase = phrase.indexOf(snippet);
+      const snippet = safePhrase.match(snippetMatcher)[0];
+      const snippetIndexInPhrase = safePhrase.indexOf(snippet);
+      const snippetEndInPhrase = (snippetIndexInPhrase + snippet.length);
       const isSnippetAtPhraseStart = (snippetIndexInPhrase === 0);
-      const isSnippetAtPhraseEnd = (snippetIndexInPhrase + snippet.length === phrase.length);
-      const textPreview = `${isSnippetAtPhraseStart ? '' : '...'}${snippet}${isSnippetAtPhraseEnd ? '' : '...'}`;
+      const isSnippetAtPhraseEnd = (snippetEndInPhrase === phrase.length);
+      const unsafeSnippet = phrase.slice(snippetIndexInPhrase, snippetEndInPhrase);
+      const textPreview = `${isSnippetAtPhraseStart ? '' : '...'}${unsafeSnippet}${isSnippetAtPhraseEnd ? '' : '...'}`;
       return [title, textPreview];
     };
     const wrapWordsWithSpan = (words, text) => {
