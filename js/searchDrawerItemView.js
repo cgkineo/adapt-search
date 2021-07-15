@@ -1,46 +1,37 @@
-define([
-  'core/js/adapt'
-], function(Adapt) {
+import Adapt from 'core/js/adapt';
 
-  var SearchDrawerItemView = Backbone.View.extend({
+export default class SearchDrawerItemView extends Backbone.View {
 
-    className: 'search',
+  className() {
+    return 'search';
+  }
 
-    events: {
-      'click .js-search-textbox-change': 'search',
-      'keyup .js-search-textbox-change': 'search'
-    },
+  events() {
+    return {
+      'click .js-search-textbox-change': this.onSearch,
+      'keyup .js-search-textbox-change': this.onSearch
+    };
+  }
 
-    initialize: function(options) {
+  initialize(options) {
+    this.listenTo(Adapt, 'drawer:empty', this.remove);
+    this.render();
+    this.search = _.debounce(this.onSearch.bind(this), 1000);
+    if (!options.query) return;
+    this.$('.js-search-textbox-change').val(options.query);
+  }
 
-      this.listenTo(Adapt, 'drawer:empty', this.remove);
-      this.render();
+  render() {
+    const data = this.model.toJSON();
+    const template = Handlebars.templates.searchBox;
+    this.$el.html(template(data));
+    return this;
+  }
 
-      this.search = _.debounce(this.search.bind(this), 1000);
-      if (options.query) {
-        this.$('.js-search-textbox-change').val(options.query);
-      }
+  onSearch(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    const query = this.$('.js-search-textbox-change').val();
+    Adapt.trigger('search:query', query);
+  }
 
-    },
-
-    render: function() {
-      var data = this.model.toJSON();
-
-      var template = Handlebars.templates['searchBox'];
-      $(this.el).html(template(data));
-
-      return this;
-    },
-
-    search: function(event) {
-      if (event && event.preventDefault) event.preventDefault();
-
-      var searchVal = this.$('.js-search-textbox-change').val();
-      Adapt.trigger('search:filterTerms', searchVal);
-    }
-
-  });
-
-  return SearchDrawerItemView;
-
-});
+}

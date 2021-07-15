@@ -1,195 +1,158 @@
-define([
-  'core/js/adapt',
-  './search-algorithm'
-], function(Adapt, SearchAlgorithm) {
-  var replaceTagsRegEx = /\<{1}[^\>]+\>/g;
-  var replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
-  var replaceEndTagsRegEx = /\<{1}\/{1}[^\>]+\>/g;
-  var replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
+import Adapt from 'core/js/adapt';
+import WORD_CHARACTERS from './WORD_CHARACTERS';
+import escapeRegExp from './escapeRegExp';
 
-  var SearchResultsView = Backbone.View.extend({
+export default class SearchResultsView extends Backbone.View {
 
-    className: 'search__items-container is-inactive',
+  className() {
+    return 'search__items-container is-inactive';
+  }
 
-    events: {
+  events() {
+    return {
       'click [data-id]': 'navigateToResultPage'
-    },
+    };
+  }
 
-    initialize: function(options) {
-      this.listenTo(Adapt, {
-        'drawer:empty': this.remove,
-        'search:termsFiltered': this.updateResults
-      });
+  initialize({ searchObject = null } = {}) {
+    this.listenTo(Adapt, {
+      'drawer:empty': this.remove,
+      'search:queried': this.updateResults
+    });
+    this.render();
+    if (!searchObject) return;
+    this.updateResults(searchObject);
+  }
 
-      this.render();
+  render() {
+    const template = Handlebars.templates.searchResults;
+    $(this.el).html(template());
+    return this;
+  }
 
-      if (options.searchObject) {
-        this.updateResults(options.searchObject);
-      }
-    },
+  updateResults(searchObject) {
+    this.$el.removeClass('is-inactive');
+    const formattedResults = this.formatResults(searchObject);
+    this.renderResults(formattedResults);
+  }
 
-    render: function() {
-      var template = Handlebars.templates['searchResults'];
-      $(this.el).html(template());
-      return this;
-    },
-
-    updateResults: function(searchObject) {
-      this.$el.removeClass('is-inactive');
-      var formattedResults = this.formatResults(searchObject);
-      this.renderResults(formattedResults);
-    },
-
-    formatResults: function(searchObject) {
-      var self = this;
-      var resultsLimit = Math.min(5, searchObject.searchResults.length);
-
-      var formattedResults = _.map(_.first(searchObject.searchResults, resultsLimit), function(result) {
-        return self.formatResult(result);
-      });
-
-      searchObject.formattedResults = formattedResults;
-      return searchObject;
-    },
-
-    formatResult: function(result, query) {
-      var foundWords = _.keys(result.foundWords).join(' ');
-      var title = result.model.get('title');
-      var displayTitle = result.model.get('displayTitle');
-      var body = result.model.get('body');
-      var previewWords = this.model.get('_previewWords');
-      var previewCharacters = this.model.get('_previewCharacters');
-      var wordCharacters = search._regularExpressions.wordCharacters;
-
-      // trim whitespace
-      title = title.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
-      displayTitle = displayTitle.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
-      body = body.replace(SearchAlgorithm._regularExpressions.trimReplaceWhitespace, '');
-
-      // strip tags
-      title = this.stripTags(title);
-      displayTitle = this.stripTags(displayTitle);
-      body = this.stripTags(body);
-
-      var searchTitle = '';
-      var textPreview = '';
-
-      // select title
-      if (!title) {
-        searchTitle = $('<div>' + displayTitle + '</div>').text() || 'No title found';
-      } else {
-        searchTitle = $('<div>' + title + '</div>').text();
-      }
-
-      // select preview text
-      if (result.foundPhrases.length > 0) {
-        var finder;
-        var phrase = result.foundPhrases[0].phrase;
-        // strip tags
-        phrase = this.stripTags(phrase);
-
-        var lowerPhrase = phrase.toLowerCase();
-        var lowerSearchTitle = searchTitle.toLowerCase();
-
-        if (lowerPhrase === lowerSearchTitle && result.foundPhrases.length > 1) {
-          phrase = result.foundPhrases[1].phrase;
-          // strip tags
-          phrase = this.stripTags(phrase);
-          lowerPhrase = phrase.toLowerCase();
-        }
-
-        if (lowerPhrase === lowerSearchTitle) {
-          // if the search phrase and title are the same
-          finder = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-          if (body) {
-            textPreview = body.match(finder)[0] + '...';
-          }
-        } else {
-          var wordMap = _.map(result.foundWords, function(count, word) {
-            return { word: word, count: count };
-          });
-          _.sortBy(wordMap, function(item) {
-            return item.count;
-          });
-          var wordIndex = 0;
-          var wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-          while (wordInPhraseStartPosition === -1) {
-            wordIndex++;
-            if (wordIndex === wordMap.length) throw new Error('search: cannot find word in phrase');
-            wordInPhraseStartPosition = lowerPhrase.indexOf(wordMap[wordIndex].word);
-          }
-          var regex = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})' + SearchAlgorithm._regularExpressions.escapeRegExp(wordMap[wordIndex].word) + '(([' + wordCharacters + ']{1}[^' + wordCharacters + ']*){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-          var snippet = phrase.match(regex)[0];
-          var snippetIndexInPhrase = phrase.indexOf(snippet);
-          if (snippet.length === phrase.length) {
-            textPreview = snippet;
-          } else if (snippetIndexInPhrase === 0) {
-            textPreview = snippet + '...';
-          } else if (snippetIndexInPhrase + snippet.length === phrase.length) {
-            textPreview = '...' + snippet;
-          } else {
-            textPreview = '...' + snippet + '...';
-          }
-        }
-
-      } else {
-        finder = new RegExp('(([^' + wordCharacters + ']*[' + wordCharacters + ']{1}){1,' + previewWords + '}|.{0,' + previewCharacters + '})', 'i');
-        if (body) {
-          textPreview = body.match(finder)[0] + '...';
-        }
-      }
-
-      var searchTitleTagged = tag(result.foundWords, searchTitle);
-      var textPreviewTagged = tag(result.foundWords, textPreview);
-
-      return {
-        searchTitleTagged: searchTitleTagged,
-        searchTitle: searchTitle,
-        foundWords: foundWords,
-        textPreview: textPreview,
-        textPreviewTagged: textPreviewTagged,
-        id: result.model.get('_id')
-      };
-
-      function tag(words, text) {
-        var initial = '';
-        _.each(words, function(count, word) {
-          var wordPos = text.toLowerCase().indexOf(word);
-          if (wordPos < 0) return;
-          initial += text.slice(0, wordPos);
-          var highlighted = text.slice(wordPos, wordPos + word.length);
-          initial += "<span class='is-found'>" + highlighted + '</span>';
-          text = text.slice(wordPos + word.length, text.length);
-        });
-        initial += text;
-        return initial;
-      }
-    },
-
-    stripTags: function (text) {
-      text = $('<span>' + text + '</span>').html();
+  formatResults(searchObject) {
+    const stripHTMLAndHandlebars = (text) => {
+      const replaceTagsRegEx = /<{1}[^>]+>/g;
+      const replaceEscapedTagsRegEx = /&lt;[^&gt;]+&gt;/g;
+      const replaceEndTagsRegEx = /<{1}\/{1}[^>]+>/g;
+      const replaceEscapedEndTagsRegEx = /&lt;\/[^&gt;]+&gt;/g;
+      const replaceHandlebarsRegEx = /{{[^}}]*/g;
+      const replaceHandlebarsEndRegEx = /}}/g;
+      text = $(`<span>${text}</span>`).html();
       return text
         .replace(replaceEndTagsRegEx, ' ')
         .replace(replaceTagsRegEx, '')
         .replace(replaceEscapedEndTagsRegEx, ' ')
-        .replace(replaceEscapedTagsRegEx, '');
-    },
+        .replace(replaceEscapedTagsRegEx, '')
+        .replace(replaceHandlebarsRegEx, ' ')
+        .replace(replaceHandlebarsEndRegEx, '')
+        .trim();
+    };
+    const checkSkipTitlePhrases = (title, result) => {
+      return result.foundPhrases.find(foundPhrase => {
+        const lowerPhrase = stripHTMLAndHandlebars(foundPhrase.phrase).toLowerCase();
+        const lowerTitle = title.toLowerCase();
+        const isNotTitle = (lowerPhrase !== lowerTitle);
+        return isNotTitle;
+      }) || result.foundPhrases[result.foundPhrases.length - 1];
+    };
+    const makeTextPreview = result => {
+      const numberOfPreviewCharacters = this.model.get('_previewCharacters');
+      const numberOfPreviewWords = this.model.get('_previewWords');
+      /**
+       * Note: This regexp makes no sense but it works, need to find a better way
+       * of matching multilanguage words, which are sometimes a single character
+       */
+      const bodyPrettify = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords * 2}}|.{0,${numberOfPreviewCharacters * 2}})`, 'i');
+      const title = stripHTMLAndHandlebars(result.model.get('title')) || stripHTMLAndHandlebars(result.model.get('displayTitle')) || 'No title found';
+      const body = stripHTMLAndHandlebars(result.model.get('body')) || '';
+      const hasNoFoundPhrases = (result.foundPhrases.length === 0);
+      if (hasNoFoundPhrases) {
+        const textPreview = body.match(bodyPrettify)[0] + '...';
+        return [title, textPreview];
+      }
+      const foundPhrase = checkSkipTitlePhrases(title, result);
+      const phrase = stripHTMLAndHandlebars(foundPhrase.phrase);
+      const lowerPhrase = phrase.toLowerCase();
+      const lowerTitle = title.toLowerCase();
+      if (lowerPhrase === lowerTitle) {
+        // if the search phrase and title are the same still
+        const textPreview = body.match(bodyPrettify)[0] + '...';
+        return [title, textPreview];
+      }
+      const word = result
+        .foundWords
+        .slice(0)
+        .sort((a, b) => a.count - b.count)
+        .find(({ word }) => lowerPhrase.includes(word))
+        .word;
+      /**
+       * Note: This regexp makes no sense but it works, need to find a better way
+       * of matching multilanguage words, which are sometimes a single character
+       */
+      const snippetMatcher = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})${escapeRegExp(word)}(([${WORD_CHARACTERS}]{1}[^${WORD_CHARACTERS}]*){1,${numberOfPreviewWords}}|.{0,${numberOfPreviewCharacters}})`, 'i');
+      const snippet = phrase.match(snippetMatcher)[0];
+      const snippetIndexInPhrase = phrase.indexOf(snippet);
+      const isSnippetAtPhraseStart = (snippetIndexInPhrase === 0);
+      const isSnippetAtPhraseEnd = (snippetIndexInPhrase + snippet.length === phrase.length);
+      const textPreview = `${isSnippetAtPhraseStart ? '' : '...'}${snippet}${isSnippetAtPhraseEnd ? '' : '...'}`;
+      return [title, textPreview];
+    };
+    const wrapWordsWithSpan = (words, text) => {
+      const tagWords = words.map(({ word }) => word);
+      const initial = [];
+      while (text) {
+        const lowerCaseText = text.toLowerCase();
+        const wordTextPositions = tagWords.map(word => lowerCaseText.indexOf(word));
+        const firstWordIndex = wordTextPositions.reduce((firstWordIndex, wordTextPosition, wordIndex) => {
+          if (wordTextPosition === -1) return firstWordIndex;
+          if (firstWordIndex === -1) return wordIndex;
+          const firstWordTextPosition = wordTextPositions[firstWordIndex];
+          if (wordTextPosition >= firstWordTextPosition) return firstWordIndex;
+          return wordIndex;
+        }, -1);
+        if (firstWordIndex === -1) break;
+        const word = tagWords[firstWordIndex];
+        const wordTextPosition = wordTextPositions[firstWordIndex];
+        initial.push(text.slice(0, wordTextPosition));
+        initial.push(`<span class='is-found'>${text.slice(wordTextPosition, wordTextPosition + word.length)}</span>`);
+        text = text.slice(wordTextPosition + word.length, text.length);
+      }
+      initial.push(text);
+      return initial.join('');
+    };
+    const resultsLimit = Math.min(5, searchObject.searchResults.length);
+    const formattedResults = searchObject.searchResults.slice(0, resultsLimit).map(result => {
+      const [title, textPreview] = makeTextPreview(result);
+      return {
+        title,
+        textPreview,
+        titleTagged: wrapWordsWithSpan(result.foundWords, title),
+        textPreviewTagged: wrapWordsWithSpan(result.foundWords, textPreview),
+        foundWords: result.foundWords.map(({ word }) => word).join(' '),
+        id: result.model.get('_id')
+      };
+    });
+    searchObject.formattedResults = formattedResults;
+    return searchObject;
+  }
 
-    renderResults: function(results) {
-      var template = Handlebars.templates['searchResultsContent'];
-      this.$('.search__items-container-inner').html(template(results));
-    },
+  renderResults(results) {
+    const template = Handlebars.templates.searchResultsContent;
+    this.$('.search__items-container-inner').html(template(results));
+  }
 
-    navigateToResultPage: function(event) {
-      event && event.preventDefault();
-      var blockID = $(event.currentTarget).attr('data-id');
+  navigateToResultPage(event) {
+    event && event.preventDefault();
+    const blockID = $(event.currentTarget).attr('data-id');
+    Adapt.navigateToElement('.' + blockID);
+    Adapt.trigger('drawer:closeDrawer');
+  }
 
-      Adapt.navigateToElement('.' + blockID);
-      Adapt.trigger('drawer:closeDrawer');
-    }
-
-  });
-
-  return SearchResultsView;
-
-});
+}

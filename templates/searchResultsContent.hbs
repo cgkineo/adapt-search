@@ -12,15 +12,15 @@
 {{else}}
 
 {{#each formattedResults}}
-<button class="search__item drawer__item-btn" data-id="{{id}}" aria-label="{{{searchTitle}}}. {{{textPreview}}}">
+<button class="search__item drawer__item-btn" data-id="{{id}}" aria-label="{{{title}}}. {{{textPreview}}}">
   <div class="search__item-inner">
 
     <div class="search__item-title drawer__item-title">
       <div class="search__item-title-inner drawer__item-title-inner">
         {{#if ../_showHighlights}}
-        {{{searchTitleTagged}}}
+        {{{titleTagged}}}
         {{else}}
-        {{{searchTitle}}}
+        {{{title}}}
         {{/if}}
       </div>
     </div>

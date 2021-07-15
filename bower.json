@@ -4,8 +4,8 @@
     "type": "git",
     "url": "git://github.com/cgkineo/adapt-search"
   },
-  "version": "3.1.1",
-  "framework": ">=5.5",
+  "version": "4.0.0",
+  "framework": ">=5.8",
   "homepage": "https://github.com/cgkineo/adapt-search",
   "issues": "https://github.com/cgkineo/adapt-search/issues/",
   "extension": "search",
