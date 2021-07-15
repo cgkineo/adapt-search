@@ -27,6 +27,15 @@
                   "validators": [],
                   "help": ""
                 },
+                "title": {
+                  "type": "string",
+                  "default": "",
+                  "required": false,
+                  "title": "Alternative title",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
+                },
                 "keywords": {
                   "type": "string",
                   "default": "",
@@ -56,6 +65,15 @@
                   "inputType": "Checkbox",
                   "validators": [],
                   "help": ""
+                },
+                "title": {
+                  "type": "string",
+                  "default": "",
+                  "required": false,
+                  "title": "Alternative title",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
                 },
                 "keywords": {
                   "type": "string",
@@ -87,6 +105,15 @@
                   "validators": [],
                   "help": ""
                 },
+                "title": {
+                  "type": "string",
+                  "default": "",
+                  "required": false,
+                  "title": "Alternative title",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
+                },
                 "keywords": {
                   "type": "string",
                   "default": "",
@@ -116,6 +143,15 @@
                   "inputType": "Checkbox",
                   "validators": [],
                   "help": ""
+                },
+                "title": {
+                  "type": "string",
+                  "default": "",
+                  "required": false,
+                  "title": "Alternative title",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
                 },
                 "keywords": {
                   "type": "string",
