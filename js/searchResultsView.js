@@ -71,7 +71,7 @@ export default class SearchResultsView extends Backbone.View {
        * of matching multilanguage words, which are sometimes a single character
        */
       const bodyPrettify = new RegExp(`(([^${WORD_CHARACTERS}]*[${WORD_CHARACTERS}]{1}){1,${numberOfPreviewWords * 2}}|.{0,${numberOfPreviewCharacters * 2}})`, 'i');
-      const title = stripHTMLAndHandlebars(result.model.get('title')) || stripHTMLAndHandlebars(result.model.get('displayTitle')) || 'No title found';
+      const title = stripHTMLAndHandlebars(result.model.get('_search')?.title || '') || stripHTMLAndHandlebars(result.model.get('title')) || stripHTMLAndHandlebars(result.model.get('displayTitle')) || 'No title found';
       const safeTitle = replaceAccents(title);
       const body = stripHTMLAndHandlebars(result.model.get('body')) || '';
       const hasNoFoundPhrases = (result.foundPhrases.length === 0);

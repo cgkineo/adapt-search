@@ -1,6 +1,7 @@
     // on each searchable contentObject, article, block or component
     "_search": {
         "_isEnabled": true,
+        "title": "Alternative title",
         "keywords": [
             "sentences which can be used",
             "to better enhance the component descriptions",
