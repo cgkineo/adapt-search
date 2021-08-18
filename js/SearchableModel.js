@@ -1,6 +1,7 @@
 import Adapt from 'core/js/adapt';
 import SearchablePhrase from './SearchablePhrase';
 import SearchableWord from './SearchableWord';
+import SEARCH_DEFAULTS from './SEARCH_DEFAULTS';
 
 /**
  * Provides a wrapper for models to extract the searchable phrases and words.
@@ -24,8 +25,9 @@ export default class SearchableModel {
     ));
     if (isUnavailableInPage) return false;
     const config = Adapt.course.get('_search');
-    const hideComponents = config._hideComponents;
-    const hideTypes = config._hideTypes;
+    const configWithDefaults = $.extend(true, {}, SEARCH_DEFAULTS, config);
+    const hideComponents = configWithDefaults._hideComponents;
+    const hideTypes = configWithDefaults._hideTypes;
     const component = this.model.get('_component');
     const type = this.model.get('_type');
     const shouldIgnore = hideTypes.includes(type) || (type === 'component' && hideComponents.includes(component));
