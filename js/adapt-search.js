@@ -11,16 +11,26 @@ class Search extends Backbone.Controller {
     this.isSetup = false;
     this.lastSearchQuery = null;
     this.lastSearchObject = null;
+    this.reIndex = _.debounce(this.reIndex.bind(this), 10);
     this.listenTo(Adapt, {
       'app:dataReady': this.onDataReady,
-      'app:languageChanged': this.clearSearchResults,
       'search:query': this.query,
       'resources:showSearch': this.onShowSearch,
       'drawer:openedItemView search:draw': this.onOpenedItemView,
       'drawer:closed': this.onDrawerClosed,
-      'drawer:noItems': this.onNoItems
+      'drawer:noItems': this.onNoItems,
+      'change:_isStarted': this.onAdaptIsStartedChange
     });
-    this.listenTo(data, {
+  }
+
+  onAdaptIsStartedChange(model, value) {
+    if (value) return;
+    this.onPreLanguageChange();
+  }
+
+  onPreLanguageChange() {
+    this.isSetup = false;
+    this.stopListening(data, {
       'add remove change:_isAvailable change:_isLocked': this.reIndex
     });
   }
@@ -36,18 +46,22 @@ class Search extends Backbone.Controller {
     const modelWithDefaults = $.extend(true, {}, SEARCH_DEFAULTS, model);
     Adapt.course.set('_search', modelWithDefaults);
     this.isSetup = true;
+    this.listenTo(data, {
+      'add remove change:_isAvailable change:_isLocked': this.reIndex
+    });
     this.reIndex();
-  }
-
-  clearSearchResults() {
-    this.query('');
+    this.clearSearchResults();
     this.addDrawerItem();
-    this.reIndex();
   }
 
   reIndex() {
     if (!this.isSetup) return;
     window.search = this.searcher = new Searcher();
+  }
+
+  clearSearchResults() {
+    this.lastSearchQuery = null;
+    this.lastSearchObject = null;
   }
 
   addDrawerItem() {
