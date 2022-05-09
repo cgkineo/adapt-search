@@ -9,6 +9,12 @@ export default class SearchResultsView extends Backbone.View {
     return 'search__items-container is-inactive';
   }
 
+  attributes() {
+    return {
+      role: 'group'
+    };
+  }
+
   events() {
     return {
       'click [data-id]': 'navigateToResultPage'
