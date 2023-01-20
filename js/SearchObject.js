@@ -10,7 +10,7 @@ export default class SearchObject {
     const searchConfig = Adapt.course.get('_search');
     Object.assign(this, searchConfig, {
       query: searchPhrase,
-      searchResults: searchResults,
+      searchResults,
       isAwaitingResults: (searchPhrase.length !== 0 && !shouldSearch),
       isBlank: (searchPhrase.length === 0)
     });
