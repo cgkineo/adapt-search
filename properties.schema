@@ -41,6 +41,7 @@
                   "default": "",
                   "required": false,
                   "title": "Keywords",
+                  "help": "You may enter search words here that are associated with this page but may not appear on this page.",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -80,6 +81,7 @@
                   "default": "",
                   "required": false,
                   "title": "Keywords",
+                  "help": "You may enter search words here that are associated with this article but may not appear on this article.",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -119,6 +121,7 @@
                   "default": "",
                   "required": false,
                   "title": "Keywords",
+                  "help": "You may enter search words here that are associated with this block but may not appear on this block.",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -158,6 +161,7 @@
                   "default": "",
                   "required": false,
                   "title": "Keywords",
+                  "help": "You may enter search words here that are associated with this component but may not appear on this component.",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
