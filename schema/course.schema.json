@@ -71,19 +71,19 @@
             "_previewCharacters": {
               "type": "number",
               "title": "Preview characters",
-              "description": "If the number of _previewWords cannot be found then use x number of characters. Defaults to 30.",
+              "description": "If the number of preview words cannot be found, then use x number of characters. Defaults to 30.",
               "default": 30
             },
             "_showFoundWords": {
               "type": "boolean",
               "title": "Show found words",
-              "description": "Show found words under the search results. Defaults to true.",
+              "description": "Show found words under the search results.",
               "default": true
             },
             "_showHighlights": {
               "type": "boolean",
               "title": "Show highlights",
-              "description": "Show the yellow highlights on search results. Defaults to true.",
+              "description": "Show the yellow highlights on search results.",
               "default": true
             },
             "_ignoreWords": {
@@ -115,6 +115,7 @@
             "description": {
               "type": "string",
               "title": "Placeholder",
+              "description": "Defaults to 'Enter search criteria'",
               "default": "Enter search criteria",
               "_adapt": {
                 "translatable": true
