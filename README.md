@@ -50,10 +50,10 @@ The attributes listed below are used in *contentObject.json*, *articles.json*, *
 ### \_search (object): 
 Container object for the `keywords` setting
 
-### \title (string): 
+### title (string): 
 Alternative title for search result.
 
-#### keywords (array): 
+### keywords (array): 
 A list of search keywords/phrases to be associated with the contentObject/article/block/component. Each item in the array must be a string.
 **NOTE**: Keywords are exported with the `grunt translate:export` command. When localising content, use a process that ensures translated keywords are found in the actual translated course content.
 
@@ -63,9 +63,9 @@ A list of search keywords/phrases to be associated with the contentObject/articl
 No known limitations.
 
 ----------------------------
-**Version number:**  4.2.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
-**Framework versions:** 5.8+  
-**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)  
-**Accessibility support:** WAI AA  
-**RTL support:** No  
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera  
+  
+**Framework versions:** 5.8+<a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br>
+**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)<br>
+**Accessibility support:** WAI AA<br>
+**RTL support:** No<br>
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera<br>
