@@ -32,6 +32,7 @@
                   "default": "",
                   "required": false,
                   "title": "Alternative title",
+                  "help": "Alternative title for the search result",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -72,6 +73,7 @@
                   "default": "",
                   "required": false,
                   "title": "Alternative title",
+                  "help": "Alternative title for the search result",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -112,6 +114,7 @@
                   "default": "",
                   "required": false,
                   "title": "Alternative title",
+                  "help": "Alternative title for the search result",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -152,7 +155,7 @@
                   "default": "",
                   "required": false,
                   "title": "Alternative title",
-                  "help": "Alternative title for the search result.",
+                  "help": "Alternative title for the search result",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
