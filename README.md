@@ -32,7 +32,7 @@ Text displayed when no results are found, defaults to `"Sorry, no results were f
 ### awaitingResultsMessage (string):
 Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to `"Formulating results..."`.
 
-### \_showHighlights (boolean): 
+### \_showHighlights (boolean):
 Show the yellow highlights on search results. Defaults to `true`.
 
 ### \_showFoundWords (boolean):
@@ -47,13 +47,13 @@ If the number of `_previewWords` cannot be found then use `x` number of characte
 ## Item Attributes
 The attributes listed below are used in *contentObject.json*, *articles.json*, *blocks.json* and *components.json* to configure **Search Items**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json).
 
-### \_search (object): 
+### \_search (object):
 Container object for the `keywords` setting
 
-### \title (string): 
+### \title (string):
 Alternative title for search result.
 
-#### keywords (array): 
+#### keywords (array):
 A list of search keywords/phrases to be associated with the contentObject/article/block/component. Each item in the array must be a string.
 **NOTE**: Keywords are exported with the `grunt translate:export` command. When localising content, use a process that ensures translated keywords are found in the actual translated course content.
 
@@ -63,9 +63,8 @@ A list of search keywords/phrases to be associated with the contentObject/articl
 No known limitations.
 
 ----------------------------
-**Version number:**  4.2.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
-**Framework versions:** 5.8+  
-**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)  
-**Accessibility support:** WAI AA  
-**RTL support:** No  
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera  
+<a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>
+**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)
+**Accessibility support:** WAI AA
+**RTL support:** No
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera
