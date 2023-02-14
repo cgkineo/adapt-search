@@ -1,0 +1,44 @@
+{
+  "$anchor": "search-block",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "$patch": {
+    "source": {
+      "$ref": "block"
+    },
+    "with": {
+      "properties": {
+        "_search": {
+          "type": "object",
+          "title": "Search",
+          "default": {},
+          "properties": {
+            "_isEnabled": {
+              "type": "boolean",
+              "title": "Enable search",
+              "default": true
+            },
+            "title": {
+              "type": "string",
+              "title": "Alternative title",
+              "description": "Alternative title for the search result",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "keywords": {
+              "type": "string",
+              "title": "Keywords",
+              "description": "You may enter search words here that are associated with this block but may not visually appear within this block.",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

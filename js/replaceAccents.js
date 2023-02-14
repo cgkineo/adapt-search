@@ -93,7 +93,6 @@ export const flattedAccentedCharacters = accentedCharacterMap.reduce((flattedAcc
   return flattedAccentedCharacters;
 }, {});
 
-
 export default function replaceAccents(str) {
   const accentReplacer = function(chr) {
     return flattedAccentedCharacters[chr] || chr;

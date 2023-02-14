@@ -1,0 +1,154 @@
+{
+  "$anchor": "search-course",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "$patch": {
+    "source": {
+      "$ref": "course"
+    },
+    "with": {
+      "properties": {
+        "_globals": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "_search": {
+              "type": "object",
+              "default": {},
+              "properties": {}
+            }
+          }
+        },
+        "_search": {
+          "type": "object",
+          "title": "Search",
+          "default": {},
+          "properties": {
+            "_isEnabled": {
+              "type": "boolean",
+              "title": "Enable search",
+              "default": true
+            },
+            "_drawerOrder": {
+              "type": "number",
+              "title": "Drawer Order",
+              "description": "Determines the order in which this extension appears as a drawer item. You only need to set this if your course has more than one extension that appears in the drawer (e.g. glossary, resources) and you want to control the order in which they are listed when the drawer is opened.",
+              "default": 0
+            },
+            "_matchOn": {
+              "type": "object",
+              "title": "Match On Rules",
+              "default": {},
+              "properties": {
+                "_contentWordBeginsPhraseWord": {
+                  "type": "boolean",
+                  "title": "A word in the content begins the search phrase word",
+                  "default": false
+                },
+                "_contentWordContainsPhraseWord": {
+                  "type": "boolean",
+                  "title": "A word in the content contains the search phrase word",
+                  "default": false
+                },
+                "_contentWordEqualsPhraseWord": {
+                  "type": "boolean",
+                  "title": "A word in the content equals the search phrase word",
+                  "default": true
+                },
+                "_phraseWordBeginsContentWord": {
+                  "type": "boolean",
+                  "title": "A word in the content starts with the search phrase word",
+                  "default": true
+                }
+              }
+            },
+            "_previewWords": {
+              "type": "number",
+              "title": "Preview words",
+              "description": "The number of words taken from either side of the matching word. Defaults to 10.",
+              "default": 10
+            },
+            "_previewCharacters": {
+              "type": "number",
+              "title": "Preview characters",
+              "description": "If the number of preview words cannot be found, then use x number of characters. Defaults to 30.",
+              "default": 30
+            },
+            "_showFoundWords": {
+              "type": "boolean",
+              "title": "Show found words",
+              "description": "Show found words under the search results.",
+              "default": true
+            },
+            "_showHighlights": {
+              "type": "boolean",
+              "title": "Show highlights",
+              "description": "Show the yellow highlights on search results.",
+              "default": true
+            },
+            "_ignoreWords": {
+              "type": "string",
+              "title": "Ignored words",
+              "description": "A comma-separated list of words which will be ignored by the search algorithm",
+              "default": "a,an,and,are,as,at,be,by,for,from,has,he,in,is,it,its,of,on,that,the,to,was,were,will,wish"
+            },
+            "_minimumWordLength": {
+              "type": "number",
+              "title": "Minimum word length",
+              "description": "Minimum number of characters which must be entered before triggering a search",
+              "default": 2
+            },
+            "_frequencyImportance": {
+              "type": "number",
+              "title": "Frequency importance",
+              "description": "Extra points for a repeat match",
+              "default": 5
+            },
+            "title": {
+              "type": "string",
+              "title": "Title",
+              "default": "Search",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "description": {
+              "type": "string",
+              "title": "Placeholder",
+              "description": "Defaults to 'Enter search criteria'",
+              "default": "Enter search criteria",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "placeholder": {
+              "type": "string",
+              "title": "Placeholder text for the search box",
+              "default": "",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "noResultsMessage": {
+              "type": "string",
+              "title": "No results message",
+              "default": "No results found",
+              "_adapt": {
+                "translatable": true
+              }
+            },
+            "awaitingResultsMessage": {
+              "type": "string",
+              "title": "Processing results message",
+              "description": "Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to 'Formulating results...'",
+              "default": "Formulating results...",
+              "_adapt": {
+                "translatable": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
