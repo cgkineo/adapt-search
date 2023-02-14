@@ -32,7 +32,7 @@ Text displayed when no results are found, defaults to `"Sorry, no results were f
 ### awaitingResultsMessage (string):
 Message between having enough characters to search and having search results (More than 2 characters per word). Defaults to `"Formulating results..."`.
 
-### \_showHighlights (boolean): 
+### \_showHighlights (boolean):
 Show the yellow highlights on search results. Defaults to `true`.
 
 ### \_showFoundWords (boolean):
