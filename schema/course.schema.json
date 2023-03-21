@@ -8,17 +8,6 @@
     },
     "with": {
       "properties": {
-        "_globals": {
-          "type": "object",
-          "default": {},
-          "properties": {
-            "_search": {
-              "type": "object",
-              "default": {},
-              "properties": {}
-            }
-          }
-        },
         "_search": {
           "type": "object",
           "title": "Search",
