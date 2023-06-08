@@ -81,7 +81,8 @@
             }
         ],
         "_hideComponents": [
-            "blank"
+            "blank",
+            "assessmentResults"
         ],
         "_hideTypes": [
         ],

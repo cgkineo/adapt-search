@@ -86,6 +86,18 @@
               "description": "Show the yellow highlights on search results.",
               "default": true
             },
+            "_hideComponents": {
+              "type": "string",
+              "title": "Hide Components",
+              "description": "A comma-separated list of components which will be ignored by the search algorithm",
+              "default": "blank,assessmentResults"
+            },
+            "_hideTypes": {
+              "type": "string",
+              "title": "Hide Types",
+              "description": "A comma-separated list of types which will be ignored by the search algorithm",
+              "default": ""
+            },
             "_ignoreWords": {
               "type": "string",
               "title": "Ignored words",
@@ -114,7 +126,7 @@
             },
             "description": {
               "type": "string",
-              "title": "Placeholder",
+              "title": "Description",
               "description": "Defaults to 'Enter search criteria'",
               "default": "Enter search criteria",
               "_adapt": {
@@ -123,7 +135,8 @@
             },
             "placeholder": {
               "type": "string",
-              "title": "Placeholder text for the search box",
+              "title": "Placeholder",
+              "description": "Placeholder text for the search box",
               "default": "",
               "_adapt": {
                 "translatable": true
@@ -132,6 +145,7 @@
             "noResultsMessage": {
               "type": "string",
               "title": "No results message",
+              "description": "Message shown when a search returns no results. Defaults to 'No results found'",
               "default": "No results found",
               "_adapt": {
                 "translatable": true
