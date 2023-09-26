@@ -2,7 +2,6 @@
 const SEARCH_DEFAULTS = {
 
   title: 'Search',
-  description: 'Type in search words',
   placeholder: '',
   noResultsMessage: 'Sorry, no results were found',
   awaitingResultsMessage: 'Formulating results...',

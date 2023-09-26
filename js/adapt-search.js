@@ -67,10 +67,9 @@ class Search extends Backbone.Controller {
   addDrawerItem() {
     const searchConfig = Adapt.course.get('_search');
     searchConfig.title = searchConfig.title || 'Search';
-    searchConfig.description = searchConfig.description || 'Description';
     const drawerObject = {
       title: searchConfig.title,
-      description: searchConfig.description,
+      description: '',
       className: 'is-search',
       drawerOrder: searchConfig._drawerOrder || 0
     };
