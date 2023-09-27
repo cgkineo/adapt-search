@@ -1,3 +1,4 @@
 <div class="search__textbox-container">
-  <input class="search__textbox js-search-textbox-change" type="text" placeholder="{{placeholder}}">
+  <label for="search__textbox" class="search__textbox-label{{#unless description}} aria-label{{/unless}}">{{#if description}}{{{description}}}{{/if}}{{#unless description}}{{{title}}}{{/unless}}</label>
+  <input id="search__textbox" class="search__textbox js-search-textbox-change" type="text" placeholder="{{placeholder}}">
 </div>
