@@ -30,8 +30,8 @@ export default class SearchableModel {
     const type = this.model.get('_type');
     const shouldIgnore = hideTypes.includes(type) || (type === 'component' && hideComponents.includes(component));
     if (shouldIgnore) return false;
-    const displayTitle = this.model.get('displayTitle').trim();
-    const title = this.model.get('title').trim();
+    const displayTitle = this.model.get('displayTitle')?.trim();
+    const title = this.model.get('title')?.trim();
     const hasTitleOrDisplayTitle = Boolean(displayTitle || title);
     return hasTitleOrDisplayTitle;
   }
