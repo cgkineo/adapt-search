@@ -31,17 +31,16 @@ export default class SearchablePhrase {
     const minimumWordLength = config._minimumWordLength;
     this.words = {};
     const matchedWords = this.safePhrase.match(matchNotWordBoundaries);
-    if (matchedWords !== null) {
-      this.words = matchedWords.map(chunk => chunk.replace(trimReplaceNonWordCharacters, ''))
-        .filter(word => word.length >= minimumWordLength)
-        .reduce((wordCounts, word) => {
-          word = word.toLowerCase();
-          if (ignoreWords.includes(word)) return wordCounts;
-          wordCounts[word] = wordCounts[word] || 0;
-          wordCounts[word]++;
-          return wordCounts;
-        }, {});
-    }
+    if (matchedWords === null) return;
+    this.words = matchedWords.map(chunk => chunk.replace(trimReplaceNonWordCharacters, ''))
+      .filter(word => word.length >= minimumWordLength)
+      .reduce((wordCounts, word) => {
+        word = word.toLowerCase();
+        if (ignoreWords.includes(word)) return wordCounts;
+        wordCounts[word] = wordCounts[word] || 0;
+        wordCounts[word]++;
+        return wordCounts;
+      }, {});
   }
 
   /**
