@@ -29,9 +29,10 @@ export default class SearchablePhrase {
       ? config._ignoreWords
       : config._ignoreWords.split(',');
     const minimumWordLength = config._minimumWordLength;
-    this.words = this.safePhrase
-      .match(matchNotWordBoundaries)
-      .map(chunk => chunk.replace(trimReplaceNonWordCharacters, ''))
+    this.words = {};
+    const matchedWords = this.safePhrase.match(matchNotWordBoundaries);
+    if (matchedWords === null) return;
+    this.words = matchedWords.map(chunk => chunk.replace(trimReplaceNonWordCharacters, ''))
       .filter(word => word.length >= minimumWordLength)
       .reduce((wordCounts, word) => {
         word = word.toLowerCase();
