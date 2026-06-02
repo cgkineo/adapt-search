@@ -65,7 +65,7 @@ No known limitations.
 ----------------------------
   
 **Framework versions:** 5.8+<a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br>
-**Author / maintainer:** Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)<br>
+**Author / maintainer:** Mindtools Kineo and community with [contributors](https://github.com/cgkineo/adapt-search/graphs/contributors)<br>
 **Accessibility support:** WAI AA<br>
 **RTL support:** No<br>
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 14 for macOS/iOS/iPadOS, Opera<br>
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari for macOS/iOS/iPadOS, Opera<br>
