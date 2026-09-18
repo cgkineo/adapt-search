@@ -4,6 +4,10 @@ import SearchDrawerItemView from './searchDrawerItemView';
 import SearchResultsView from './searchResultsView';
 import SEARCH_DEFAULTS from './SEARCH_DEFAULTS';
 import Searcher from './Searcher';
+import toList from './toList';
+
+// settings which may be authored as either an array or a comma-separated string
+const LIST_ATTRIBUTES = ['_ignoreWords', '_hideComponents', '_hideTypes'];
 
 class Search extends Backbone.Controller {
 
@@ -44,6 +48,9 @@ class Search extends Backbone.Controller {
   setupConfig() {
     const model = Adapt.course.get('_search') || {};
     const modelWithDefaults = $.extend(true, {}, SEARCH_DEFAULTS, model);
+    LIST_ATTRIBUTES.forEach(name => (modelWithDefaults[name] = toList(modelWithDefaults[name])));
+    // deep extend merges arrays item by item, so an authored list must replace the default outright
+    if (model._searchAttributes?.length) modelWithDefaults._searchAttributes = model._searchAttributes;
     Adapt.course.set('_search', modelWithDefaults);
     this.isSetup = true;
     this.listenTo(data, {

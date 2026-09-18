@@ -44,6 +44,21 @@ The number of words taken from either side of the matching word. Defaults to `15
 ### \_previewCharacters (integer):
 If the number of `_previewWords` cannot be found then use `x` number of characters. Defaults to `30`.
 
+### \_ignoreWords (string):
+A comma-separated list of words which will be ignored by the search algorithm. An array of strings is also accepted.
+
+### \_hideComponents (string):
+A comma-separated list of components which will be ignored by the search algorithm. Defaults to `"blank,assessmentResults"`. An array of strings is also accepted.
+
+### \_hideTypes (string):
+A comma-separated list of types which will be ignored by the search algorithm. Defaults to `""`. An array of strings is also accepted.
+
+### \_searchAttributes (array):
+The content attributes to index, and how heavily each one is weighted. Each item holds an `_attributeName`, a `_level` (a lower number scores more highly) and `_allowTextPreview`. Leave empty to use the default set.
+
+### \_scoreQualificationThreshold (integer):
+The percentage of the highest scoring result a result must reach to be listed. Defaults to `20`.
+
 ## Item Attributes
 The attributes listed below are used in *contentObject.json*, *articles.json*, *blocks.json* and *components.json* to configure **Search Items**, and are properly formatted as JSON in [*example.json*](https://github.com/cgkineo/adapt-search/blob/master/example.json).
 
