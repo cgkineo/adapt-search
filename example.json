@@ -80,17 +80,10 @@
                 "_allowTextPreview": true
             }
         ],
-        "_hideComponents": [
-            "blank",
-            "assessmentResults"
-        ],
-        "_hideTypes": [
-        ],
-        "_ignoreWords": [
-            "a","an","and","are","as","at","be","by","for",
-            "from","has","he","in","is","it","its","of","on",
-            "that","the","to","was","were","will","wish","",
-        ],
+        // comma-separated lists; an array of strings is also accepted
+        "_hideComponents": "blank,assessmentResults",
+        "_hideTypes": "",
+        "_ignoreWords": "a,an,and,are,as,at,be,by,for,from,has,he,in,is,it,its,of,on,that,the,to,was,were,will,wish",
         "_matchOn": {
             "_contentWordBeginsPhraseWord": false,
             "_contentWordContainsPhraseWord": false,

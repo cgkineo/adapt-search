@@ -24,10 +24,7 @@ export default class SearchablePhrase {
     this.score = score ?? (this.level !== null ? (1 / this.level) : null);
     this.allowTextPreview = (allowTextPreview ?? searchAttribute?._allowTextPreview) ?? null;
     const config = Adapt.course.get('_search');
-    // Handle _ignoreWords as a special case to support the authoring tool
-    const ignoreWords = Array.isArray(config._ignoreWords)
-      ? config._ignoreWords
-      : config._ignoreWords.split(',');
+    const ignoreWords = config._ignoreWords;
     const minimumWordLength = config._minimumWordLength;
     this.words = {};
     const matchedWords = this.safePhrase.match(matchNotWordBoundaries);

@@ -38,14 +38,20 @@
                   "translatable": true
                 },
                 "keywords": {
-                  "type": "string",
-                  "default": "",
+                  "type": "array",
                   "required": false,
                   "title": "Keywords",
                   "help": "You may enter search words here that are associated with this page but may not appear on this page.",
-                  "inputType": "Text",
-                  "validators": [],
-                  "translatable": true
+                  "items": {
+                    "type": "string",
+                    "required": true,
+                    "default": "",
+                    "title": "Keyword",
+                    "inputType": "Text",
+                    "validators": ["required"],
+                    "help": "",
+                    "translatable": true
+                  }
                 }
               }
             }
@@ -79,14 +85,20 @@
                   "translatable": true
                 },
                 "keywords": {
-                  "type": "string",
-                  "default": "",
+                  "type": "array",
                   "required": false,
                   "title": "Keywords",
                   "help": "You may enter search words here that are associated with this article but may not appear on this article.",
-                  "inputType": "Text",
-                  "validators": [],
-                  "translatable": true
+                  "items": {
+                    "type": "string",
+                    "required": true,
+                    "default": "",
+                    "title": "Keyword",
+                    "inputType": "Text",
+                    "validators": ["required"],
+                    "help": "",
+                    "translatable": true
+                  }
                 }
               }
             }
@@ -120,14 +132,20 @@
                   "translatable": true
                 },
                 "keywords": {
-                  "type": "string",
-                  "default": "",
+                  "type": "array",
                   "required": false,
                   "title": "Keywords",
                   "help": "You may enter search words here that are associated with this block but may not appear on this block.",
-                  "inputType": "Text",
-                  "validators": [],
-                  "translatable": true
+                  "items": {
+                    "type": "string",
+                    "required": true,
+                    "default": "",
+                    "title": "Keyword",
+                    "inputType": "Text",
+                    "validators": ["required"],
+                    "help": "",
+                    "translatable": true
+                  }
                 }
               }
             }
@@ -161,14 +179,20 @@
                   "translatable": true
                 },
                 "keywords": {
-                  "type": "string",
-                  "default": "",
+                  "type": "array",
                   "required": false,
                   "title": "Keywords",
                   "help": "You may enter search words here that are associated with this component but may not appear on this component.",
-                  "inputType": "Text",
-                  "validators": [],
-                  "translatable": true
+                  "items": {
+                    "type": "string",
+                    "required": true,
+                    "default": "",
+                    "title": "Keyword",
+                    "inputType": "Text",
+                    "validators": ["required"],
+                    "help": "",
+                    "translatable": true
+                  }
                 }
               }
             }
@@ -245,6 +269,45 @@
                     }
                   }
                 },
+                "_searchAttributes": {
+                  "type": "array",
+                  "required": false,
+                  "title": "Search attributes",
+                  "help": "The content attributes to index, and how heavily each one is weighted. Leave empty to use the default set.",
+                  "items": {
+                    "type": "object",
+                    "required": false,
+                    "properties": {
+                      "_attributeName": {
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "title": "Attribute name",
+                        "inputType": "Text",
+                        "validators": ["required"],
+                        "help": "The name of the content attribute to index, e.g. body"
+                      },
+                      "_level": {
+                        "type": "number",
+                        "required": true,
+                        "default": 1,
+                        "title": "Level",
+                        "inputType": "Number",
+                        "validators": ["number"],
+                        "help": "The importance of a match on this attribute. A lower number scores more highly."
+                      },
+                      "_allowTextPreview": {
+                        "type": "boolean",
+                        "required": true,
+                        "default": false,
+                        "title": "Allow text preview",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Allow the text of this attribute to be shown in the search result preview."
+                      }
+                    }
+                  }
+                },
                 "_previewWords": {
                   "type": "number",
                   "required": false,
@@ -281,6 +344,24 @@
                   "validators": [],
                   "help": ""
                 },
+                "_hideComponents": {
+                  "type": "string",
+                  "default": "blank,assessmentResults",
+                  "required": false,
+                  "title": "Hide Components",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "A comma-separated list of components which will be ignored by the search algorithm"
+                },
+                "_hideTypes": {
+                  "type": "string",
+                  "default": "",
+                  "required": false,
+                  "title": "Hide Types",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "A comma-separated list of types which will be ignored by the search algorithm"
+                },
                 "_ignoreWords": {
                   "type": "string",
                   "default": "a,an,and,are,as,at,be,by,for,from,has,he,in,is,it,its,of,on,that,the,to,was,were,will,wish",
@@ -308,6 +389,15 @@
                   "validators": ["number"],
                   "help": "Extra points for a repeat match"
                 },
+                "_scoreQualificationThreshold": {
+                  "type": "number",
+                  "required": false,
+                  "default": 20,
+                  "title": "Score qualification threshold",
+                  "inputType": "Number",
+                  "validators": ["number"],
+                  "help": "The percentage of the highest scoring result a result must reach to be listed. Defaults to 20."
+                },
                 "title": {
                   "type": "string",
                   "default": "Search",
@@ -321,7 +411,8 @@
                   "type": "string",
                   "default": "Enter search criteria",
                   "required": false,
-                  "title": "Placeholder",
+                  "title": "Description",
+                  "help": "Defaults to 'Enter search criteria'",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true
@@ -330,7 +421,8 @@
                   "type": "string",
                   "default": "",
                   "required": false,
-                  "title": "Placeholder text for the search box",
+                  "title": "Placeholder",
+                  "help": "Placeholder text for the search box",
                   "inputType": "Text",
                   "validators": [],
                   "translatable": true

@@ -51,6 +51,35 @@
                 }
               }
             },
+            "_searchAttributes": {
+              "type": "array",
+              "title": "Search attributes",
+              "description": "The content attributes to index, and how heavily each one is weighted. Leave empty to use the default set.",
+              "default": [],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_attributeName": {
+                    "type": "string",
+                    "title": "Attribute name",
+                    "description": "The name of the content attribute to index, e.g. body",
+                    "default": ""
+                  },
+                  "_level": {
+                    "type": "number",
+                    "title": "Level",
+                    "description": "The importance of a match on this attribute. A lower number scores more highly.",
+                    "default": 1
+                  },
+                  "_allowTextPreview": {
+                    "type": "boolean",
+                    "title": "Allow text preview",
+                    "description": "Allow the text of this attribute to be shown in the search result preview.",
+                    "default": false
+                  }
+                }
+              }
+            },
             "_previewWords": {
               "type": "number",
               "title": "Preview words",
@@ -104,6 +133,12 @@
               "title": "Frequency importance",
               "description": "Extra points for a repeat match",
               "default": 5
+            },
+            "_scoreQualificationThreshold": {
+              "type": "number",
+              "title": "Score qualification threshold",
+              "description": "The percentage of the highest scoring result a result must reach to be listed. Defaults to 20.",
+              "default": 20
             },
             "title": {
               "type": "string",

@@ -28,10 +28,13 @@
               }
             },
             "keywords": {
-              "type": "string",
+              "type": "array",
               "title": "Keywords",
               "description": "You may enter search words here that are associated with this article but may not visually appear within this article.",
-              "default": "",
+              "default": [],
+              "items": {
+                "type": "string"
+              },
               "_adapt": {
                 "translatable": true
               }
